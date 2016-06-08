@@ -1,0 +1,17 @@
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+
+import { ColorPicker } from '../src';
+
+class App extends Component {
+  render () {
+    return (
+        <ColorPicker
+          opacitySlider={true}
+          color="rgba(25,6,1,1.5)"
+          onChange={color => console.log(color) } />
+    );
+  }
+}
+
+ReactDOM.render(<App />, document.querySelector('.container'));
