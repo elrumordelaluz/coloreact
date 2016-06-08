@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import appStyles from './App.css';
-
 import ColorPicker from './ColorPicker';
 
 class App extends Component {

@@ -1,8 +1,0 @@
-@import './shared/styles/_config';
-
-.app {
-  color: var(--main-color, red);
-  font-family: var(--font-family, Arial);
-  font-size: 1.75em;
-  font-weight: 100;
-}

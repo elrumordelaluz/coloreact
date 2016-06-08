@@ -1,3 +1,5 @@
+@import './_configStyles';
+
 .Map {
   position: absolute;
   top: 1em;
@@ -14,11 +16,11 @@
   }
 
   .Map.dark .Pointer {
-    border-color: #fff;
+    border-color: var(--light-color, #fff);
   }
 
   .Map.light .Pointer {
-    border-color: #000;
+    border-color: var(--dark-color, #000);
   }
 
   .Map .Pointer {
@@ -28,7 +30,7 @@
     margin-left: -5px;
     margin-bottom: -5px;
     border-radius: 100%;
-    border: 1px solid #000;
+    border: 1px solid var(--darl-color, #000);
     will-change: left, bottom;
   }
 
