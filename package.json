@@ -2,7 +2,7 @@
   "name": "coloreact",
   "version": "0.1.0",
   "description": "A tiny Color Picker for React",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --port 3004",
     "webpack": "webpack --progress --colors",
@@ -10,12 +10,12 @@
     "build:dir": "`npm bin`/babel src -d dist",
     "build:file": "`npm bin`/babel src --out-file dist/coloreact.js"
   },
-  "keywords": [],
+  "keywords": ["color-picker", "react", "color"],
   "author": "Lionel T <elrumordelaluz@hotmail.com> (elrumordelaluz.com)",
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://github.com/elrumordelaluz/react-tiny-starter.git"
+    "url": "https://github.com/elrumordelaluz/coloreact"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.6",
