@@ -17,6 +17,14 @@ class ColorPicker extends Component {
     this.showLastValue = this.showLastValue.bind(this);
   }
 
+  componentWillReceiveProps (nextProps) {
+    if (!u.equals(u.toHSV(nextProps.color), this.state.color)) {
+      this.setState({
+        color: u.toHSV(nextProps.color)
+      });
+    }
+  }
+
   handleHueChange (hue) {
     const [, s, v, a] = this.state.color;
     this.update([hue, s, v, a]);
