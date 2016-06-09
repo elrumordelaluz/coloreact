@@ -3,7 +3,10 @@ import ReactDOM from 'react-dom';
 import hoistStatics from 'hoist-non-react-statics'
 
 const noop = () => {};
-const getDocument = element => element.ownerDocument;
+const getDocument = element => {
+  console.log(element);
+  return element.ownerDocument;
+}
 const clamp = (val, min, max) => Math.min(Math.max(val, min), max);
 const getDisplayName = (WrappedComponent) => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component'
@@ -31,6 +34,7 @@ export default function draggable (options = {}) {
 
       componentDidMount () {
         this.document = getDocument(ReactDOM.findDOMNode(this));
+        console.log(this.document)
         const window  = this.window = this.document.defaultView;
 
         window.addEventListener("resize", this.updateBoundingRect);

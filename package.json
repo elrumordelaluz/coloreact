@@ -8,7 +8,11 @@
     "build": "NODE_ENV=production babel -d lib/ src/",
     "bundle": "webpack --progress --colors"
   },
-  "keywords": ["color-picker", "react", "color"],
+  "keywords": [
+    "color-picker",
+    "react",
+    "color"
+  ],
   "author": "Lionel T <elrumordelaluz@hotmail.com> (elrumordelaluz.com)",
   "license": "ISC",
   "repository": {
@@ -30,9 +34,7 @@
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
-    "aphrodite": "^0.3.3",
     "babel-preset-stage-1": "^6.5.0",
-    "classnames": "^2.2.5",
     "hoist-non-react-statics": "^1.0.6",
     "pure-color": "^1.2.0",
     "react": "^15.1.0",
