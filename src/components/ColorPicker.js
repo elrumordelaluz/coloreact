@@ -47,7 +47,27 @@ class ColorPicker extends Component {
 
   update (color) {
     this.setState({ color });
-    this.props.onChange(u.toRgbString(color));
+    this.props.onChange(this.output());
+  }
+
+  output () {
+    const { color } = this.state;
+    const rgbArr = u.toRGBa(color);
+    const hex = u.toHEX(rgbArr);
+    const rgbaString = u.toRgbString(color);
+    const rgba = {
+      r: rgbArr[0],
+      g: rgbArr[1],
+      b: rgbArr[2],
+      a: rgbArr[3]
+    }
+    const hsv = {
+      h: color[0],
+      s: color[1],
+      v: color[2]
+    };
+
+    return { rgba, rgbaString, hex, hsv, };
   }
 
   render () {
