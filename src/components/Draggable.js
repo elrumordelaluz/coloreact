@@ -4,7 +4,6 @@ import hoistStatics from 'hoist-non-react-statics'
 
 const noop = () => {};
 const getDocument = element => {
-  console.log(element);
   return element.ownerDocument;
 }
 const clamp = (val, min, max) => Math.min(Math.max(val, min), max);
@@ -34,7 +33,6 @@ export default function draggable (options = {}) {
 
       componentDidMount () {
         this.document = getDocument(ReactDOM.findDOMNode(this));
-        console.log(this.document)
         const window  = this.window = this.document.defaultView;
 
         window.addEventListener("resize", this.updateBoundingRect);
