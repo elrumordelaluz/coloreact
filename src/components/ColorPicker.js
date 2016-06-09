@@ -1,14 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
-
 import * as u from '../utils';
 import Slider from './Slider';
 import Map from './Map';
-
-import classNames from 'classnames/bind';
-import styles from './Styles.css';
-
-const cx = classNames.bind(styles);
 
 class ColorPicker extends Component {
   constructor (props) {
@@ -57,37 +51,42 @@ class ColorPicker extends Component {
     this.props.onChange(u.toRgbString(color));
   }
 
+  applyOpacitySliderStyles () {
+
+  }
+
   render () {
     const [ hue, saturation, value ] = this.state.color;
+    const {
+      colorPicker,
+      opacitySlider,
+      opacitySlider__slider } = ColorPicker.defaultStyles;
     return (
-      <div className={cx({
-          'ColorPicker': true,
-          'with-opacity-slider': this.props.opacitySlider
-        })}>
-        <div className={cx({ 'Hue-slider': true })}>
-          <Slider
-            vertical={true}
-            value={hue}
-            max={360}
-            onChange={this.handleHueChange} />
-        </div>
+      <div className="ColorPicker" style={colorPicker}>
+        <Slider
+          vertical={true}
+          value={hue}
+          type="hue"
+          max={360}
+          onChange={this.handleHueChange} />
 
         {this.props.opacitySlider && (
-          <div className={cx({ 'Opacity-slider': true })}>
-            <Slider
-              value={this.getAlpha()}
-              max={1}
-              background={this.getBackgroundGradient()}
-              onChange={this.handleAlphaChange}
-            />
-          </div>
+          <Slider
+            className="opacity-slider"
+            type="opacity"
+            bottom={true}
+            value={this.getAlpha()}
+            max={1}
+            background={this.getBackgroundGradient()}
+            onChange={this.handleAlphaChange}
+          />
         )}
 
         <Map
           x={saturation}
           y={value}
           max={100}
-          className={u.isDark(this.state.color) ? "dark" : "light"}
+          pointerColor={!u.isDark(this.state.color) ? "dark" : "light"}
           backgroundColor={this.getBackgroundHue()}
           onChange={this.handleSaturationValueChange}
         />
@@ -104,5 +103,15 @@ ColorPicker.propTypes = {
 ColorPicker.defaultProps = {
   color: "rgba(0,0,0,1)"
 }
+
+ColorPicker.defaultStyles = {
+  colorPicker: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+  },
+};
 
 export default ColorPicker;

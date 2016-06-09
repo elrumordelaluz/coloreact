@@ -1,40 +1,68 @@
 import React, { Component, PropTypes } from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import draggable from './Draggable';
-import classNames from 'classnames/bind';
-import styles from './Styles.css';
-
-const cx = classNames.bind(styles);
 
 class Slider extends Component {
   constructor (props) {
     super(props);
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
-    this.getCss = this.getCss.bind(this);
   }
 
-  getCss() {
+  getPointerStyles() {
+    const { pointer } = Slider.defaultStyles;
     const attr = this.props.vertical ? 'bottom' : 'left';
 
-    return {
-      [attr] : this.props.getPercentageValue(this.props.value)
-    };
+    return Object.assign({},
+      pointer,
+      {
+        [attr]: this.props.getPercentageValue(this.props.value)
+      }
+    );
+  }
+
+  getSliderStyles () {
+    const {
+      slider,
+      verticalSlider,
+      horizontalSlider,
+      opacitySlider,
+      rightSlider,
+      bottomSlider } = Slider.defaultStyles;
+
+    return Object.assign({},
+      slider,
+      rightSlider,
+      this.props.bottom && bottomSlider,
+      this.props.vertical && verticalSlider,
+      !this.props.vertical && horizontalSlider,
+      this.props.opacity && opacitySlider
+    );
+  }
+
+  getTrackStyles () {
+    const { track, horizontalTrack, verticalTrack, opacityTrack, hueTrack } = Slider.defaultStyles;
+    const background = this.props.background;
+    return Object.assign({},
+      track,
+      this.props.vertical && verticalTrack,
+      !this.props.vertical && horizontalTrack,
+      this.props.type === 'opacity' && opacityTrack,
+      this.props.type === 'hue' && hueTrack,
+      this.props.background && { background: this.props.background },
+    );
   }
 
   render () {
-    const background = this.props.background;
+    const { opacitySlider, opacitySlider__track }= Slider.defaultStyles;
     return (
       <div
-        className={cx({
-          'Slider': true,
-          'vertical': this.props.vertical,
-          'horizontal': !this.props.vertical
-        })}
+        className="Slider"
+        style={this.getSliderStyles()}
         onMouseDown={this.props.startUpdates}
         onTouchStart={this.props.startUpdates}>
 
-        <div className={cx({ 'Track': true })} style={{ background }} />
-        {this.props.rect && <div className={cx({ 'Pointer': true })}  style={this.getCss()} />}
+        <div className="Track" style={this.getTrackStyles()} />
+        {this.props.rect && <div className="Pointer"  style={this.getPointerStyles()} />}
       </div>
     );
   }
@@ -42,14 +70,111 @@ class Slider extends Component {
 
 Slider.propTypes = {
   value: PropTypes.number.isRequired,
-  single: PropTypes.string,
   background: PropTypes.string
 };
 
 Slider.defaultProps = {
   value: 0,
-  single: "vertical",
   background: ""
 };
+
+Slider.defaultStyles = {
+  // Slider
+
+  slider: {
+    position: 'absolute',
+    userSelect: 'none',
+  },
+
+  horizontalSlider: {
+    height: 8,
+    left: '1em',
+    right: '2em',
+    height: 10,
+    cursor: 'ew-resize',
+  },
+
+  verticalSlider: {
+    top: '1em',
+    bottom: '1em',
+    width: 10,
+    cursor: 'ns-resize',
+  },
+
+  opacitySlider: {
+    background: '#fff url("data:image/gif;base64,R0lGODdhEAAQAPEAAMvLy8zMzP///wAAACwAAAAAEAAQAEACHYxvosstCAEMrq6Jj812Y59NIDQipdY5XLWqH4sVADs=") repeat',
+    backgroundSize: '8px 8px',
+  },
+
+  rightSlider: {
+    right: '1.3em'
+  },
+
+  bottomSlider: {
+    bottom: '1.3em',
+  },
+
+  // Track
+
+  track: {
+    borderRadius: 3,
+    background: '#888',
+  },
+
+  horizontalTrack: {
+    height: 8,
+    marginTop: -4,
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: '50%',
+  },
+
+  verticalTrack: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    bottom: 0,
+    left: '50%',
+    width: 8,
+    marginLeft: -4,
+  },
+
+  opacityTrack: {
+    background: 'linear-gradient(to right, rgba(255,255,255,0) 0%, #FFF 100%)',
+  },
+
+  hueTrack: {
+    background: `linear-gradient(to bottom,
+      #FF0000 0%,
+      #FF0099 10%,
+      #CD00FF 20%,
+      #3200FF 30%,
+      #0066FF 40%,
+      #00FFFD 50%,
+      #00FF66 60%,
+      #35FF00 70%,
+      #CDFF00 80%,
+      #FF9900 90%,
+      #FF0000 100%
+    )`,
+  },
+
+  // Pointer
+
+  pointer: {
+    position: 'absolute',
+    bottom: '50%',
+    left: '50%',
+    width: 16,
+    height: 16,
+    marginLeft: -8,
+    marginBottom: -8,
+    borderRadius: 16,
+    background: '#fff',
+    boxShadow: 'inset 0 0 0 1px #ccc,0 1px 2px #ccc',
+    willChange: 'left, bottom',
+  }
+}
 
 export default draggable({ single: true })(Slider);
