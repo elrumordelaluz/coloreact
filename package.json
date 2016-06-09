@@ -4,7 +4,7 @@
   "description": "A tiny Color Picker for React",
   "main": "lib/index.js",
   "scripts": {
-    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --port 3004",
+    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --port 3040",
     "build": "NODE_ENV=production babel -d lib/ src/"
   },
   "keywords": [
