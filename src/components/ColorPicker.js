@@ -51,10 +51,6 @@ class ColorPicker extends Component {
     this.props.onChange(u.toRgbString(color));
   }
 
-  applyOpacitySliderStyles () {
-
-  }
-
   render () {
     const [ hue, saturation, value ] = this.state.color;
     const {
