@@ -39,7 +39,9 @@ class Map extends Component {
         className="Map"
         style={this.getMapStyles()}
         onMouseDown={this.props.startUpdates}
-        onTouchStart={this.props.startUpdates}>
+        onTouchStart={this.props.startUpdates}
+        onMouseUp={this.props.onComplete}
+        onTouchEnd={this.props.onComplete}>
 
         <div className="Background" style={this.getBgStyles()}>
           <span className="Background__overlay" style={bgOverlay} />

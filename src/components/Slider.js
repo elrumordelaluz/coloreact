@@ -59,7 +59,9 @@ class Slider extends Component {
         className={`Slider ${this.props.className}`}
         style={this.getSliderStyles()}
         onMouseDown={this.props.startUpdates}
-        onTouchStart={this.props.startUpdates}>
+        onTouchStart={this.props.startUpdates}
+        onMouseUp={this.props.onComplete}
+        onTouchEnd={this.props.onComplete}>
 
         <div className="Track" style={this.getTrackStyles()} />
 

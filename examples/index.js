@@ -9,7 +9,8 @@ class App extends Component {
       <ColorPicker
         opacity={true}
         color="rgba(25,6,1,1.5)"
-        onChange={color => console.log(color) } />
+        onChange={color => color }
+        onComplete={color => console.log(color) } />
     );
   }
 }

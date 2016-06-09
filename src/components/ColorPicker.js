@@ -14,6 +14,7 @@ class ColorPicker extends Component {
     this.handleSaturationValueChange = this.handleSaturationValueChange.bind(this);
     this.handleHueChange = this.handleHueChange.bind(this);
     this.handleAlphaChange = this.handleAlphaChange.bind(this);
+    this.showLastValue = this.showLastValue.bind(this);
   }
 
   handleHueChange (hue) {
@@ -70,6 +71,10 @@ class ColorPicker extends Component {
     return { rgba, rgbaString, hex, hsv, };
   }
 
+  showLastValue () {
+    this.props.onComplete(this.output());
+  }
+
   render () {
     const [ hue, saturation, value ] = this.state.color;
     const { colorPicker } = ColorPicker.defaultStyles;
@@ -81,7 +86,8 @@ class ColorPicker extends Component {
           value={hue}
           type="hue"
           max={360}
-          onChange={this.handleHueChange} />
+          onChange={this.handleHueChange}
+          onComplete={this.showLastValue} />
 
         {this.props.opacity && (
           <Slider
@@ -92,7 +98,7 @@ class ColorPicker extends Component {
             max={1}
             background={this.getBackgroundGradient()}
             onChange={this.handleAlphaChange}
-          />
+            onComplete={this.showLastValue} />
         )}
 
         <Map
@@ -102,6 +108,7 @@ class ColorPicker extends Component {
           pointerColor={!u.isDark(this.state.color) ? "dark" : "light"}
           backgroundColor={this.getBackgroundHue()}
           onChange={this.handleSaturationValueChange}
+          onComplete={this.showLastValue}
         />
       </div>
     );
