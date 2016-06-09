@@ -3,9 +3,7 @@ import ReactDOM from 'react-dom';
 import hoistStatics from 'hoist-non-react-statics'
 
 const noop = () => {};
-const getDocument = element => {
-  return element.ownerDocument;
-}
+const getDocument = element => element.ownerDocument;
 const clamp = (val, min, max) => Math.min(Math.max(val, min), max);
 const getDisplayName = (WrappedComponent) => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component'
@@ -136,13 +134,12 @@ export default function draggable (options = {}) {
     Draggable.WrappedComponent = WrappedComponent;
     Draggable.propTypes = {
       onChange : PropTypes.func.isRequired,
-      max : PropTypes.number
+      max : PropTypes.number,
     };
-
     Draggable.defaultProps = {
       onChange: noop,
-      max : 1
-    }
+      max : 1,
+    };
 
     return hoistStatics(Draggable, WrappedComponent);
   }

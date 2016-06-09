@@ -42,7 +42,6 @@ class ColorPicker extends Component {
   getBackgroundGradient() {
     const [h, s, v] = this.state.color;
     const opaque = u.toRgbString([h, s, v, 1]);
-
     return `linear-gradient(to right, rgba(0,0,0,0) 0%, ${opaque} 100%)`;
   }
 
@@ -93,12 +92,12 @@ class ColorPicker extends Component {
 
 ColorPicker.propTypes = {
   color: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
 };
 
 ColorPicker.defaultProps = {
-  color: "rgba(0,0,0,1)"
-}
+  color: 'rgba(0,0,0,1)',
+};
 
 ColorPicker.defaultStyles = {
   colorPicker: {

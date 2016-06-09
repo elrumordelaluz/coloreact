@@ -16,7 +16,7 @@ class Slider extends Component {
       pointer,
       {
         [attr]: this.props.getPercentageValue(this.props.value)
-      }
+      },
     );
   }
 
@@ -35,7 +35,7 @@ class Slider extends Component {
       this.props.bottom && bottomSlider,
       this.props.vertical && verticalSlider,
       !this.props.vertical && horizontalSlider,
-      this.props.opacity && opacitySlider
+      this.props.opacity && opacitySlider,
     );
   }
 
@@ -70,22 +70,20 @@ class Slider extends Component {
 
 Slider.propTypes = {
   value: PropTypes.number.isRequired,
-  background: PropTypes.string
+  background: PropTypes.string,
 };
 
 Slider.defaultProps = {
   value: 0,
-  background: ""
+  background: '',
 };
 
 Slider.defaultStyles = {
   // Slider
-
   slider: {
     position: 'absolute',
     userSelect: 'none',
   },
-
   horizontalSlider: {
     height: 8,
     left: '1em',
@@ -93,34 +91,28 @@ Slider.defaultStyles = {
     height: 10,
     cursor: 'ew-resize',
   },
-
   verticalSlider: {
     top: '1em',
     bottom: '1em',
     width: 10,
     cursor: 'ns-resize',
   },
-
   opacitySlider: {
     background: '#fff url("data:image/gif;base64,R0lGODdhEAAQAPEAAMvLy8zMzP///wAAACwAAAAAEAAQAEACHYxvosstCAEMrq6Jj812Y59NIDQipdY5XLWqH4sVADs=") repeat',
     backgroundSize: '8px 8px',
   },
-
   rightSlider: {
     right: '1.3em'
   },
-
   bottomSlider: {
     bottom: '1.3em',
   },
 
   // Track
-
   track: {
     borderRadius: 3,
     background: '#888',
   },
-
   horizontalTrack: {
     height: 8,
     marginTop: -4,
@@ -129,7 +121,6 @@ Slider.defaultStyles = {
     right: 0,
     top: '50%',
   },
-
   verticalTrack: {
     position: 'absolute',
     right: 0,
@@ -139,11 +130,9 @@ Slider.defaultStyles = {
     width: 8,
     marginLeft: -4,
   },
-
   opacityTrack: {
     background: 'linear-gradient(to right, rgba(255,255,255,0) 0%, #FFF 100%)',
   },
-
   hueTrack: {
     background: `linear-gradient(to bottom,
       #FF0000 0%,
@@ -161,7 +150,6 @@ Slider.defaultStyles = {
   },
 
   // Pointer
-
   pointer: {
     position: 'absolute',
     bottom: '50%',
@@ -174,7 +162,7 @@ Slider.defaultStyles = {
     background: '#fff',
     boxShadow: 'inset 0 0 0 1px #ccc,0 1px 2px #ccc',
     willChange: 'left, bottom',
-  }
-}
+  },
+};
 
 export default draggable({ single: true })(Slider);

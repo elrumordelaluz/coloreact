@@ -22,7 +22,7 @@ class Map extends Component {
         bottom: this.props.getPercentageValue(this.props.y)
       },
       this.props.pointerColor === 'dark' && pointerDark,
-      this.props.pointerColor === 'light' && pointerLight
+      this.props.pointerColor === 'light' && pointerLight,
     );
   }
 
@@ -57,14 +57,14 @@ Map.propTypes = {
   x: React.PropTypes.number.isRequired,
   y: React.PropTypes.number.isRequired,
   backgroundColor: React.PropTypes.string,
-  className: React.PropTypes.string
+  className: React.PropTypes.string,
 };
 
 Map.defaultProps = {
   x: 0,
   y: 0,
   backgroundColor: "transparent",
-  className: ""
+  className: "",
 };
 
 Map.defaultStyles = {
@@ -109,7 +109,6 @@ Map.defaultStyles = {
     height: '100%',
     width: '100%',
   },
-
   bgOverlay: {
     display: 'block',
     position: 'absolute',
@@ -120,7 +119,6 @@ Map.defaultStyles = {
     background: `linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%),
                  linear-gradient(to right, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%)`,
   },
-
-}
+};
 
 export default draggable()(Map);
