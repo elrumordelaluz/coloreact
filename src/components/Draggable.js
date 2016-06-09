@@ -47,8 +47,9 @@ export default function draggable (options = {}) {
 
       startUpdates (e) {
         const { document } = this;
-
         e.preventDefault();
+
+        this.updateBoundingRect();
         document.addEventListener("mousemove", this.handleUpdate);
         document.addEventListener("touchmove", this.handleUpdate);
         document.addEventListener("mouseup", this.stopUpdates);
@@ -58,7 +59,6 @@ export default function draggable (options = {}) {
         this.setState({ active : true });
         this.updatePosition(x, y);
       }
-
 
       handleUpdate (e) {
         if (this.state.active) {
