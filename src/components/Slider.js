@@ -56,13 +56,16 @@ class Slider extends Component {
     const { opacitySlider, opacitySlider__track }= Slider.defaultStyles;
     return (
       <div
-        className="Slider"
+        className={`Slider ${this.props.className}`}
         style={this.getSliderStyles()}
         onMouseDown={this.props.startUpdates}
         onTouchStart={this.props.startUpdates}>
 
         <div className="Track" style={this.getTrackStyles()} />
-        {this.props.rect && <div className="Pointer"  style={this.getPointerStyles()} />}
+
+        { this.props.rect && (
+          <div className="Pointer" style={this.getPointerStyles()} />
+        )}
       </div>
     );
   }
@@ -86,14 +89,14 @@ Slider.defaultStyles = {
   },
   horizontalSlider: {
     height: 8,
-    left: '1em',
-    right: '2em',
+    left: '2.5em',
+    right: '2.5em',
     height: 10,
     cursor: 'ew-resize',
   },
   verticalSlider: {
-    top: '1em',
-    bottom: '1em',
+    top: '2.5em',
+    bottom: '2.5em',
     width: 10,
     cursor: 'ns-resize',
   },

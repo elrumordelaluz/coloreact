@@ -52,22 +52,20 @@ class ColorPicker extends Component {
 
   render () {
     const [ hue, saturation, value ] = this.state.color;
-    const {
-      colorPicker,
-      opacitySlider,
-      opacitySlider__slider } = ColorPicker.defaultStyles;
+    const { colorPicker } = ColorPicker.defaultStyles;
     return (
       <div className="ColorPicker" style={colorPicker}>
         <Slider
+          className="HueSlider"
           vertical={true}
           value={hue}
           type="hue"
           max={360}
           onChange={this.handleHueChange} />
 
-        {this.props.opacitySlider && (
+        {this.props.opacity && (
           <Slider
-            className="opacity-slider"
+            className="OpacitySlider"
             type="opacity"
             bottom={true}
             value={this.getAlpha()}

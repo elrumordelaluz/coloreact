@@ -7,7 +7,7 @@ class App extends Component {
   render () {
     return (
         <ColorPicker
-          opacitySlider={true}
+          opacity={true}
           color="rgba(25,6,1,1.5)"
           onChange={color => console.log(color) } />
     );

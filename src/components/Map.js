@@ -71,10 +71,10 @@ Map.defaultStyles = {
   // Map
   map: {
     position: 'absolute',
-    top: '1em',
-    bottom: '1em',
-    right: '2em',
-    left: '1em',
+    top: '2.5em',
+    bottom: '2.5em',
+    right: '2.5em',
+    left: '2.5em',
     overflow: 'hidden',
     userSelect: 'none',
     borderRadius: '.25em',
