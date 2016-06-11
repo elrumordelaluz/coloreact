@@ -27,14 +27,16 @@ class Slider extends Component {
       horizontalSlider,
       opacitySlider,
       rightSlider,
+      leftSlider,
       bottomSlider } = Slider.defaultStyles;
 
     return Object.assign({},
       slider,
-      rightSlider,
-      this.props.bottom && bottomSlider,
+      this.props.vertical && this.props.right && rightSlider,
+      this.props.vertical && !this.props.right && leftSlider,
       this.props.vertical && verticalSlider,
       !this.props.vertical && horizontalSlider,
+      !this.props.vertical && this.props.bottom && bottomSlider,
       this.props.opacity && opacitySlider,
     );
   }
@@ -111,6 +113,9 @@ Slider.defaultStyles = {
   },
   bottomSlider: {
     bottom: '1.3em',
+  },
+  leftSlider: {
+    left: '1.3em'
   },
 
   // Track
