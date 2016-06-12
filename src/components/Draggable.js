@@ -133,12 +133,12 @@ export default function draggable (options = {}) {
     Draggable.displayName = `draggable(${getDisplayName(WrappedComponent)})`;
     Draggable.WrappedComponent = WrappedComponent;
     Draggable.propTypes = {
-      onChange : PropTypes.func.isRequired,
-      max : PropTypes.number,
+      onChange: PropTypes.func.isRequired,
+      max: PropTypes.number,
     };
     Draggable.defaultProps = {
       onChange: noop,
-      max : 1,
+      max: 1,
     };
 
     return hoistStatics(Draggable, WrappedComponent);
