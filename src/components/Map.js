@@ -39,12 +39,10 @@ class Map extends Component {
     const { bgOverlay } = Map.defaultStyles;
     return (
       <div
-        className={this.props.className || 'Map'}
+        className={this.props.className}
         style={this.getMapStyles()}
         onMouseDown={this.props.startUpdates}
-        onTouchStart={this.props.startUpdates}
-        onMouseUp={this.props.onComplete}
-        onTouchEnd={this.props.onComplete}>
+        onTouchStart={this.props.startUpdates}>
 
         <div className="Map__Background" style={this.getBgStyles()}>
           <span className="Map__Background__overlay" style={bgOverlay} />
@@ -68,8 +66,8 @@ Map.propTypes = {
 Map.defaultProps = {
   x: 0,
   y: 0,
-  backgroundColor: "transparent",
-  className: "",
+  backgroundColor: 'transparent',
+  className: 'Map',
 };
 
 Map.defaultStyles = {

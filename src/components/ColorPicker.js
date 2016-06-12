@@ -80,7 +80,7 @@ class ColorPicker extends Component {
   }
 
   showLastValue () {
-    this.props.onComplete(this.output());
+    this.props.onComplete && this.props.onComplete(this.output());
   }
 
   render () {
@@ -101,9 +101,10 @@ class ColorPicker extends Component {
           onComplete={this.showLastValue}
           style={{
             right: '1.3em',
-            bottom: '2.5em',
+            bottom: this.props.opacity ? '2.5em' : '1.3em',
           }}
           trackStyle={{
+            borderRadius: '1em',
             background: `linear-gradient(to bottom,
               #FF0000 0%,
               #FF0099 10%,
@@ -140,6 +141,7 @@ class ColorPicker extends Component {
               backgroundSize: '8px 8px',
             }}
             trackStyle={{
+              borderRadius: '1em',
               background: 'linear-gradient(to right, rgba(255,255,255,0) 0%, #FFF 100%)',
             }}
             pointerStyle={{
@@ -155,7 +157,12 @@ class ColorPicker extends Component {
           backgroundColor={this.getBackgroundHue()}
           onChange={this.handleSaturationValueChange}
           onComplete={this.showLastValue}
-          style={{ top: 0, left: 0, right: '2.5em', bottom: '2.5em', }}
+          style={{
+            top: 0,
+            left: 0,
+            right: '2.5em',
+            bottom: this.props.opacity ? '2.5em' : '1.3em'
+          }}
           pointerStyle={{
             borderColor: !u.isDark(this.state.color) ? "#000" : "#fff"
           }}
@@ -168,20 +175,11 @@ class ColorPicker extends Component {
 ColorPicker.propTypes = {
   color: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
+  onComplete: PropTypes.func,
 };
 
 ColorPicker.defaultProps = {
   color: 'rgba(0,0,0,1)',
 };
-
-// ColorPicker.defaultStyles = {
-//   colorPicker: {
-//     position: 'absolute',
-//     top: 0,
-//     right: 0,
-//     bottom: 0,
-//     left: 0,
-//   },
-// };
 
 export default ColorPicker;

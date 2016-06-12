@@ -77,6 +77,7 @@ export default function draggable (options = {}) {
           document.removeEventListener("mouseup", this.stopUpdates);
           document.removeEventListener("touchend", this.stopUpdates);
 
+          this.props.onComplete();
           this.setState({ active : false });
         }
       }
@@ -134,10 +135,12 @@ export default function draggable (options = {}) {
     Draggable.WrappedComponent = WrappedComponent;
     Draggable.propTypes = {
       onChange: PropTypes.func.isRequired,
+      onComplete: PropTypes.func,
       max: PropTypes.number,
     };
     Draggable.defaultProps = {
       onChange: noop,
+      onComplete: noop,
       max: 1,
     };
 

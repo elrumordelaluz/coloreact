@@ -11,7 +11,6 @@ class Slider extends Component {
   getPointerStyles() {
     const { pointer } = Slider.defaultStyles;
     const attr = this.props.vertical ? 'bottom' : 'left';
-
     return Object.assign({},
       pointer,
       this.props.pointerStyle && this.props.pointerStyle,
@@ -50,9 +49,7 @@ class Slider extends Component {
         className={this.props.className || 'Slider'}
         style={this.getSliderStyles()}
         onMouseDown={this.props.startUpdates}
-        onTouchStart={this.props.startUpdates}
-        onMouseUp={this.props.onComplete}
-        onTouchEnd={this.props.onComplete}>
+        onTouchStart={this.props.startUpdates}>
 
         <div className="Slider__Track" style={this.getTrackStyles()} />
 
@@ -96,8 +93,7 @@ Slider.defaultStyles = {
 
   // Track
   track: {
-    borderRadius: '1em',
-    background: '#888',
+    background: '#efefef',
     position: 'absolute',
   },
   horizontalTrack: {
@@ -106,8 +102,8 @@ Slider.defaultStyles = {
     right: 0,
   },
   verticalTrack: {
-    top: 0,
     bottom: 0,
+    top: 0,
     width: '100%',
   },
 
@@ -120,7 +116,7 @@ Slider.defaultStyles = {
     height: 16,
     marginLeft: -8,
     marginBottom: -8,
-    background: '#d7d7d7',
+    background: '#efefef',
     willChange: 'left, bottom',
   },
 };
