@@ -35,37 +35,57 @@ class App extends Component {
     })
   }
 
+
+
   render () {
     return (
       <div className="App">
         <button onClick={() => this.handleChange('#d5d5d5')}>a</button>
         <button onClick={() => this.handleChange('#0f34a1')}>b</button>
         <button onClick={() => this.handleChange('#7a3')}>c</button>
-        <div style={{
-            position: 'relative',
-            width: '100%',
-            height: '400px',
-          }}>
+        <ColorPicker
+          className="MyColorPicker"
+          opacity={true}
+          color={this.state.currentColor}
+          onChange={color => color }
+          onComplete={color => console.log(color) } />
 
-          <ColorPicker
-            opacity={true}
-            color={this.state.currentColor}
-            onChange={color => color }
-            onComplete={color => console.log(color) } />
-        </div>
         <div style={{ position: 'relative', height: '600px' }}>
           <Map
             x={this.state.x}
             y={this.state.y}
             max={100}
             onChange={this.changeMap}
-            backgroundColor={'green'}
+            backgroundColor={'yellow'}
+
+            style={{
+              top: '5em',
+              right: '2.5em',
+              bottom: '5em',
+              left: '2.5em',
+            }}
+
+            pointerStyle={{
+              width: 100,
+              height: 100,
+              marginLeft: -50,
+              marginBottom: -50,
+              backgroundColor: 'rgba(255,255,255,.1)',
+              borderColor: this.state.x > 50 ? 'black' : 'yellow',
+            }}
             />
           <Slider
             max={1}
             value={this.state.val}
             onChange={this.changeSlider}
-            vertical={true}
+            style={{
+              bottom: '2.5em',
+              left: '2.5em',
+              right: '2.5em'
+            }}
+            pointerStyle={{
+              border: '1px solid'
+            }}
             background="red"
           />
         </div>

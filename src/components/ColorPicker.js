@@ -85,9 +85,12 @@ class ColorPicker extends Component {
 
   render () {
     const [ hue, saturation, value ] = this.state.color;
-    const { colorPicker } = ColorPicker.defaultStyles;
+    // const { colorPicker } = ColorPicker.defaultStyles;
     return (
-      <div className="ColorPicker" style={colorPicker}>
+      <div
+        className={this.props.className || 'ColorPicker'}
+        style={this.props.style}>
+
         <Slider
           className="HueSlider"
           vertical={true}
@@ -95,28 +98,67 @@ class ColorPicker extends Component {
           type="hue"
           max={360}
           onChange={this.handleHueChange}
-          onComplete={this.showLastValue} />
+          onComplete={this.showLastValue}
+          style={{
+            right: '1.3em',
+            bottom: '2.5em',
+          }}
+          trackStyle={{
+            background: `linear-gradient(to bottom,
+              #FF0000 0%,
+              #FF0099 10%,
+              #CD00FF 20%,
+              #3200FF 30%,
+              #0066FF 40%,
+              #00FFFD 50%,
+              #00FF66 60%,
+              #35FF00 70%,
+              #CDFF00 80%,
+              #FF9900 90%,
+              #FF0000 100%
+            )`,
+          }}
+          pointerStyle={{
+            boxShadow: 'inset 0 0 0 1px #ccc,0 1px 2px #ccc',
+            borderRadius: '100%',
+          }} />
 
         {this.props.opacity && (
           <Slider
             className="OpacitySlider"
             type="opacity"
-            bottom={true}
             value={this.getAlpha()}
             max={1}
             background={this.getBackgroundGradient()}
             onChange={this.handleAlphaChange}
-            onComplete={this.showLastValue} />
+            onComplete={this.showLastValue}
+            style={{
+              bottom: '1.3em',
+              right: '2.5em',
+              height: 8,
+              background: '#fff url("data:image/gif;base64,R0lGODdhEAAQAPEAAMvLy8zMzP///wAAACwAAAAAEAAQAEACHYxvosstCAEMrq6Jj812Y59NIDQipdY5XLWqH4sVADs=") repeat',
+              backgroundSize: '8px 8px',
+            }}
+            trackStyle={{
+              background: 'linear-gradient(to right, rgba(255,255,255,0) 0%, #FFF 100%)',
+            }}
+            pointerStyle={{
+              boxShadow: 'inset 0 0 0 1px #ccc,0 1px 2px #ccc',
+              borderRadius: '100%',
+            }} />
         )}
 
         <Map
           x={saturation}
           y={value}
           max={100}
-          pointerColor={!u.isDark(this.state.color) ? "dark" : "light"}
           backgroundColor={this.getBackgroundHue()}
           onChange={this.handleSaturationValueChange}
           onComplete={this.showLastValue}
+          style={{ top: 0, left: 0, right: '2.5em', bottom: '2.5em', }}
+          pointerStyle={{
+            borderColor: !u.isDark(this.state.color) ? "#000" : "#fff"
+          }}
         />
       </div>
     );
@@ -132,14 +174,14 @@ ColorPicker.defaultProps = {
   color: 'rgba(0,0,0,1)',
 };
 
-ColorPicker.defaultStyles = {
-  colorPicker: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-  },
-};
+// ColorPicker.defaultStyles = {
+//   colorPicker: {
+//     position: 'absolute',
+//     top: 0,
+//     right: 0,
+//     bottom: 0,
+//     left: 0,
+//   },
+// };
 
 export default ColorPicker;

@@ -10,19 +10,22 @@ class Map extends Component {
 
   getMapStyles () {
     const { map, mapActive } = Map.defaultStyles;
-    return Object.assign({}, map, this.props.active && mapActive);
+    return Object.assign({},
+      map,
+      this.props.style && this.props.style,
+      this.props.active && mapActive
+    );
   }
 
   getPointerStyles () {
     const { pointer, pointerDark, pointerLight } = Map.defaultStyles;
     return Object.assign({},
       pointer,
+      this.props.pointerStyle && this.props.pointerStyle,
       {
         left: this.props.getPercentageValue(this.props.x),
         bottom: this.props.getPercentageValue(this.props.y)
       },
-      this.props.pointerColor === 'dark' && pointerDark,
-      this.props.pointerColor === 'light' && pointerLight,
     );
   }
 
@@ -36,19 +39,19 @@ class Map extends Component {
     const { bgOverlay } = Map.defaultStyles;
     return (
       <div
-        className="Map"
+        className={this.props.className || 'Map'}
         style={this.getMapStyles()}
         onMouseDown={this.props.startUpdates}
         onTouchStart={this.props.startUpdates}
         onMouseUp={this.props.onComplete}
         onTouchEnd={this.props.onComplete}>
 
-        <div className="Background" style={this.getBgStyles()}>
-          <span className="Background__overlay" style={bgOverlay} />
+        <div className="Map__Background" style={this.getBgStyles()}>
+          <span className="Map__Background__overlay" style={bgOverlay} />
         </div>
 
         { this.props.rect && (
-          <div className="Pointer" style={this.getPointerStyles()} />
+          <div className="Map__Pointer" style={this.getPointerStyles()} />
         )}
       </div>
     );
@@ -73,13 +76,12 @@ Map.defaultStyles = {
   // Map
   map: {
     position: 'absolute',
-    top: '2.5em',
-    bottom: '2.5em',
-    right: '2.5em',
-    left: '2.5em',
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
     overflow: 'hidden',
     userSelect: 'none',
-    borderRadius: '.25em',
   },
   mapActive: {
     cursor: 'none',
@@ -93,14 +95,8 @@ Map.defaultStyles = {
     marginLeft: -5,
     marginBottom: -5,
     borderRadius: '100%',
-    border: '1px solid #000',
+    border: '1px solid',
     willChange: 'left, bottom',
-  },
-  pointerDark: {
-    borderColor: '#000',
-  },
-  pointerLight: {
-    borderColor: '#fff',
   },
 
   // Background
