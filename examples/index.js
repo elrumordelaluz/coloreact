@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-
-import { ColorPicker, Slider, Map } from '../src';
+import Styles from './styles.css';
+import ColorPicker, { Slider, Map } from '../src';
 
 class App extends Component {
   constructor (props) {
@@ -37,7 +37,7 @@ class App extends Component {
 
   render () {
     return (
-      <div>
+      <div className="App">
         <button onClick={() => this.handleChange('#d5d5d5')}>a</button>
         <button onClick={() => this.handleChange('#0f34a1')}>b</button>
         <button onClick={() => this.handleChange('#7a3')}>c</button>
