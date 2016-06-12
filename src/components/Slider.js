@@ -8,6 +8,10 @@ class Slider extends Component {
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
 
+  shouldComponentUpdate (nextProps) {
+    return nextProps.value !== this.props.value;
+  }
+
   getPointerStyles() {
     const { pointer } = Slider.defaultStyles;
     const attr = this.props.vertical ? 'bottom' : 'left';

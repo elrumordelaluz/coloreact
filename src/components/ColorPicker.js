@@ -25,6 +25,10 @@ class ColorPicker extends Component {
     }
   }
 
+  shouldComponentUpdate (nextProps) {
+    return nextProps.color !== this.props.color
+  }
+
   handleHueChange (hue) {
     const [, s, v, a] = this.state.color;
     this.update([hue, s, v, a]);

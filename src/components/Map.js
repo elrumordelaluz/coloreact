@@ -8,6 +8,10 @@ class Map extends Component {
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
 
+  shouldComponentUpdate (nextProps) {
+    return nextProps.x !== this.props.x || nextProps.y !== this.props.y;
+  }
+
   getMapStyles () {
     const { map, mapActive } = Map.defaultStyles;
     return Object.assign({},
