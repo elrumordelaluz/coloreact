@@ -1,6 +1,43 @@
-.App {
-  padding: 3em;
+@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono);
+
+body {
+  font-family: 'Ubuntu Mono', monospace;
 }
+
+pre,
+code {
+  font-family: 'Ubuntu Mono', monospace;
+}
+
+pre {
+  padding: .75rem 1rem !important;
+}
+
+pre code {
+  line-height: 1.5;
+}
+
+.examples {
+  padding-left: 2em;
+  padding-right: 2em;
+}
+
+.swatches {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+  .swatches li {
+    display: inline-block;
+    height: 2em;
+    width: 2em;
+  }
+
+  .swatches li.selected {
+    box-shadow: 0 0 3px;
+  }
+
+
 
 
 .MyColorPicker {
