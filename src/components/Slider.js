@@ -121,7 +121,7 @@ Slider.defaultStyles = {
     marginLeft: -8,
     marginBottom: -8,
     background: '#efefef',
-    willChange: 'left, bottom',
+    willChange: 'auto',
   },
 };
 

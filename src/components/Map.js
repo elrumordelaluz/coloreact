@@ -98,7 +98,7 @@ Map.defaultStyles = {
     marginBottom: -5,
     borderRadius: '100%',
     border: '1px solid',
-    willChange: 'left, bottom',
+    willChange: 'auto',
   },
 
   // Background
