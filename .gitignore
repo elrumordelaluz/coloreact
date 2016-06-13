@@ -3,3 +3,4 @@ bundle.js
 npm-debug.log
 /build
 /dist
+/lib
