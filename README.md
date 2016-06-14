@@ -57,7 +57,10 @@ It is possible to create your own _ColorPicker_ using `Map` and `Slider`s.
 
 ```
 
-### [Examples](https://github.com/elrumordelaluz/coloreact/tree/master/examples)
+### Examples
+
+[Live examples](https://elrumordelaluz.github.io/coloreact/)
+[Code](https://github.com/elrumordelaluz/coloreact/tree/master/examples)
 
 ```
 $ npm start
