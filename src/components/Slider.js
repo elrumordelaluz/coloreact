@@ -1,17 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import PureRenderMixin from 'react-addons-pure-render-mixin';
 import draggable from './Draggable';
 
 class Slider extends Component {
-  constructor (props) {
-    super(props);
-    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
-  }
-
-  shouldComponentUpdate (nextProps) {
-    return nextProps.value !== this.props.value;
-  }
-
   getPointerStyles() {
     const { pointer } = Slider.defaultStyles;
     const attr = this.props.vertical ? 'bottom' : 'left';

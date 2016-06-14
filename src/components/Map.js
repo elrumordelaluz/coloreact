@@ -1,17 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import PureRenderMixin from 'react-addons-pure-render-mixin';
 import draggable from './Draggable';
 
 class Map extends Component {
-  constructor (props) {
-    super(props);
-    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
-  }
-
-  shouldComponentUpdate (nextProps) {
-    return nextProps.x !== this.props.x || nextProps.y !== this.props.y;
-  }
-
   getMapStyles () {
     const { map, mapActive } = Map.defaultStyles;
     return Object.assign({},

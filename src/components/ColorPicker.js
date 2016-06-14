@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import PureRenderMixin from 'react-addons-pure-render-mixin';
 import * as u from '../utils';
 import Slider from './Slider';
 import Map from './Map';
@@ -10,7 +9,6 @@ class ColorPicker extends Component {
     this.state = {
       color: u.toHSV(this.props.color)
     }
-    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
     this.handleSaturationValueChange = this.handleSaturationValueChange.bind(this);
     this.handleHueChange = this.handleHueChange.bind(this);
     this.handleAlphaChange = this.handleAlphaChange.bind(this);
@@ -23,10 +21,6 @@ class ColorPicker extends Component {
         color: u.toHSV(nextProps.color)
       });
     }
-  }
-
-  shouldComponentUpdate (nextProps) {
-    return nextProps.color !== this.props.color
   }
 
   handleHueChange (hue) {
