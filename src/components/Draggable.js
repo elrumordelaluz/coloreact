@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import hoistStatics from 'hoist-non-react-statics'
+import throttle from 'lodash/throttle';
 
 const noop = () => {};
 const getDocument = element => element.ownerDocument;
@@ -15,10 +16,9 @@ export default function draggable (options = {}) {
       constructor (props) {
         super(props);
 
-        this.state = {
-          active: false
-        }
+        this.state = { active: false }
 
+        this.throttle = throttle((fn: any, data: any) => fn(data), 30);
         this.getPercentageValue = this.getPercentageValue.bind(this);
         this.startUpdates = this.startUpdates.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
@@ -57,14 +57,16 @@ export default function draggable (options = {}) {
 
         const { x, y } = this.getPosition(e);
         this.setState({ active : true });
-        this.updatePosition(x, y);
+        // this.updatePosition(x, y);
+        this.throttle(this.updatePosition, { x, y });
       }
 
       handleUpdate (e) {
         if (this.state.active) {
           e.preventDefault();
           const { x, y } = this.getPosition(e);
-          this.updatePosition(x, y);
+          // this.updatePosition(x, y);
+          this.throttle(this.updatePosition, { x, y });
         }
       }
 
@@ -82,7 +84,7 @@ export default function draggable (options = {}) {
         }
       }
 
-      updatePosition (clientX, clientY) {
+      updatePosition ({x: clientX, y: clientY}) {
         const { rect } = this.state;
 
         if (options.single) {
