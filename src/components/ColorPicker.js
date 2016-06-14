@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import * as u from '../utils';
 import Slider from './Slider';
 import Map from './Map';
+import throttle from 'lodash/throttle';
 
 class ColorPicker extends Component {
   constructor (props) {
@@ -9,6 +10,11 @@ class ColorPicker extends Component {
     this.state = {
       color: u.toHSV(this.props.color)
     }
+
+    this.throttle = throttle(function (fn: any, data: any) {
+      fn(data)
+    }, 100);
+
     this.handleSaturationValueChange = this.handleSaturationValueChange.bind(this);
     this.handleHueChange = this.handleHueChange.bind(this);
     this.handleAlphaChange = this.handleAlphaChange.bind(this);
@@ -54,7 +60,7 @@ class ColorPicker extends Component {
 
   update (color) {
     this.setState({ color });
-    this.props.onChange(this.output());
+    this.throttle(this.props.onChange, this.output());
   }
 
   output () {
@@ -83,7 +89,6 @@ class ColorPicker extends Component {
 
   render () {
     const [ hue, saturation, value ] = this.state.color;
-    // const { colorPicker } = ColorPicker.defaultStyles;
     return (
       <div
         className={this.props.className || 'ColorPicker'}

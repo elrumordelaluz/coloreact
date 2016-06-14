@@ -36,6 +36,7 @@
   "dependencies": {
     "babel-preset-stage-1": "^6.5.0",
     "hoist-non-react-statics": "^1.0.6",
+    "lodash": "^4.13.1",
     "pure-color": "^1.2.0",
     "react": "^15.1.0",
     "react-addons-pure-render-mixin": "^15.1.0",
