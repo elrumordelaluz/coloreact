@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import ColorPicker from '../src';
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import { atelierSavannaDark } from 'react-syntax-highlighter/dist/styles';
+import { rainbow } from 'react-syntax-highlighter/dist/styles';
 
 class SwatchesExample extends Component {
   constructor (props) {
     super(props);
     this.state = {
       swatches: ['#9C27B0', '#673AB7', '#FF1744', '#00BCD4', '#03A9F4', '#4CAF50', '#009688', '#CDDC39'],
-      selected: 0,
+      selected: 5,
     }
     this.selectSwatch = this.selectSwatch.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -51,7 +51,7 @@ class SwatchesExample extends Component {
           style={{ position: 'relative', height: '300px', width: '100%', paddingLeft: '1.3em' }}
           color={this.state.swatches[this.state.selected]}
           onChange={this.handleChange} />
-        <SyntaxHighlighter language='jsx' style={atelierSavannaDark}>
+        <SyntaxHighlighter language='jsx' style={rainbow}>
         {`import ColorPicker from 'coloreact';
 <ColorPicker
   color={this.state.swatches[this.state.selected]}

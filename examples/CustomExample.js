@@ -1,83 +1,130 @@
 import React, { Component } from 'react';
 import { Slider, Map } from '../src';
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import { atelierSavannaDark } from 'react-syntax-highlighter/dist/styles';
+import { rainbow } from 'react-syntax-highlighter/dist/styles';
+import * as u from '../src/utils';
 
 class CustomExample extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      swatches: ['#f00', '#000'],
-      selected: 0,
+      h: 155,
+      s: 50,
+      v: 50,
+      mapActive: false,
+      sliderActive: false,
     }
-    this.selectSwatch = this.selectSwatch.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this._sv = this._sv.bind(this);
+    this._h = this._h.bind(this);
+    this.resetActive = this.resetActive.bind(this);
   }
 
-  selectSwatch (selected) {
+  _sv (s, v)  {
+    this.setState({ s, v, mapActive: true });
+  }
+
+  _h (h) {
+    this.setState({ h, sliderActive: true });
+  }
+
+  resetActive () {
     this.setState({
-      selected
+      mapActive: false,
+      sliderActive: false
     })
   }
 
-  handleChange (color) {
-    this.state.swatches[this.state.selected] = color.rgbaString;
-    this.setState({
-      swatches: this.state.swatches
-    })
+  getHue () {
+    return u.toRgbString([this.state.h, 100, 100]);
   }
 
   render () {
     return (
-      <div className="examples__custom">
-        <h3>Custom Example</h3>
-        <div style={{ position: 'relative', height: '600px' }}>
+      <div className="example">
+        <h3>Custom ColorPicker</h3>
+        <div style={{
+            position: 'relative',
+            height: '300px',
+            border: `1em solid ${u.toRgbString([this.state.h, this.state.s, this.state.v])}`,
+            marginBottom: '3em'
+          }}>
           <Map
-            x={50}
-            y={50}
+            x={this.state.s}
+            y={this.state.v}
             max={100}
-            onChange={(a) => console.log(a)}
-            backgroundColor={'yellow'}
+            onChange={this._sv}
+            backgroundColor={this.getHue()}
             className="MyCustomMap"
-
+            onComplete={this.resetActive}
             style={{
-              top: '5em',
-              right: '2.5em',
-              bottom: '5em',
-              left: '2.5em',
+              top: 0,
+              right: 0,
+              bottom: 0,
+              left: 0,
             }}
 
             pointerStyle={{
-              width: 100,
-              height: 100,
-              marginLeft: -50,
-              marginBottom: -50,
-              backgroundColor: 'rgba(255,255,255,.1)',
-              borderColor: this.state.x > 50 ? 'black' : 'yellow',
+              width: 30,
+              height: 30,
+              marginLeft: -15,
+              marginBottom: -15,
+              boxShadow: this.state.mapActive ? '.3em .3em 2em rgba(0,0,0,.3), inset 0 0 .1em rgba(255,255,255,.1)' : 'inset 0 0 .5em rgba(0,0,0,.3), 0 0 .3em rgba(255,255,255,.1)',
+              border: 0,
+              transition: 'transform 250ms, box-shadow 250ms',
+              transform: this.state.mapActive ? 'scale(1)' : 'scale(.95)',
             }}
             />
           <Slider
-            max={1}
-            value={this.state.val}
-            onChange={this.changeSlider}
+            max={360}
+            value={this.state.h}
+            onChange={this._h}
+            onComplete={this.resetActive}
             style={{
-              bottom: '2.5em',
-              left: '2.5em',
-              right: '2.5em'
+              bottom: '1em',
+              left: '1em',
+              right: '1em',
+            }}
+            trackStyle={{
+              backgroundColor: 'transparent',
             }}
             pointerStyle={{
-              border: '1px solid'
+              backgroundColor: 'transparent',
+              borderRadius: '100%',
+              boxShadow: `inset 0 0 .5em ${this.getHue()},
+                          0 0 .75em ${this.getHue()}`,
+              animationName: 'moveLeftRight',
+              animationDuration: '1s',
+              animationTimingFunction: 'linear',
+              animationIterationCount: 'infinite',
+              animationDirection: 'alternate',
+              animationPlayState: this.state.sliderActive ? 'paused' : 'running',
             }}
           />
         </div>
-        <SyntaxHighlighter language='jsx' style={atelierSavannaDark}>
-        {`import ColorPicker from 'coloreact';
+        <SyntaxHighlighter language='jsx' style={rainbow}>
+        {`import { Map, Slider } from 'coloreact';
 
-<ColorPicker
-  color={this.state.swatches[this.state.selected]}
-  opacity={true}
-  onChange={this.handleChange} />`}
+<Map
+  x={this.state.s}
+  y={this.state.v}
+  max={100}
+  onChange={this._sv}
+  backgroundColor={this.getHue()}
+  style={{ ... }}
+  pointerStyle={{ ... }}
+  />
+
+<Slider
+  max={360}
+  value={this.state.h}
+  onChange={this._h}
+  style={{ ... }}
+  trackStyle={{ ... }}
+  pointerStyle={{ ... }}
+/>`}
         </SyntaxHighlighter>
+
+        <a className="example__codeLink" href="https://github.com/elrumordelaluz/coloreact/blob/master/examples/CustomExample.js">Example Full code</a>
       </div>
     );
   }
