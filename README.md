@@ -13,7 +13,7 @@ $ npm i --save coloreact
 
 ```js
 
-  import { ColorPicker } from 'coloreact';
+  import ColorPicker from 'coloreact';
 
   // ...
   return (
@@ -43,12 +43,11 @@ It is possible to create your own _ColorPicker_ using `Map` and `Slider`s.
         y={this.state.value}
         max={100}
         backgroundColor={this.getHue()}
-        onChange={this.handleSaturationAndValue}
+        onChange={this.handleSaturationValue}
       />
       <Slider
         vertical={true}
         value={this.state.hue}
-        // type="hue"
         max={360}
         onChange={this.handleHue}
       />
@@ -56,4 +55,11 @@ It is possible to create your own _ColorPicker_ using `Map` and `Slider`s.
   // ...
 
 
+```
+
+### [Examples](https://github.com/elrumordelaluz/coloreact/tree/master/examples)
+
+```
+$ npm start
+# goto http://localhost:3040/
 ```
