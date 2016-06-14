@@ -10,39 +10,17 @@ import CustomExample from './CustomExample';
 class App extends Component {
   constructor (props) {
     super(props);
-    this.state = {
-      currentColor: '#f00',
-      val: .5,
-      x: 50,
-      y: 50,
-    }
-    this.changeSlider = this.changeSlider.bind(this);
-    this.changeMap = this.changeMap.bind(this);
-  }
-
-  handleChange (color) {
-    this.setState({
-      currentColor: color
-    })
-  }
-
-  changeSlider (val) {
-    this.setState({
-      val
-    })
-  }
-
-  changeMap (x, y) {
-    this.setState({
-      x,
-      y,
-    })
   }
 
   render () {
     return (
       <div className="examples">
-        <h1>coloreact</h1>
+        <header className="examples-header">
+          <h1 className="main-title">
+            <a href="https://github.com/elrumordelaluz/coloreact">coloreact</a>
+          </h1>
+          <p>A tiny Color Picker for React</p>
+        </header>
         <SingleExample />
         <SwatchesExample />
         <CustomExample />

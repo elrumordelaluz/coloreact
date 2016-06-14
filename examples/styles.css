@@ -2,6 +2,7 @@
 
 body {
   font-family: 'Ubuntu Mono', monospace;
+  background-color: #f2f2f2;
 }
 
 pre,
@@ -18,8 +19,24 @@ pre code {
 }
 
 .examples {
-  padding-left: 2em;
-  padding-right: 2em;
+  margin-left: 10vw;
+  margin-right: 10vw;
+}
+
+.examples-header {
+  margin-bottom: 2.5em;
+}
+
+.example {
+  padding: 1em 2em;
+  border-radius: .3em;
+  background-color: rgba(255,255,255,.5);
+  margin-bottom: 2.5em;
+}
+
+.main-title a {
+  text-decoration: none;
+  color: inherit;
 }
 
 .swatches {
@@ -28,13 +45,23 @@ pre code {
   margin: 0;
 }
   .swatches li {
+    cursor: pointer;
     display: inline-block;
     height: 2em;
+    margin: 1px;
+    border-width: 3px;
+    border-style: solid;
+    border-color: transparent;
     width: 2em;
+    transition: box-shadow .3s;
+  }
+
+  .swatches li:hover {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   }
 
   .swatches li.selected {
-    box-shadow: 0 0 3px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   }
 
 

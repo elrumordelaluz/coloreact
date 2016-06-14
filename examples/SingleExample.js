@@ -5,16 +5,19 @@ import { atelierSavannaDark } from 'react-syntax-highlighter/dist/styles';
 
 const SingleExample = () => {
   return (
-    <div className="examples__single">
+    <div className="example">
       <h3>Single Example</h3>
+
       <ColorPicker
-        style={{ position: 'relative', height: '300px', width: '300px', }}
+        style={{ position: 'relative', height: '300px', width: '100%', paddingLeft: '1.3em' }}
         color="#f00"
-        onChange={color => console.log(color) } />
+        onChange={color => console.log('single-example color:', color.hex) } />
+
       <SyntaxHighlighter language='jsx' style={atelierSavannaDark}>
         {`import ColorPicker from 'coloreact';
-<ColorPicker color="#f00" onChange={(color) => color } />`}
+<ColorPicker color="#f00" onChange={color => console.log(color.hex)} />`}
       </SyntaxHighlighter>
+
     </div>
   );
 }

@@ -30,7 +30,7 @@ class SwatchesExample extends Component {
 
   render () {
     return (
-      <div className="examples__swatches">
+      <div className="example">
         <h3>Swatches Example</h3>
         <ul className="swatches">
           {
@@ -45,13 +45,12 @@ class SwatchesExample extends Component {
         </ul>
         <code>{this.state.swatches[this.state.selected]}</code>
         <ColorPicker
-          style={{ position: 'relative', height: '300px', width: '300px', }}
+          style={{ position: 'relative', height: '300px', width: '100%', paddingLeft: '1.3em' }}
           color={this.state.swatches[this.state.selected]}
           opacity={true}
           onChange={this.handleChange} />
         <SyntaxHighlighter language='jsx' style={atelierSavannaDark}>
         {`import ColorPicker from 'coloreact';
-
 <ColorPicker
   color={this.state.swatches[this.state.selected]}
   opacity={true}
