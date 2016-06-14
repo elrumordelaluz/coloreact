@@ -34,6 +34,10 @@ pre code {
   margin-bottom: 2.5em;
 }
 
+.example h3 {
+  text-align: center;;
+}
+
 .main-title a {
   text-decoration: none;
   color: inherit;
@@ -43,6 +47,7 @@ pre code {
   list-style: none;
   padding: 0;
   margin: 0;
+  text-align: center;
 }
   .swatches li {
     cursor: pointer;
@@ -63,6 +68,13 @@ pre code {
   .swatches li.selected {
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   }
+
+.swatch-value {
+  opacity: .5;
+  display: block;
+  text-align: center;
+  padding: 1em;
+}
 
 
 
