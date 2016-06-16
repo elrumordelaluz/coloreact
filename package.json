@@ -4,6 +4,7 @@
   "description": "A tiny Color Picker for React",
   "main": "lib/index.js",
   "scripts": {
+    "prepublish": "npm run lib",
     "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --port 3040",
     "lib": "NODE_ENV=production babel -d lib/ src/",
     "build": "webpack --progress --colors",
