@@ -1,6 +1,6 @@
 # ColoReact
 
-A tiny **Color Picker** for **React**
+A tiny **Color Picker** for **React** [ [Demo](https://elrumordelaluz.github.io/coloreact/) ]
 
 
 ### Install
@@ -59,7 +59,7 @@ It is possible to create your own _ColorPicker_ using `Map` and `Slider`s.
 
 ### Examples
 
-[Live examples](https://elrumordelaluz.github.io/coloreact/)
+[Live examples](https://elrumordelaluz.github.io/coloreact/) | 
 [Code](https://github.com/elrumordelaluz/coloreact/tree/master/examples)
 
 ```
