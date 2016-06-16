@@ -6,7 +6,7 @@ import { rainbow } from 'react-syntax-highlighter/dist/styles';
 const SingleExample = () => {
   return (
     <div className="example">
-      <h3>Simple Example</h3>
+      <h3>Single ColorPicker</h3>
 
       <ColorPicker
         style={{ position: 'relative', height: '300px', width: '100%', paddingLeft: '1.3em' }}

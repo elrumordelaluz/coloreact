@@ -32,7 +32,7 @@ class SwatchesExample extends Component {
     const actualColor = this.state.swatches[this.state.selected];
     return (
       <div className="example">
-        <h3>Swatches Example</h3>
+        <h3>ColorPicker with Swatches</h3>
         <ul className="swatches">
           {
             this.state.swatches.map((col, i) => (
