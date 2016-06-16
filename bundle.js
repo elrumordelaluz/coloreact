@@ -22595,7 +22595,7 @@
 	    _react2.default.createElement(
 	      'h3',
 	      null,
-	      'Simple Example'
+	      'Single ColorPicker'
 	    ),
 	    _react2.default.createElement(_src2.default, {
 	      style: { position: 'relative', height: '300px', width: '100%', paddingLeft: '1.3em' },
@@ -47568,7 +47568,7 @@
 	        _react2.default.createElement(
 	          'h3',
 	          null,
-	          'Swatches Example'
+	          'ColorPicker with Swatches'
 	        ),
 	        _react2.default.createElement(
 	          'ul',
