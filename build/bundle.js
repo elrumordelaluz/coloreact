@@ -22607,6 +22607,11 @@
 	      _reactSyntaxHighlighter2.default,
 	      { language: 'jsx', style: _styles.rainbow },
 	      'import ColorPicker from \'coloreact\';\n<ColorPicker color="#408fa3" onChange={color => console.log(color.hex)} />'
+	    ),
+	    _react2.default.createElement(
+	      'a',
+	      { className: 'example__codeLink', href: 'https://github.com/elrumordelaluz/coloreact/blob/master/examples/SingleExample.js' },
+	      'Example Full code'
 	    )
 	  );
 	};
@@ -47596,6 +47601,11 @@
 	          _reactSyntaxHighlighter2.default,
 	          { language: 'jsx', style: _styles.rainbow },
 	          'import ColorPicker from \'coloreact\';\n<ColorPicker\n  color={this.state.swatches[this.state.selected]}\n  opacity={true}\n  onChange={this.handleChange} />'
+	        ),
+	        _react2.default.createElement(
+	          'a',
+	          { className: 'example__codeLink', href: 'https://github.com/elrumordelaluz/coloreact/blob/master/examples/SwatchesExample.js' },
+	          'Example Full code'
 	        )
 	      );
 	    }
