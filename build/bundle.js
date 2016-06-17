@@ -20822,10 +20822,6 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _utils = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../utils\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-	var u = _interopRequireWildcard(_utils);
-
 	var _Slider = __webpack_require__(175);
 
 	var _Slider2 = _interopRequireDefault(_Slider);
@@ -20841,8 +20837,6 @@
 	var _tinycolor = __webpack_require__(187);
 
 	var _tinycolor2 = _interopRequireDefault(_tinycolor);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -20938,7 +20932,10 @@
 	  }, {
 	    key: 'getBackgroundHue',
 	    value: function getBackgroundHue() {
-	      return u.toRgbString([this.state.color.h, 100, 100]);
+	      return (0, _tinycolor2.default)({
+	        h: this.state.color.h,
+	        s: 100,
+	        v: 100 }).toRgbString();
 	    }
 	  }, {
 	    key: 'getBackgroundGradient',
@@ -20948,7 +20945,11 @@
 	      var s = _state$color4.s;
 	      var v = _state$color4.v;
 
-	      var opaque = u.toRgbString([h, s, v, 1]);
+	      var opaque = (0, _tinycolor2.default)({
+	        h: h,
+	        s: s,
+	        v: v,
+	        a: 1 }).toRgbString();
 	      return 'linear-gradient(to right, rgba(0,0,0,0) 0%, ' + opaque + ' 100%)';
 	    }
 	  }, {
