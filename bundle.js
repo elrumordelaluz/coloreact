@@ -71,15 +71,15 @@
 
 	var _src2 = _interopRequireDefault(_src);
 
-	var _SingleExample = __webpack_require__(200);
+	var _SingleExample = __webpack_require__(188);
 
 	var _SingleExample2 = _interopRequireDefault(_SingleExample);
 
-	var _SwatchesExample = __webpack_require__(434);
+	var _SwatchesExample = __webpack_require__(422);
 
 	var _SwatchesExample2 = _interopRequireDefault(_SwatchesExample);
 
-	var _CustomExample = __webpack_require__(435);
+	var _CustomExample = __webpack_require__(423);
 
 	var _CustomExample2 = _interopRequireDefault(_CustomExample);
 
@@ -20792,11 +20792,11 @@
 
 	var _ColorPicker2 = _interopRequireDefault(_ColorPicker);
 
-	var _Slider2 = __webpack_require__(188);
+	var _Slider2 = __webpack_require__(175);
 
 	var _Slider3 = _interopRequireDefault(_Slider2);
 
-	var _Map2 = __webpack_require__(199);
+	var _Map2 = __webpack_require__(186);
 
 	var _Map3 = _interopRequireDefault(_Map2);
 
@@ -20816,29 +20816,31 @@
 	  value: true
 	});
 
-	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _utils = __webpack_require__(175);
+	var _utils = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../utils\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 
 	var u = _interopRequireWildcard(_utils);
 
-	var _Slider = __webpack_require__(188);
+	var _Slider = __webpack_require__(175);
 
 	var _Slider2 = _interopRequireDefault(_Slider);
 
-	var _Map = __webpack_require__(199);
+	var _Map = __webpack_require__(186);
 
 	var _Map2 = _interopRequireDefault(_Map);
 
-	var _throttle = __webpack_require__(191);
+	var _throttle = __webpack_require__(178);
 
 	var _throttle2 = _interopRequireDefault(_throttle);
+
+	var _tinycolor = __webpack_require__(187);
+
+	var _tinycolor2 = _interopRequireDefault(_tinycolor);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -20858,8 +20860,9 @@
 
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ColorPicker).call(this, props));
 
+	    var c = (0, _tinycolor2.default)(_this.props.color).toHsv();
 	    _this.state = {
-	      color: u.toHSV(_this.props.color)
+	      color: _this.toPercentage(c)
 	    };
 
 	    _this.throttle = (0, _throttle2.default)(function (fn, data) {
@@ -20876,62 +20879,74 @@
 	  _createClass(ColorPicker, [{
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
-	      if (!u.equals(u.toHSV(nextProps.color), this.state.color)) {
+	      if (!_tinycolor2.default.equals(nextProps.color, this.state.color)) {
+	        var c = (0, _tinycolor2.default)(nextProps.color).toHsv();
 	        this.setState({
-	          color: u.toHSV(nextProps.color)
+	          color: this.toPercentage(c)
 	        });
 	      }
 	    }
 	  }, {
+	    key: 'toPercentage',
+	    value: function toPercentage(hsv) {
+	      var h = hsv.h;
+	      var s = hsv.s;
+	      var v = hsv.v;
+	      var a = hsv.a;
+
+	      return {
+	        h: h,
+	        s: s * 100,
+	        v: v * 100,
+	        a: a
+	      };
+	    }
+	  }, {
 	    key: 'handleHueChange',
-	    value: function handleHueChange(hue) {
-	      var _state$color = _slicedToArray(this.state.color, 4);
+	    value: function handleHueChange(h) {
+	      var _state$color = this.state.color;
+	      var s = _state$color.s;
+	      var v = _state$color.v;
+	      var a = _state$color.a;
 
-	      var s = _state$color[1];
-	      var v = _state$color[2];
-	      var a = _state$color[3];
-
-	      this.update([hue, s, v, a]);
+	      this.update({ h: h, s: s, v: v, a: a });
 	    }
 	  }, {
 	    key: 'handleSaturationValueChange',
-	    value: function handleSaturationValueChange(saturation, value) {
-	      var _state$color2 = _slicedToArray(this.state.color, 4);
+	    value: function handleSaturationValueChange(s, v) {
+	      var _state$color2 = this.state.color;
+	      var h = _state$color2.h;
+	      var a = _state$color2.a;
 
-	      var h = _state$color2[0];
-	      var a = _state$color2[3];
-
-	      this.update([h, saturation, value, a]);
+	      this.update({ h: h, s: s, v: v, a: a });
 	    }
 	  }, {
 	    key: 'handleAlphaChange',
-	    value: function handleAlphaChange(alpha) {
-	      var _state$color3 = _slicedToArray(this.state.color, 3);
+	    value: function handleAlphaChange(a) {
+	      var _state$color3 = this.state.color;
+	      var h = _state$color3.h;
+	      var s = _state$color3.s;
+	      var v = _state$color3.v;
 
-	      var h = _state$color3[0];
-	      var s = _state$color3[1];
-	      var v = _state$color3[2];
-
-	      this.update([h, s, v, alpha]);
+	      this.update({ h: h, s: s, v: v, a: a });
 	    }
 	  }, {
 	    key: 'getAlpha',
 	    value: function getAlpha() {
-	      return this.state.color[3] === undefined ? 1 : this.state.color[3];
+	      return this.state.color.a === undefined ? 1 : this.state.color.a;
 	    }
 	  }, {
 	    key: 'getBackgroundHue',
 	    value: function getBackgroundHue() {
-	      return u.toRgbString([this.state.color[0], 100, 100]);
+	      return u.toRgbString([this.state.color.h, 100, 100]);
 	    }
 	  }, {
 	    key: 'getBackgroundGradient',
 	    value: function getBackgroundGradient() {
-	      var _state$color4 = _slicedToArray(this.state.color, 3);
-
-	      var h = _state$color4[0];
-	      var s = _state$color4[1];
-	      var v = _state$color4[2];
+	      var _state$color4 = this.state.color;
+	      var h = _state$color4.h;
+	      var s = _state$color4.s;
+	      var v = _state$color4.v;
 
 	      var opaque = u.toRgbString([h, s, v, 1]);
 	      return 'linear-gradient(to right, rgba(0,0,0,0) 0%, ' + opaque + ' 100%)';
@@ -20945,24 +20960,14 @@
 	  }, {
 	    key: 'output',
 	    value: function output() {
-	      var color = this.state.color;
-
-	      var rgbArr = u.toRGBa(color);
-	      var hex = u.toHEX(rgbArr);
-	      var rgbaString = u.toRgbString(color);
-	      var rgba = {
-	        r: rgbArr[0],
-	        g: rgbArr[1],
-	        b: rgbArr[2],
-	        a: rgbArr[3]
+	      var c = (0, _tinycolor2.default)(this.state.color);
+	      return {
+	        hex: c.toHex(),
+	        hexString: c.toHexString(),
+	        rgb: c.toRgb(),
+	        rgbString: c.toRgbString()
 	      };
-	      var hsv = {
-	        h: color[0],
-	        s: color[1],
-	        v: color[2]
-	      };
-
-	      return { rgba: rgba, rgbaString: rgbaString, hex: hex, hsv: hsv };
+	      return c;
 	    }
 	  }, {
 	    key: 'showLastValue',
@@ -20972,11 +20977,11 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _state$color5 = _slicedToArray(this.state.color, 3);
-
-	      var hue = _state$color5[0];
-	      var saturation = _state$color5[1];
-	      var value = _state$color5[2];
+	      var _state$color5 = this.state.color;
+	      var h = _state$color5.h;
+	      var s = _state$color5.s;
+	      var v = _state$color5.v;
+	      var a = _state$color5.a;
 
 	      return _react2.default.createElement(
 	        'div',
@@ -20986,7 +20991,7 @@
 	        _react2.default.createElement(_Slider2.default, {
 	          className: 'HueSlider',
 	          vertical: true,
-	          value: hue,
+	          value: h,
 	          type: 'hue',
 	          max: 360,
 	          onChange: this.handleHueChange,
@@ -21006,7 +21011,7 @@
 	        this.props.opacity && _react2.default.createElement(_Slider2.default, {
 	          className: 'OpacitySlider',
 	          type: 'opacity',
-	          value: this.getAlpha(),
+	          value: a,
 	          max: 1,
 	          background: this.getBackgroundGradient(),
 	          onChange: this.handleAlphaChange,
@@ -21027,8 +21032,8 @@
 	            borderRadius: '100%'
 	          } }),
 	        _react2.default.createElement(_Map2.default, {
-	          x: saturation,
-	          y: value,
+	          x: s,
+	          y: v,
 	          max: 100,
 	          backgroundColor: this.getBackgroundHue(),
 	          onChange: this.handleSaturationValueChange,
@@ -21040,7 +21045,7 @@
 	            bottom: this.props.opacity ? '2.5em' : '1.3em'
 	          },
 	          pointerStyle: {
-	            borderColor: !u.isDark(this.state.color) ? "#000" : "#fff"
+	            borderColor: (0, _tinycolor2.default)(this.state.color).isDark() ? "#fff" : "#000"
 	          }
 	        })
 	      );
@@ -21066,399 +21071,6 @@
 /* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.isDark = exports.equals = exports.toRgbString = exports.toRGBa = exports.toHSV = exports.toHEX = undefined;
-
-	var _parse = __webpack_require__(176);
-
-	var _parse2 = _interopRequireDefault(_parse);
-
-	var _rgb2hsv = __webpack_require__(183);
-
-	var _rgb2hsv2 = _interopRequireDefault(_rgb2hsv);
-
-	var _hsv2rgb = __webpack_require__(184);
-
-	var _hsv2rgb2 = _interopRequireDefault(_hsv2rgb);
-
-	var _rgb2string = __webpack_require__(185);
-
-	var _rgb2string2 = _interopRequireDefault(_rgb2string);
-
-	var _rgb2hex = __webpack_require__(186);
-
-	var _rgb2hex2 = _interopRequireDefault(_rgb2hex);
-
-	var _rgb2grayscale = __webpack_require__(187);
-
-	var _rgb2grayscale2 = _interopRequireDefault(_rgb2grayscale);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-	var toHEX = exports.toHEX = function toHEX(rgb) {
-	  return (0, _rgb2hex2.default)(rgb);
-	};
-
-	/**
-	 * Parse String to Hue-Saturation-Value
-	 * @param  {String} color
-	 * @return {Array}
-	 */
-	var toHSV = exports.toHSV = function toHSV(color) {
-	  var parsedColor = (0, _parse2.default)(color);
-	  var hsv = (0, _rgb2hsv2.default)(parsedColor);
-	  var alpha = parsedColor.length === 4 ? parsedColor[3] : 1;
-	  return [].concat(_toConsumableArray(hsv), [alpha]);
-	};
-
-	/**
-	 * Transform Hue-Saturation-Value into rgba String
-	 * @param  {Array} hsv
-	 * @return {String}
-	 */
-	var toRGBa = exports.toRGBa = function toRGBa(hsv) {
-	  var rgb = (0, _hsv2rgb2.default)(hsv);
-	  return [].concat(_toConsumableArray(rgb), [hsv.length === 4 ? hsv[3].toFixed(2) : 1]);
-	};
-
-	/**
-	 * Transform Hue-Saturation-Value into rgba String
-	 * @param  {Array} hsv
-	 * @return {String}
-	 */
-	var toRgbString = exports.toRgbString = function toRgbString(hsv) {
-	  var rgb = (0, _hsv2rgb2.default)(hsv);
-	  return (0, _rgb2string2.default)([].concat(_toConsumableArray(rgb), [hsv.length === 4 ? hsv[3].toFixed(2) : 1]));
-	};
-
-	/**
-	 * Determine if two Hue-Saturation-Value arrays are equals
-	 * @param  {Array} a
-	 * @param  {Array} b
-	 * @return {Boolean}
-	 */
-	var equals = exports.equals = function equals(a, b) {
-	  return toRgbString(a) === toRgbString(b);
-	};
-
-	/**
-	 * Determine if color is dark
-	 * @param  {Array} hsv Hue-Saturation-Value
-	 * @return {Boolean}
-	 */
-	var isDark = exports.isDark = function isDark(hsv) {
-	  return (0, _rgb2grayscale2.default)((0, _hsv2rgb2.default)(hsv)) <= 128;
-	};
-
-/***/ },
-/* 176 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var hsl = __webpack_require__(177);
-	var hex = __webpack_require__(180);
-	var rgb = __webpack_require__(181);
-	var hsl2rgb = __webpack_require__(182);
-
-	function hsl2rgbParse(color) {
-	  var h = hsl(color);
-	  var r = hsl2rgb(h);
-
-	  // handle alpha since hsl2rgb doesn't know (or care!) about it
-	  if(h.length === 4) {
-	    r.push(h[3]);
-	  }
-
-	  return r;
-	}
-
-	var space2parser = {
-	  "#" : hex,
-	  "hsl" : hsl2rgbParse,
-	  "rgb" : rgb
-	};
-
-	function parse(color) {
-	  for(var scheme in space2parser) {
-	    if(color.indexOf(scheme) === 0) {
-	      return space2parser[scheme](color);
-	    }
-	  }
-	}
-
-	parse.rgb = rgb;
-	parse.hsl = hsl;
-	parse.hex = hex;
-
-	module.exports = parse;
-
-/***/ },
-/* 177 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var extractComponents = __webpack_require__(178);
-	var clamp = __webpack_require__(179);
-
-	function parseHslComponent(component, i) {
-	  component = parseFloat(component);
-
-	  switch(i) {
-	    case 0:
-	      return clamp(component, 0, 360);
-	    case 1:
-	    case 2:
-	      return clamp(component, 0, 100);
-	    case 3:
-	      return clamp(component, 0, 1);
-	  }
-	}
-
-	function hsl(color) {
-	  return extractComponents(color).map(parseHslComponent);
-	}
-
-	module.exports = hsl;
-
-/***/ },
-/* 178 */
-/***/ function(module, exports) {
-
-	var component = /-?\d+(\.\d+)?%?/g;
-	function extractComponents(color) {
-	  return color.match(component);
-	}
-
-	module.exports = extractComponents;
-
-/***/ },
-/* 179 */
-/***/ function(module, exports) {
-
-	function clamp(val, min, max) {
-	  return Math.min(Math.max(val, min), max);
-	}
-
-	module.exports = clamp;
-
-/***/ },
-/* 180 */
-/***/ function(module, exports) {
-
-	function hex(hex) {
-	  if (hex.length === 4) {
-	    hex = '#' + hex.charAt(1) + hex.charAt(1) +
-	      hex.charAt(2) + hex.charAt(2) + 
-	      hex.charAt(3) + hex.charAt(3);
-	  }
-	  return [
-	    parseInt(hex.substring(1,3), 16),
-	    parseInt(hex.substring(3,5), 16),
-	    parseInt(hex.substring(5,7), 16)
-	  ];
-	}
-
-	module.exports = hex;
-
-/***/ },
-/* 181 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var extractComponents = __webpack_require__(178);
-	var clamp = __webpack_require__(179);
-
-	function parseRgbComponent(component, i) {
-	  if (i < 3) {
-	    if (component.indexOf('%') != -1) {
-	      return Math.round(255 * clamp(parseInt(component, 10), 0, 100)/100);
-	    } else {
-	      return clamp(parseInt(component, 10), 0, 255);
-	    }
-	  } else {
-	    return clamp(parseFloat(component), 0, 1);
-	  } 
-	}
-
-	function rgb(color) {
-	  return extractComponents(color).map(parseRgbComponent);
-	}
-
-	module.exports = rgb;
-
-/***/ },
-/* 182 */
-/***/ function(module, exports) {
-
-	function hsl2rgb(hsl) {
-	  var h = hsl[0] / 360,
-	      s = hsl[1] / 100,
-	      l = hsl[2] / 100,
-	      t1, t2, t3, rgb, val;
-
-	  if (s == 0) {
-	    val = l * 255;
-	    return [val, val, val];
-	  }
-
-	  if (l < 0.5)
-	    t2 = l * (1 + s);
-	  else
-	    t2 = l + s - l * s;
-	  t1 = 2 * l - t2;
-
-	  rgb = [0, 0, 0];
-	  for (var i = 0; i < 3; i++) {
-	    t3 = h + 1 / 3 * - (i - 1);
-	    t3 < 0 && t3++;
-	    t3 > 1 && t3--;
-
-	    if (6 * t3 < 1)
-	      val = t1 + (t2 - t1) * 6 * t3;
-	    else if (2 * t3 < 1)
-	      val = t2;
-	    else if (3 * t3 < 2)
-	      val = t1 + (t2 - t1) * (2 / 3 - t3) * 6;
-	    else
-	      val = t1;
-
-	    rgb[i] = val * 255;
-	  }
-
-	  return rgb;
-	}
-
-	module.exports = hsl2rgb;
-
-/***/ },
-/* 183 */
-/***/ function(module, exports) {
-
-	function rgb2hsv(rgb) {
-	  var r = rgb[0],
-	      g = rgb[1],
-	      b = rgb[2],
-	      min = Math.min(r, g, b),
-	      max = Math.max(r, g, b),
-	      delta = max - min,
-	      h, s, v;
-
-	  if (max == 0)
-	    s = 0;
-	  else
-	    s = (delta/max * 1000)/10;
-
-	  if (max == min)
-	    h = 0;
-	  else if (r == max)
-	    h = (g - b) / delta;
-	  else if (g == max)
-	    h = 2 + (b - r) / delta;
-	  else if (b == max)
-	    h = 4 + (r - g) / delta;
-
-	  h = Math.min(h * 60, 360);
-
-	  if (h < 0)
-	    h += 360;
-
-	  v = ((max / 255) * 1000) / 10;
-
-	  return [h, s, v];
-	}
-
-	module.exports = rgb2hsv;
-
-/***/ },
-/* 184 */
-/***/ function(module, exports) {
-
-	function hsv2rgb(hsv) {
-	  var h = hsv[0] / 60,
-	      s = hsv[1] / 100,
-	      v = hsv[2] / 100,
-	      hi = Math.floor(h) % 6;
-
-	  var f = h - Math.floor(h),
-	      p = 255 * v * (1 - s),
-	      q = 255 * v * (1 - (s * f)),
-	      t = 255 * v * (1 - (s * (1 - f))),
-	      v = 255 * v;
-
-	  switch(hi) {
-	    case 0:
-	      return [v, t, p];
-	    case 1:
-	      return [q, v, p];
-	    case 2:
-	      return [p, v, t];
-	    case 3:
-	      return [p, q, v];
-	    case 4:
-	      return [t, p, v];
-	    case 5:
-	      return [v, p, q];
-	  }
-	}
-
-	module.exports = hsv2rgb;
-
-/***/ },
-/* 185 */
-/***/ function(module, exports) {
-
-	function rgb2string(rgb) {
-	  var scheme = "rgb";
-
-	  if(rgb.length === 4) {
-	    scheme += "a";
-	  }
-
-	  rgb[0] = Math.round(rgb[0]);
-	  rgb[1] = Math.round(rgb[1]);
-	  rgb[2] = Math.round(rgb[2]);
-
-	  return scheme + "(" + rgb.join(",") + ")";
-	}
-
-	module.exports = rgb2string;
-
-/***/ },
-/* 186 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var clamp = __webpack_require__(179);
-
-	function componentToHex(c) {
-	  var value = Math.round(clamp(c, 0, 255));
-	  var hex   = value.toString(16);
-
-	  return hex.length == 1 ? "0" + hex : hex;
-	}
-
-	function rgb2hex(rgb) {
-	  return "#" + componentToHex(rgb[0]) + componentToHex(rgb[1]) + componentToHex(rgb[2]);
-	}
-
-	module.exports = rgb2hex;
-
-/***/ },
-/* 187 */
-/***/ function(module, exports) {
-
-	function rgb2grayscale (rgb) {
-	  return (rgb[0] * 299 + rgb[1] * 587 + rgb[2] * 114) / 1000;
-	}
-
-	module.exports = rgb2grayscale;
-
-/***/ },
-/* 188 */
-/***/ function(module, exports, __webpack_require__) {
-
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -21473,7 +21085,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Draggable = __webpack_require__(189);
+	var _Draggable = __webpack_require__(176);
 
 	var _Draggable2 = _interopRequireDefault(_Draggable);
 
@@ -21611,7 +21223,7 @@
 	exports.default = (0, _Draggable2.default)({ single: true })(Slider);
 
 /***/ },
-/* 189 */
+/* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21634,11 +21246,11 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _hoistNonReactStatics = __webpack_require__(190);
+	var _hoistNonReactStatics = __webpack_require__(177);
 
 	var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
 
-	var _throttle = __webpack_require__(191);
+	var _throttle = __webpack_require__(178);
 
 	var _throttle2 = _interopRequireDefault(_throttle);
 
@@ -21727,8 +21339,8 @@
 	          var y = _getPosition.y;
 
 	          this.setState({ active: true });
-	          // this.updatePosition(x, y);
-	          this.throttle(this.updatePosition, { x: x, y: y });
+	          this.updatePosition({ x: x, y: y });
+	          // this.throttle(this.updatePosition, { x, y });
 	        }
 	      }, {
 	        key: 'handleUpdate',
@@ -21740,9 +21352,9 @@
 
 	            var x = _getPosition2.x;
 	            var y = _getPosition2.y;
-	            // this.updatePosition(x, y);
 
-	            this.throttle(this.updatePosition, { x: x, y: y });
+	            this.updatePosition({ x: x, y: y });
+	            // this.throttle(this.updatePosition, { x, y });
 	          }
 	        }
 	      }, {
@@ -21836,7 +21448,7 @@
 	}
 
 /***/ },
-/* 190 */
+/* 177 */
 /***/ function(module, exports) {
 
 	/**
@@ -21884,11 +21496,11 @@
 
 
 /***/ },
-/* 191 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var debounce = __webpack_require__(192),
-	    isObject = __webpack_require__(193);
+	var debounce = __webpack_require__(179),
+	    isObject = __webpack_require__(180);
 
 	/** Used as the `TypeError` message for "Functions" methods. */
 	var FUNC_ERROR_TEXT = 'Expected a function';
@@ -21956,12 +21568,12 @@
 
 
 /***/ },
-/* 192 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(193),
-	    now = __webpack_require__(194),
-	    toNumber = __webpack_require__(195);
+	var isObject = __webpack_require__(180),
+	    now = __webpack_require__(181),
+	    toNumber = __webpack_require__(182);
 
 	/** Used as the `TypeError` message for "Functions" methods. */
 	var FUNC_ERROR_TEXT = 'Expected a function';
@@ -22143,7 +21755,7 @@
 
 
 /***/ },
-/* 193 */
+/* 180 */
 /***/ function(module, exports) {
 
 	/**
@@ -22180,7 +21792,7 @@
 
 
 /***/ },
-/* 194 */
+/* 181 */
 /***/ function(module, exports) {
 
 	/**
@@ -22207,12 +21819,12 @@
 
 
 /***/ },
-/* 195 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isFunction = __webpack_require__(196),
-	    isObject = __webpack_require__(193),
-	    isSymbol = __webpack_require__(197);
+	var isFunction = __webpack_require__(183),
+	    isObject = __webpack_require__(180),
+	    isSymbol = __webpack_require__(184);
 
 	/** Used as references for various `Number` constants. */
 	var NAN = 0 / 0;
@@ -22280,10 +21892,10 @@
 
 
 /***/ },
-/* 196 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(193);
+	var isObject = __webpack_require__(180);
 
 	/** `Object#toString` result references. */
 	var funcTag = '[object Function]',
@@ -22329,10 +21941,10 @@
 
 
 /***/ },
-/* 197 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObjectLike = __webpack_require__(198);
+	var isObjectLike = __webpack_require__(185);
 
 	/** `Object#toString` result references. */
 	var symbolTag = '[object Symbol]';
@@ -22374,7 +21986,7 @@
 
 
 /***/ },
-/* 198 */
+/* 185 */
 /***/ function(module, exports) {
 
 	/**
@@ -22409,7 +22021,7 @@
 
 
 /***/ },
-/* 199 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22424,7 +22036,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Draggable = __webpack_require__(189);
+	var _Draggable = __webpack_require__(176);
 
 	var _Draggable2 = _interopRequireDefault(_Draggable);
 
@@ -22563,7 +22175,1179 @@
 	exports.default = (0, _Draggable2.default)()(Map);
 
 /***/ },
-/* 200 */
+/* 187 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;// TinyColor v1.3.0
+	// https://github.com/bgrins/TinyColor
+	// Brian Grinstead, MIT License
+
+	(function() {
+
+	var trimLeft = /^\s+/,
+	    trimRight = /\s+$/,
+	    tinyCounter = 0,
+	    math = Math,
+	    mathRound = math.round,
+	    mathMin = math.min,
+	    mathMax = math.max,
+	    mathRandom = math.random;
+
+	function tinycolor (color, opts) {
+
+	    color = (color) ? color : '';
+	    opts = opts || { };
+
+	    // If input is already a tinycolor, return itself
+	    if (color instanceof tinycolor) {
+	       return color;
+	    }
+	    // If we are called as a function, call using new instead
+	    if (!(this instanceof tinycolor)) {
+	        return new tinycolor(color, opts);
+	    }
+
+	    var rgb = inputToRGB(color);
+	    this._originalInput = color,
+	    this._r = rgb.r,
+	    this._g = rgb.g,
+	    this._b = rgb.b,
+	    this._a = rgb.a,
+	    this._roundA = mathRound(100*this._a) / 100,
+	    this._format = opts.format || rgb.format;
+	    this._gradientType = opts.gradientType;
+
+	    // Don't let the range of [0,255] come back in [0,1].
+	    // Potentially lose a little bit of precision here, but will fix issues where
+	    // .5 gets interpreted as half of the total, instead of half of 1
+	    // If it was supposed to be 128, this was already taken care of by `inputToRgb`
+	    if (this._r < 1) { this._r = mathRound(this._r); }
+	    if (this._g < 1) { this._g = mathRound(this._g); }
+	    if (this._b < 1) { this._b = mathRound(this._b); }
+
+	    this._ok = rgb.ok;
+	    this._tc_id = tinyCounter++;
+	}
+
+	tinycolor.prototype = {
+	    isDark: function() {
+	        return this.getBrightness() < 128;
+	    },
+	    isLight: function() {
+	        return !this.isDark();
+	    },
+	    isValid: function() {
+	        return this._ok;
+	    },
+	    getOriginalInput: function() {
+	      return this._originalInput;
+	    },
+	    getFormat: function() {
+	        return this._format;
+	    },
+	    getAlpha: function() {
+	        return this._a;
+	    },
+	    getBrightness: function() {
+	        //http://www.w3.org/TR/AERT#color-contrast
+	        var rgb = this.toRgb();
+	        return (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
+	    },
+	    getLuminance: function() {
+	        //http://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef
+	        var rgb = this.toRgb();
+	        var RsRGB, GsRGB, BsRGB, R, G, B;
+	        RsRGB = rgb.r/255;
+	        GsRGB = rgb.g/255;
+	        BsRGB = rgb.b/255;
+
+	        if (RsRGB <= 0.03928) {R = RsRGB / 12.92;} else {R = Math.pow(((RsRGB + 0.055) / 1.055), 2.4);}
+	        if (GsRGB <= 0.03928) {G = GsRGB / 12.92;} else {G = Math.pow(((GsRGB + 0.055) / 1.055), 2.4);}
+	        if (BsRGB <= 0.03928) {B = BsRGB / 12.92;} else {B = Math.pow(((BsRGB + 0.055) / 1.055), 2.4);}
+	        return (0.2126 * R) + (0.7152 * G) + (0.0722 * B);
+	    },
+	    setAlpha: function(value) {
+	        this._a = boundAlpha(value);
+	        this._roundA = mathRound(100*this._a) / 100;
+	        return this;
+	    },
+	    toHsv: function() {
+	        var hsv = rgbToHsv(this._r, this._g, this._b);
+	        return { h: hsv.h * 360, s: hsv.s, v: hsv.v, a: this._a };
+	    },
+	    toHsvString: function() {
+	        var hsv = rgbToHsv(this._r, this._g, this._b);
+	        var h = mathRound(hsv.h * 360), s = mathRound(hsv.s * 100), v = mathRound(hsv.v * 100);
+	        return (this._a == 1) ?
+	          "hsv("  + h + ", " + s + "%, " + v + "%)" :
+	          "hsva(" + h + ", " + s + "%, " + v + "%, "+ this._roundA + ")";
+	    },
+	    toHsl: function() {
+	        var hsl = rgbToHsl(this._r, this._g, this._b);
+	        return { h: hsl.h * 360, s: hsl.s, l: hsl.l, a: this._a };
+	    },
+	    toHslString: function() {
+	        var hsl = rgbToHsl(this._r, this._g, this._b);
+	        var h = mathRound(hsl.h * 360), s = mathRound(hsl.s * 100), l = mathRound(hsl.l * 100);
+	        return (this._a == 1) ?
+	          "hsl("  + h + ", " + s + "%, " + l + "%)" :
+	          "hsla(" + h + ", " + s + "%, " + l + "%, "+ this._roundA + ")";
+	    },
+	    toHex: function(allow3Char) {
+	        return rgbToHex(this._r, this._g, this._b, allow3Char);
+	    },
+	    toHexString: function(allow3Char) {
+	        return '#' + this.toHex(allow3Char);
+	    },
+	    toHex8: function() {
+	        return rgbaToHex(this._r, this._g, this._b, this._a);
+	    },
+	    toHex8String: function() {
+	        return '#' + this.toHex8();
+	    },
+	    toRgb: function() {
+	        return { r: mathRound(this._r), g: mathRound(this._g), b: mathRound(this._b), a: this._a };
+	    },
+	    toRgbString: function() {
+	        return (this._a == 1) ?
+	          "rgb("  + mathRound(this._r) + ", " + mathRound(this._g) + ", " + mathRound(this._b) + ")" :
+	          "rgba(" + mathRound(this._r) + ", " + mathRound(this._g) + ", " + mathRound(this._b) + ", " + this._roundA + ")";
+	    },
+	    toPercentageRgb: function() {
+	        return { r: mathRound(bound01(this._r, 255) * 100) + "%", g: mathRound(bound01(this._g, 255) * 100) + "%", b: mathRound(bound01(this._b, 255) * 100) + "%", a: this._a };
+	    },
+	    toPercentageRgbString: function() {
+	        return (this._a == 1) ?
+	          "rgb("  + mathRound(bound01(this._r, 255) * 100) + "%, " + mathRound(bound01(this._g, 255) * 100) + "%, " + mathRound(bound01(this._b, 255) * 100) + "%)" :
+	          "rgba(" + mathRound(bound01(this._r, 255) * 100) + "%, " + mathRound(bound01(this._g, 255) * 100) + "%, " + mathRound(bound01(this._b, 255) * 100) + "%, " + this._roundA + ")";
+	    },
+	    toName: function() {
+	        if (this._a === 0) {
+	            return "transparent";
+	        }
+
+	        if (this._a < 1) {
+	            return false;
+	        }
+
+	        return hexNames[rgbToHex(this._r, this._g, this._b, true)] || false;
+	    },
+	    toFilter: function(secondColor) {
+	        var hex8String = '#' + rgbaToHex(this._r, this._g, this._b, this._a);
+	        var secondHex8String = hex8String;
+	        var gradientType = this._gradientType ? "GradientType = 1, " : "";
+
+	        if (secondColor) {
+	            var s = tinycolor(secondColor);
+	            secondHex8String = s.toHex8String();
+	        }
+
+	        return "progid:DXImageTransform.Microsoft.gradient("+gradientType+"startColorstr="+hex8String+",endColorstr="+secondHex8String+")";
+	    },
+	    toString: function(format) {
+	        var formatSet = !!format;
+	        format = format || this._format;
+
+	        var formattedString = false;
+	        var hasAlpha = this._a < 1 && this._a >= 0;
+	        var needsAlphaFormat = !formatSet && hasAlpha && (format === "hex" || format === "hex6" || format === "hex3" || format === "name");
+
+	        if (needsAlphaFormat) {
+	            // Special case for "transparent", all other non-alpha formats
+	            // will return rgba when there is transparency.
+	            if (format === "name" && this._a === 0) {
+	                return this.toName();
+	            }
+	            return this.toRgbString();
+	        }
+	        if (format === "rgb") {
+	            formattedString = this.toRgbString();
+	        }
+	        if (format === "prgb") {
+	            formattedString = this.toPercentageRgbString();
+	        }
+	        if (format === "hex" || format === "hex6") {
+	            formattedString = this.toHexString();
+	        }
+	        if (format === "hex3") {
+	            formattedString = this.toHexString(true);
+	        }
+	        if (format === "hex8") {
+	            formattedString = this.toHex8String();
+	        }
+	        if (format === "name") {
+	            formattedString = this.toName();
+	        }
+	        if (format === "hsl") {
+	            formattedString = this.toHslString();
+	        }
+	        if (format === "hsv") {
+	            formattedString = this.toHsvString();
+	        }
+
+	        return formattedString || this.toHexString();
+	    },
+	    clone: function() {
+	        return tinycolor(this.toString());
+	    },
+
+	    _applyModification: function(fn, args) {
+	        var color = fn.apply(null, [this].concat([].slice.call(args)));
+	        this._r = color._r;
+	        this._g = color._g;
+	        this._b = color._b;
+	        this.setAlpha(color._a);
+	        return this;
+	    },
+	    lighten: function() {
+	        return this._applyModification(lighten, arguments);
+	    },
+	    brighten: function() {
+	        return this._applyModification(brighten, arguments);
+	    },
+	    darken: function() {
+	        return this._applyModification(darken, arguments);
+	    },
+	    desaturate: function() {
+	        return this._applyModification(desaturate, arguments);
+	    },
+	    saturate: function() {
+	        return this._applyModification(saturate, arguments);
+	    },
+	    greyscale: function() {
+	        return this._applyModification(greyscale, arguments);
+	    },
+	    spin: function() {
+	        return this._applyModification(spin, arguments);
+	    },
+
+	    _applyCombination: function(fn, args) {
+	        return fn.apply(null, [this].concat([].slice.call(args)));
+	    },
+	    analogous: function() {
+	        return this._applyCombination(analogous, arguments);
+	    },
+	    complement: function() {
+	        return this._applyCombination(complement, arguments);
+	    },
+	    monochromatic: function() {
+	        return this._applyCombination(monochromatic, arguments);
+	    },
+	    splitcomplement: function() {
+	        return this._applyCombination(splitcomplement, arguments);
+	    },
+	    triad: function() {
+	        return this._applyCombination(triad, arguments);
+	    },
+	    tetrad: function() {
+	        return this._applyCombination(tetrad, arguments);
+	    }
+	};
+
+	// If input is an object, force 1 into "1.0" to handle ratios properly
+	// String input requires "1.0" as input, so 1 will be treated as 1
+	tinycolor.fromRatio = function(color, opts) {
+	    if (typeof color == "object") {
+	        var newColor = {};
+	        for (var i in color) {
+	            if (color.hasOwnProperty(i)) {
+	                if (i === "a") {
+	                    newColor[i] = color[i];
+	                }
+	                else {
+	                    newColor[i] = convertToPercentage(color[i]);
+	                }
+	            }
+	        }
+	        color = newColor;
+	    }
+
+	    return tinycolor(color, opts);
+	};
+
+	// Given a string or object, convert that input to RGB
+	// Possible string inputs:
+	//
+	//     "red"
+	//     "#f00" or "f00"
+	//     "#ff0000" or "ff0000"
+	//     "#ff000000" or "ff000000"
+	//     "rgb 255 0 0" or "rgb (255, 0, 0)"
+	//     "rgb 1.0 0 0" or "rgb (1, 0, 0)"
+	//     "rgba (255, 0, 0, 1)" or "rgba 255, 0, 0, 1"
+	//     "rgba (1.0, 0, 0, 1)" or "rgba 1.0, 0, 0, 1"
+	//     "hsl(0, 100%, 50%)" or "hsl 0 100% 50%"
+	//     "hsla(0, 100%, 50%, 1)" or "hsla 0 100% 50%, 1"
+	//     "hsv(0, 100%, 100%)" or "hsv 0 100% 100%"
+	//
+	function inputToRGB(color) {
+
+	    var rgb = { r: 0, g: 0, b: 0 };
+	    var a = 1;
+	    var ok = false;
+	    var format = false;
+
+	    if (typeof color == "string") {
+	        color = stringInputToObject(color);
+	    }
+
+	    if (typeof color == "object") {
+	        if (color.hasOwnProperty("r") && color.hasOwnProperty("g") && color.hasOwnProperty("b")) {
+	            rgb = rgbToRgb(color.r, color.g, color.b);
+	            ok = true;
+	            format = String(color.r).substr(-1) === "%" ? "prgb" : "rgb";
+	        }
+	        else if (color.hasOwnProperty("h") && color.hasOwnProperty("s") && color.hasOwnProperty("v")) {
+	            color.s = convertToPercentage(color.s);
+	            color.v = convertToPercentage(color.v);
+	            rgb = hsvToRgb(color.h, color.s, color.v);
+	            ok = true;
+	            format = "hsv";
+	        }
+	        else if (color.hasOwnProperty("h") && color.hasOwnProperty("s") && color.hasOwnProperty("l")) {
+	            color.s = convertToPercentage(color.s);
+	            color.l = convertToPercentage(color.l);
+	            rgb = hslToRgb(color.h, color.s, color.l);
+	            ok = true;
+	            format = "hsl";
+	        }
+
+	        if (color.hasOwnProperty("a")) {
+	            a = color.a;
+	        }
+	    }
+
+	    a = boundAlpha(a);
+
+	    return {
+	        ok: ok,
+	        format: color.format || format,
+	        r: mathMin(255, mathMax(rgb.r, 0)),
+	        g: mathMin(255, mathMax(rgb.g, 0)),
+	        b: mathMin(255, mathMax(rgb.b, 0)),
+	        a: a
+	    };
+	}
+
+
+	// Conversion Functions
+	// --------------------
+
+	// `rgbToHsl`, `rgbToHsv`, `hslToRgb`, `hsvToRgb` modified from:
+	// <http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript>
+
+	// `rgbToRgb`
+	// Handle bounds / percentage checking to conform to CSS color spec
+	// <http://www.w3.org/TR/css3-color/>
+	// *Assumes:* r, g, b in [0, 255] or [0, 1]
+	// *Returns:* { r, g, b } in [0, 255]
+	function rgbToRgb(r, g, b){
+	    return {
+	        r: bound01(r, 255) * 255,
+	        g: bound01(g, 255) * 255,
+	        b: bound01(b, 255) * 255
+	    };
+	}
+
+	// `rgbToHsl`
+	// Converts an RGB color value to HSL.
+	// *Assumes:* r, g, and b are contained in [0, 255] or [0, 1]
+	// *Returns:* { h, s, l } in [0,1]
+	function rgbToHsl(r, g, b) {
+
+	    r = bound01(r, 255);
+	    g = bound01(g, 255);
+	    b = bound01(b, 255);
+
+	    var max = mathMax(r, g, b), min = mathMin(r, g, b);
+	    var h, s, l = (max + min) / 2;
+
+	    if(max == min) {
+	        h = s = 0; // achromatic
+	    }
+	    else {
+	        var d = max - min;
+	        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+	        switch(max) {
+	            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+	            case g: h = (b - r) / d + 2; break;
+	            case b: h = (r - g) / d + 4; break;
+	        }
+
+	        h /= 6;
+	    }
+
+	    return { h: h, s: s, l: l };
+	}
+
+	// `hslToRgb`
+	// Converts an HSL color value to RGB.
+	// *Assumes:* h is contained in [0, 1] or [0, 360] and s and l are contained [0, 1] or [0, 100]
+	// *Returns:* { r, g, b } in the set [0, 255]
+	function hslToRgb(h, s, l) {
+	    var r, g, b;
+
+	    h = bound01(h, 360);
+	    s = bound01(s, 100);
+	    l = bound01(l, 100);
+
+	    function hue2rgb(p, q, t) {
+	        if(t < 0) t += 1;
+	        if(t > 1) t -= 1;
+	        if(t < 1/6) return p + (q - p) * 6 * t;
+	        if(t < 1/2) return q;
+	        if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+	        return p;
+	    }
+
+	    if(s === 0) {
+	        r = g = b = l; // achromatic
+	    }
+	    else {
+	        var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+	        var p = 2 * l - q;
+	        r = hue2rgb(p, q, h + 1/3);
+	        g = hue2rgb(p, q, h);
+	        b = hue2rgb(p, q, h - 1/3);
+	    }
+
+	    return { r: r * 255, g: g * 255, b: b * 255 };
+	}
+
+	// `rgbToHsv`
+	// Converts an RGB color value to HSV
+	// *Assumes:* r, g, and b are contained in the set [0, 255] or [0, 1]
+	// *Returns:* { h, s, v } in [0,1]
+	function rgbToHsv(r, g, b) {
+
+	    r = bound01(r, 255);
+	    g = bound01(g, 255);
+	    b = bound01(b, 255);
+
+	    var max = mathMax(r, g, b), min = mathMin(r, g, b);
+	    var h, s, v = max;
+
+	    var d = max - min;
+	    s = max === 0 ? 0 : d / max;
+
+	    if(max == min) {
+	        h = 0; // achromatic
+	    }
+	    else {
+	        switch(max) {
+	            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+	            case g: h = (b - r) / d + 2; break;
+	            case b: h = (r - g) / d + 4; break;
+	        }
+	        h /= 6;
+	    }
+	    return { h: h, s: s, v: v };
+	}
+
+	// `hsvToRgb`
+	// Converts an HSV color value to RGB.
+	// *Assumes:* h is contained in [0, 1] or [0, 360] and s and v are contained in [0, 1] or [0, 100]
+	// *Returns:* { r, g, b } in the set [0, 255]
+	 function hsvToRgb(h, s, v) {
+
+	    h = bound01(h, 360) * 6;
+	    s = bound01(s, 100);
+	    v = bound01(v, 100);
+
+	    var i = math.floor(h),
+	        f = h - i,
+	        p = v * (1 - s),
+	        q = v * (1 - f * s),
+	        t = v * (1 - (1 - f) * s),
+	        mod = i % 6,
+	        r = [v, q, p, p, t, v][mod],
+	        g = [t, v, v, q, p, p][mod],
+	        b = [p, p, t, v, v, q][mod];
+
+	    return { r: r * 255, g: g * 255, b: b * 255 };
+	}
+
+	// `rgbToHex`
+	// Converts an RGB color to hex
+	// Assumes r, g, and b are contained in the set [0, 255]
+	// Returns a 3 or 6 character hex
+	function rgbToHex(r, g, b, allow3Char) {
+
+	    var hex = [
+	        pad2(mathRound(r).toString(16)),
+	        pad2(mathRound(g).toString(16)),
+	        pad2(mathRound(b).toString(16))
+	    ];
+
+	    // Return a 3 character hex if possible
+	    if (allow3Char && hex[0].charAt(0) == hex[0].charAt(1) && hex[1].charAt(0) == hex[1].charAt(1) && hex[2].charAt(0) == hex[2].charAt(1)) {
+	        return hex[0].charAt(0) + hex[1].charAt(0) + hex[2].charAt(0);
+	    }
+
+	    return hex.join("");
+	}
+
+	// `rgbaToHex`
+	// Converts an RGBA color plus alpha transparency to hex
+	// Assumes r, g, b and a are contained in the set [0, 255]
+	// Returns an 8 character hex
+	function rgbaToHex(r, g, b, a) {
+
+	    var hex = [
+	        pad2(convertDecimalToHex(a)),
+	        pad2(mathRound(r).toString(16)),
+	        pad2(mathRound(g).toString(16)),
+	        pad2(mathRound(b).toString(16))
+	    ];
+
+	    return hex.join("");
+	}
+
+	// `equals`
+	// Can be called with any tinycolor input
+	tinycolor.equals = function (color1, color2) {
+	    if (!color1 || !color2) { return false; }
+	    return tinycolor(color1).toRgbString() == tinycolor(color2).toRgbString();
+	};
+
+	tinycolor.random = function() {
+	    return tinycolor.fromRatio({
+	        r: mathRandom(),
+	        g: mathRandom(),
+	        b: mathRandom()
+	    });
+	};
+
+
+	// Modification Functions
+	// ----------------------
+	// Thanks to less.js for some of the basics here
+	// <https://github.com/cloudhead/less.js/blob/master/lib/less/functions.js>
+
+	function desaturate(color, amount) {
+	    amount = (amount === 0) ? 0 : (amount || 10);
+	    var hsl = tinycolor(color).toHsl();
+	    hsl.s -= amount / 100;
+	    hsl.s = clamp01(hsl.s);
+	    return tinycolor(hsl);
+	}
+
+	function saturate(color, amount) {
+	    amount = (amount === 0) ? 0 : (amount || 10);
+	    var hsl = tinycolor(color).toHsl();
+	    hsl.s += amount / 100;
+	    hsl.s = clamp01(hsl.s);
+	    return tinycolor(hsl);
+	}
+
+	function greyscale(color) {
+	    return tinycolor(color).desaturate(100);
+	}
+
+	function lighten (color, amount) {
+	    amount = (amount === 0) ? 0 : (amount || 10);
+	    var hsl = tinycolor(color).toHsl();
+	    hsl.l += amount / 100;
+	    hsl.l = clamp01(hsl.l);
+	    return tinycolor(hsl);
+	}
+
+	function brighten(color, amount) {
+	    amount = (amount === 0) ? 0 : (amount || 10);
+	    var rgb = tinycolor(color).toRgb();
+	    rgb.r = mathMax(0, mathMin(255, rgb.r - mathRound(255 * - (amount / 100))));
+	    rgb.g = mathMax(0, mathMin(255, rgb.g - mathRound(255 * - (amount / 100))));
+	    rgb.b = mathMax(0, mathMin(255, rgb.b - mathRound(255 * - (amount / 100))));
+	    return tinycolor(rgb);
+	}
+
+	function darken (color, amount) {
+	    amount = (amount === 0) ? 0 : (amount || 10);
+	    var hsl = tinycolor(color).toHsl();
+	    hsl.l -= amount / 100;
+	    hsl.l = clamp01(hsl.l);
+	    return tinycolor(hsl);
+	}
+
+	// Spin takes a positive or negative amount within [-360, 360] indicating the change of hue.
+	// Values outside of this range will be wrapped into this range.
+	function spin(color, amount) {
+	    var hsl = tinycolor(color).toHsl();
+	    var hue = (mathRound(hsl.h) + amount) % 360;
+	    hsl.h = hue < 0 ? 360 + hue : hue;
+	    return tinycolor(hsl);
+	}
+
+	// Combination Functions
+	// ---------------------
+	// Thanks to jQuery xColor for some of the ideas behind these
+	// <https://github.com/infusion/jQuery-xcolor/blob/master/jquery.xcolor.js>
+
+	function complement(color) {
+	    var hsl = tinycolor(color).toHsl();
+	    hsl.h = (hsl.h + 180) % 360;
+	    return tinycolor(hsl);
+	}
+
+	function triad(color) {
+	    var hsl = tinycolor(color).toHsl();
+	    var h = hsl.h;
+	    return [
+	        tinycolor(color),
+	        tinycolor({ h: (h + 120) % 360, s: hsl.s, l: hsl.l }),
+	        tinycolor({ h: (h + 240) % 360, s: hsl.s, l: hsl.l })
+	    ];
+	}
+
+	function tetrad(color) {
+	    var hsl = tinycolor(color).toHsl();
+	    var h = hsl.h;
+	    return [
+	        tinycolor(color),
+	        tinycolor({ h: (h + 90) % 360, s: hsl.s, l: hsl.l }),
+	        tinycolor({ h: (h + 180) % 360, s: hsl.s, l: hsl.l }),
+	        tinycolor({ h: (h + 270) % 360, s: hsl.s, l: hsl.l })
+	    ];
+	}
+
+	function splitcomplement(color) {
+	    var hsl = tinycolor(color).toHsl();
+	    var h = hsl.h;
+	    return [
+	        tinycolor(color),
+	        tinycolor({ h: (h + 72) % 360, s: hsl.s, l: hsl.l}),
+	        tinycolor({ h: (h + 216) % 360, s: hsl.s, l: hsl.l})
+	    ];
+	}
+
+	function analogous(color, results, slices) {
+	    results = results || 6;
+	    slices = slices || 30;
+
+	    var hsl = tinycolor(color).toHsl();
+	    var part = 360 / slices;
+	    var ret = [tinycolor(color)];
+
+	    for (hsl.h = ((hsl.h - (part * results >> 1)) + 720) % 360; --results; ) {
+	        hsl.h = (hsl.h + part) % 360;
+	        ret.push(tinycolor(hsl));
+	    }
+	    return ret;
+	}
+
+	function monochromatic(color, results) {
+	    results = results || 6;
+	    var hsv = tinycolor(color).toHsv();
+	    var h = hsv.h, s = hsv.s, v = hsv.v;
+	    var ret = [];
+	    var modification = 1 / results;
+
+	    while (results--) {
+	        ret.push(tinycolor({ h: h, s: s, v: v}));
+	        v = (v + modification) % 1;
+	    }
+
+	    return ret;
+	}
+
+	// Utility Functions
+	// ---------------------
+
+	tinycolor.mix = function(color1, color2, amount) {
+	    amount = (amount === 0) ? 0 : (amount || 50);
+
+	    var rgb1 = tinycolor(color1).toRgb();
+	    var rgb2 = tinycolor(color2).toRgb();
+
+	    var p = amount / 100;
+	    var w = p * 2 - 1;
+	    var a = rgb2.a - rgb1.a;
+
+	    var w1;
+
+	    if (w * a == -1) {
+	        w1 = w;
+	    } else {
+	        w1 = (w + a) / (1 + w * a);
+	    }
+
+	    w1 = (w1 + 1) / 2;
+
+	    var w2 = 1 - w1;
+
+	    var rgba = {
+	        r: rgb2.r * w1 + rgb1.r * w2,
+	        g: rgb2.g * w1 + rgb1.g * w2,
+	        b: rgb2.b * w1 + rgb1.b * w2,
+	        a: rgb2.a * p  + rgb1.a * (1 - p)
+	    };
+
+	    return tinycolor(rgba);
+	};
+
+
+	// Readability Functions
+	// ---------------------
+	// <http://www.w3.org/TR/2008/REC-WCAG20-20081211/#contrast-ratiodef (WCAG Version 2)
+
+	// `contrast`
+	// Analyze the 2 colors and returns the color contrast defined by (WCAG Version 2)
+	tinycolor.readability = function(color1, color2) {
+	    var c1 = tinycolor(color1);
+	    var c2 = tinycolor(color2);
+	    return (Math.max(c1.getLuminance(),c2.getLuminance())+0.05) / (Math.min(c1.getLuminance(),c2.getLuminance())+0.05);
+	};
+
+	// `isReadable`
+	// Ensure that foreground and background color combinations meet WCAG2 guidelines.
+	// The third argument is an optional Object.
+	//      the 'level' property states 'AA' or 'AAA' - if missing or invalid, it defaults to 'AA';
+	//      the 'size' property states 'large' or 'small' - if missing or invalid, it defaults to 'small'.
+	// If the entire object is absent, isReadable defaults to {level:"AA",size:"small"}.
+
+	// *Example*
+	//    tinycolor.isReadable("#000", "#111") => false
+	//    tinycolor.isReadable("#000", "#111",{level:"AA",size:"large"}) => false
+	tinycolor.isReadable = function(color1, color2, wcag2) {
+	    var readability = tinycolor.readability(color1, color2);
+	    var wcag2Parms, out;
+
+	    out = false;
+
+	    wcag2Parms = validateWCAG2Parms(wcag2);
+	    switch (wcag2Parms.level + wcag2Parms.size) {
+	        case "AAsmall":
+	        case "AAAlarge":
+	            out = readability >= 4.5;
+	            break;
+	        case "AAlarge":
+	            out = readability >= 3;
+	            break;
+	        case "AAAsmall":
+	            out = readability >= 7;
+	            break;
+	    }
+	    return out;
+
+	};
+
+	// `mostReadable`
+	// Given a base color and a list of possible foreground or background
+	// colors for that base, returns the most readable color.
+	// Optionally returns Black or White if the most readable color is unreadable.
+	// *Example*
+	//    tinycolor.mostReadable(tinycolor.mostReadable("#123", ["#124", "#125"],{includeFallbackColors:false}).toHexString(); // "#112255"
+	//    tinycolor.mostReadable(tinycolor.mostReadable("#123", ["#124", "#125"],{includeFallbackColors:true}).toHexString();  // "#ffffff"
+	//    tinycolor.mostReadable("#a8015a", ["#faf3f3"],{includeFallbackColors:true,level:"AAA",size:"large"}).toHexString(); // "#faf3f3"
+	//    tinycolor.mostReadable("#a8015a", ["#faf3f3"],{includeFallbackColors:true,level:"AAA",size:"small"}).toHexString(); // "#ffffff"
+	tinycolor.mostReadable = function(baseColor, colorList, args) {
+	    var bestColor = null;
+	    var bestScore = 0;
+	    var readability;
+	    var includeFallbackColors, level, size ;
+	    args = args || {};
+	    includeFallbackColors = args.includeFallbackColors ;
+	    level = args.level;
+	    size = args.size;
+
+	    for (var i= 0; i < colorList.length ; i++) {
+	        readability = tinycolor.readability(baseColor, colorList[i]);
+	        if (readability > bestScore) {
+	            bestScore = readability;
+	            bestColor = tinycolor(colorList[i]);
+	        }
+	    }
+
+	    if (tinycolor.isReadable(baseColor, bestColor, {"level":level,"size":size}) || !includeFallbackColors) {
+	        return bestColor;
+	    }
+	    else {
+	        args.includeFallbackColors=false;
+	        return tinycolor.mostReadable(baseColor,["#fff", "#000"],args);
+	    }
+	};
+
+
+	// Big List of Colors
+	// ------------------
+	// <http://www.w3.org/TR/css3-color/#svg-color>
+	var names = tinycolor.names = {
+	    aliceblue: "f0f8ff",
+	    antiquewhite: "faebd7",
+	    aqua: "0ff",
+	    aquamarine: "7fffd4",
+	    azure: "f0ffff",
+	    beige: "f5f5dc",
+	    bisque: "ffe4c4",
+	    black: "000",
+	    blanchedalmond: "ffebcd",
+	    blue: "00f",
+	    blueviolet: "8a2be2",
+	    brown: "a52a2a",
+	    burlywood: "deb887",
+	    burntsienna: "ea7e5d",
+	    cadetblue: "5f9ea0",
+	    chartreuse: "7fff00",
+	    chocolate: "d2691e",
+	    coral: "ff7f50",
+	    cornflowerblue: "6495ed",
+	    cornsilk: "fff8dc",
+	    crimson: "dc143c",
+	    cyan: "0ff",
+	    darkblue: "00008b",
+	    darkcyan: "008b8b",
+	    darkgoldenrod: "b8860b",
+	    darkgray: "a9a9a9",
+	    darkgreen: "006400",
+	    darkgrey: "a9a9a9",
+	    darkkhaki: "bdb76b",
+	    darkmagenta: "8b008b",
+	    darkolivegreen: "556b2f",
+	    darkorange: "ff8c00",
+	    darkorchid: "9932cc",
+	    darkred: "8b0000",
+	    darksalmon: "e9967a",
+	    darkseagreen: "8fbc8f",
+	    darkslateblue: "483d8b",
+	    darkslategray: "2f4f4f",
+	    darkslategrey: "2f4f4f",
+	    darkturquoise: "00ced1",
+	    darkviolet: "9400d3",
+	    deeppink: "ff1493",
+	    deepskyblue: "00bfff",
+	    dimgray: "696969",
+	    dimgrey: "696969",
+	    dodgerblue: "1e90ff",
+	    firebrick: "b22222",
+	    floralwhite: "fffaf0",
+	    forestgreen: "228b22",
+	    fuchsia: "f0f",
+	    gainsboro: "dcdcdc",
+	    ghostwhite: "f8f8ff",
+	    gold: "ffd700",
+	    goldenrod: "daa520",
+	    gray: "808080",
+	    green: "008000",
+	    greenyellow: "adff2f",
+	    grey: "808080",
+	    honeydew: "f0fff0",
+	    hotpink: "ff69b4",
+	    indianred: "cd5c5c",
+	    indigo: "4b0082",
+	    ivory: "fffff0",
+	    khaki: "f0e68c",
+	    lavender: "e6e6fa",
+	    lavenderblush: "fff0f5",
+	    lawngreen: "7cfc00",
+	    lemonchiffon: "fffacd",
+	    lightblue: "add8e6",
+	    lightcoral: "f08080",
+	    lightcyan: "e0ffff",
+	    lightgoldenrodyellow: "fafad2",
+	    lightgray: "d3d3d3",
+	    lightgreen: "90ee90",
+	    lightgrey: "d3d3d3",
+	    lightpink: "ffb6c1",
+	    lightsalmon: "ffa07a",
+	    lightseagreen: "20b2aa",
+	    lightskyblue: "87cefa",
+	    lightslategray: "789",
+	    lightslategrey: "789",
+	    lightsteelblue: "b0c4de",
+	    lightyellow: "ffffe0",
+	    lime: "0f0",
+	    limegreen: "32cd32",
+	    linen: "faf0e6",
+	    magenta: "f0f",
+	    maroon: "800000",
+	    mediumaquamarine: "66cdaa",
+	    mediumblue: "0000cd",
+	    mediumorchid: "ba55d3",
+	    mediumpurple: "9370db",
+	    mediumseagreen: "3cb371",
+	    mediumslateblue: "7b68ee",
+	    mediumspringgreen: "00fa9a",
+	    mediumturquoise: "48d1cc",
+	    mediumvioletred: "c71585",
+	    midnightblue: "191970",
+	    mintcream: "f5fffa",
+	    mistyrose: "ffe4e1",
+	    moccasin: "ffe4b5",
+	    navajowhite: "ffdead",
+	    navy: "000080",
+	    oldlace: "fdf5e6",
+	    olive: "808000",
+	    olivedrab: "6b8e23",
+	    orange: "ffa500",
+	    orangered: "ff4500",
+	    orchid: "da70d6",
+	    palegoldenrod: "eee8aa",
+	    palegreen: "98fb98",
+	    paleturquoise: "afeeee",
+	    palevioletred: "db7093",
+	    papayawhip: "ffefd5",
+	    peachpuff: "ffdab9",
+	    peru: "cd853f",
+	    pink: "ffc0cb",
+	    plum: "dda0dd",
+	    powderblue: "b0e0e6",
+	    purple: "800080",
+	    rebeccapurple: "663399",
+	    red: "f00",
+	    rosybrown: "bc8f8f",
+	    royalblue: "4169e1",
+	    saddlebrown: "8b4513",
+	    salmon: "fa8072",
+	    sandybrown: "f4a460",
+	    seagreen: "2e8b57",
+	    seashell: "fff5ee",
+	    sienna: "a0522d",
+	    silver: "c0c0c0",
+	    skyblue: "87ceeb",
+	    slateblue: "6a5acd",
+	    slategray: "708090",
+	    slategrey: "708090",
+	    snow: "fffafa",
+	    springgreen: "00ff7f",
+	    steelblue: "4682b4",
+	    tan: "d2b48c",
+	    teal: "008080",
+	    thistle: "d8bfd8",
+	    tomato: "ff6347",
+	    turquoise: "40e0d0",
+	    violet: "ee82ee",
+	    wheat: "f5deb3",
+	    white: "fff",
+	    whitesmoke: "f5f5f5",
+	    yellow: "ff0",
+	    yellowgreen: "9acd32"
+	};
+
+	// Make it easy to access colors via `hexNames[hex]`
+	var hexNames = tinycolor.hexNames = flip(names);
+
+
+	// Utilities
+	// ---------
+
+	// `{ 'name1': 'val1' }` becomes `{ 'val1': 'name1' }`
+	function flip(o) {
+	    var flipped = { };
+	    for (var i in o) {
+	        if (o.hasOwnProperty(i)) {
+	            flipped[o[i]] = i;
+	        }
+	    }
+	    return flipped;
+	}
+
+	// Return a valid alpha value [0,1] with all invalid values being set to 1
+	function boundAlpha(a) {
+	    a = parseFloat(a);
+
+	    if (isNaN(a) || a < 0 || a > 1) {
+	        a = 1;
+	    }
+
+	    return a;
+	}
+
+	// Take input from [0, n] and return it as [0, 1]
+	function bound01(n, max) {
+	    if (isOnePointZero(n)) { n = "100%"; }
+
+	    var processPercent = isPercentage(n);
+	    n = mathMin(max, mathMax(0, parseFloat(n)));
+
+	    // Automatically convert percentage into number
+	    if (processPercent) {
+	        n = parseInt(n * max, 10) / 100;
+	    }
+
+	    // Handle floating point rounding errors
+	    if ((math.abs(n - max) < 0.000001)) {
+	        return 1;
+	    }
+
+	    // Convert into [0, 1] range if it isn't already
+	    return (n % max) / parseFloat(max);
+	}
+
+	// Force a number between 0 and 1
+	function clamp01(val) {
+	    return mathMin(1, mathMax(0, val));
+	}
+
+	// Parse a base-16 hex value into a base-10 integer
+	function parseIntFromHex(val) {
+	    return parseInt(val, 16);
+	}
+
+	// Need to handle 1.0 as 100%, since once it is a number, there is no difference between it and 1
+	// <http://stackoverflow.com/questions/7422072/javascript-how-to-detect-number-as-a-decimal-including-1-0>
+	function isOnePointZero(n) {
+	    return typeof n == "string" && n.indexOf('.') != -1 && parseFloat(n) === 1;
+	}
+
+	// Check to see if string passed in is a percentage
+	function isPercentage(n) {
+	    return typeof n === "string" && n.indexOf('%') != -1;
+	}
+
+	// Force a hex value to have 2 characters
+	function pad2(c) {
+	    return c.length == 1 ? '0' + c : '' + c;
+	}
+
+	// Replace a decimal with it's percentage value
+	function convertToPercentage(n) {
+	    if (n <= 1) {
+	        n = (n * 100) + "%";
+	    }
+
+	    return n;
+	}
+
+	// Converts a decimal to a hex value
+	function convertDecimalToHex(d) {
+	    return Math.round(parseFloat(d) * 255).toString(16);
+	}
+	// Converts a hex value to a decimal
+	function convertHexToDecimal(h) {
+	    return (parseIntFromHex(h) / 255);
+	}
+
+	var matchers = (function() {
+
+	    // <http://www.w3.org/TR/css3-values/#integers>
+	    var CSS_INTEGER = "[-\\+]?\\d+%?";
+
+	    // <http://www.w3.org/TR/css3-values/#number-value>
+	    var CSS_NUMBER = "[-\\+]?\\d*\\.\\d+%?";
+
+	    // Allow positive/negative integer/number.  Don't capture the either/or, just the entire outcome.
+	    var CSS_UNIT = "(?:" + CSS_NUMBER + ")|(?:" + CSS_INTEGER + ")";
+
+	    // Actual matching.
+	    // Parentheses and commas are optional, but not required.
+	    // Whitespace can take the place of commas or opening paren
+	    var PERMISSIVE_MATCH3 = "[\\s|\\(]+(" + CSS_UNIT + ")[,|\\s]+(" + CSS_UNIT + ")[,|\\s]+(" + CSS_UNIT + ")\\s*\\)?";
+	    var PERMISSIVE_MATCH4 = "[\\s|\\(]+(" + CSS_UNIT + ")[,|\\s]+(" + CSS_UNIT + ")[,|\\s]+(" + CSS_UNIT + ")[,|\\s]+(" + CSS_UNIT + ")\\s*\\)?";
+
+	    return {
+	        rgb: new RegExp("rgb" + PERMISSIVE_MATCH3),
+	        rgba: new RegExp("rgba" + PERMISSIVE_MATCH4),
+	        hsl: new RegExp("hsl" + PERMISSIVE_MATCH3),
+	        hsla: new RegExp("hsla" + PERMISSIVE_MATCH4),
+	        hsv: new RegExp("hsv" + PERMISSIVE_MATCH3),
+	        hsva: new RegExp("hsva" + PERMISSIVE_MATCH4),
+	        hex3: /^#?([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})$/,
+	        hex6: /^#?([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/,
+	        hex8: /^#?([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/
+	    };
+	})();
+
+	// `stringInputToObject`
+	// Permissive string parsing.  Take in a number of formats, and output an object
+	// based on detected format.  Returns `{ r, g, b }` or `{ h, s, l }` or `{ h, s, v}`
+	function stringInputToObject(color) {
+
+	    color = color.replace(trimLeft,'').replace(trimRight, '').toLowerCase();
+	    var named = false;
+	    if (names[color]) {
+	        color = names[color];
+	        named = true;
+	    }
+	    else if (color == 'transparent') {
+	        return { r: 0, g: 0, b: 0, a: 0, format: "name" };
+	    }
+
+	    // Try to match string input using regular expressions.
+	    // Keep most of the number bounding out of this function - don't worry about [0,1] or [0,100] or [0,360]
+	    // Just return an object and let the conversion functions handle that.
+	    // This way the result will be the same whether the tinycolor is initialized with string or object.
+	    var match;
+	    if ((match = matchers.rgb.exec(color))) {
+	        return { r: match[1], g: match[2], b: match[3] };
+	    }
+	    if ((match = matchers.rgba.exec(color))) {
+	        return { r: match[1], g: match[2], b: match[3], a: match[4] };
+	    }
+	    if ((match = matchers.hsl.exec(color))) {
+	        return { h: match[1], s: match[2], l: match[3] };
+	    }
+	    if ((match = matchers.hsla.exec(color))) {
+	        return { h: match[1], s: match[2], l: match[3], a: match[4] };
+	    }
+	    if ((match = matchers.hsv.exec(color))) {
+	        return { h: match[1], s: match[2], v: match[3] };
+	    }
+	    if ((match = matchers.hsva.exec(color))) {
+	        return { h: match[1], s: match[2], v: match[3], a: match[4] };
+	    }
+	    if ((match = matchers.hex8.exec(color))) {
+	        return {
+	            a: convertHexToDecimal(match[1]),
+	            r: parseIntFromHex(match[2]),
+	            g: parseIntFromHex(match[3]),
+	            b: parseIntFromHex(match[4]),
+	            format: named ? "name" : "hex8"
+	        };
+	    }
+	    if ((match = matchers.hex6.exec(color))) {
+	        return {
+	            r: parseIntFromHex(match[1]),
+	            g: parseIntFromHex(match[2]),
+	            b: parseIntFromHex(match[3]),
+	            format: named ? "name" : "hex"
+	        };
+	    }
+	    if ((match = matchers.hex3.exec(color))) {
+	        return {
+	            r: parseIntFromHex(match[1] + '' + match[1]),
+	            g: parseIntFromHex(match[2] + '' + match[2]),
+	            b: parseIntFromHex(match[3] + '' + match[3]),
+	            format: named ? "name" : "hex"
+	        };
+	    }
+
+	    return false;
+	}
+
+	function validateWCAG2Parms(parms) {
+	    // return valid WCAG2 parms for isReadable.
+	    // If input parms are invalid, return {"level":"AA", "size":"small"}
+	    var level, size;
+	    parms = parms || {"level":"AA", "size":"small"};
+	    level = (parms.level || "AA").toUpperCase();
+	    size = (parms.size || "small").toLowerCase();
+	    if (level !== "AA" && level !== "AAA") {
+	        level = "AA";
+	    }
+	    if (size !== "small" && size !== "large") {
+	        size = "small";
+	    }
+	    return {"level":level, "size":size};
+	}
+
+	// Node: Export function
+	if (typeof module !== "undefined" && module.exports) {
+	    module.exports = tinycolor;
+	}
+	// AMD/requirejs: Define the module
+	else if (true) {
+	    !(__WEBPACK_AMD_DEFINE_RESULT__ = function () {return tinycolor;}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	}
+	// Browser: Expose to window
+	else {
+	    window.tinycolor = tinycolor;
+	}
+
+	})();
+
+
+/***/ },
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22580,11 +23364,11 @@
 
 	var _src2 = _interopRequireDefault(_src);
 
-	var _reactSyntaxHighlighter = __webpack_require__(201);
+	var _reactSyntaxHighlighter = __webpack_require__(189);
 
 	var _reactSyntaxHighlighter2 = _interopRequireDefault(_reactSyntaxHighlighter);
 
-	var _styles = __webpack_require__(360);
+	var _styles = __webpack_require__(348);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22619,7 +23403,7 @@
 	exports.default = SingleExample;
 
 /***/ },
-/* 201 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22632,7 +23416,7 @@
 
 	exports.default = SyntaxHighlighter;
 
-	var _lowlight = __webpack_require__(202);
+	var _lowlight = __webpack_require__(190);
 
 	var _lowlight2 = _interopRequireDefault(_lowlight);
 
@@ -22640,7 +23424,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _styles = __webpack_require__(360);
+	var _styles = __webpack_require__(348);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22715,7 +23499,7 @@
 	}
 
 /***/ },
-/* 202 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22731,165 +23515,165 @@
 
 	/* eslint-env commonjs */
 
-	var low = __webpack_require__(203);
+	var low = __webpack_require__(191);
 
 	/* jscs:disable maximumLineLength */
 
-	low.registerLanguage('1c', __webpack_require__(205));
-	low.registerLanguage('accesslog', __webpack_require__(206));
-	low.registerLanguage('actionscript', __webpack_require__(207));
-	low.registerLanguage('ada', __webpack_require__(208));
-	low.registerLanguage('apache', __webpack_require__(209));
-	low.registerLanguage('applescript', __webpack_require__(210));
-	low.registerLanguage('cpp', __webpack_require__(211));
-	low.registerLanguage('arduino', __webpack_require__(212));
-	low.registerLanguage('armasm', __webpack_require__(213));
-	low.registerLanguage('xml', __webpack_require__(214));
-	low.registerLanguage('asciidoc', __webpack_require__(215));
-	low.registerLanguage('aspectj', __webpack_require__(216));
-	low.registerLanguage('autohotkey', __webpack_require__(217));
-	low.registerLanguage('autoit', __webpack_require__(218));
-	low.registerLanguage('avrasm', __webpack_require__(219));
-	low.registerLanguage('axapta', __webpack_require__(220));
-	low.registerLanguage('bash', __webpack_require__(221));
-	low.registerLanguage('basic', __webpack_require__(222));
-	low.registerLanguage('bnf', __webpack_require__(223));
-	low.registerLanguage('brainfuck', __webpack_require__(224));
-	low.registerLanguage('cal', __webpack_require__(225));
-	low.registerLanguage('capnproto', __webpack_require__(226));
-	low.registerLanguage('ceylon', __webpack_require__(227));
-	low.registerLanguage('clojure', __webpack_require__(228));
-	low.registerLanguage('clojure-repl', __webpack_require__(229));
-	low.registerLanguage('cmake', __webpack_require__(230));
-	low.registerLanguage('coffeescript', __webpack_require__(231));
-	low.registerLanguage('cos', __webpack_require__(232));
-	low.registerLanguage('crmsh', __webpack_require__(233));
-	low.registerLanguage('crystal', __webpack_require__(234));
-	low.registerLanguage('cs', __webpack_require__(235));
-	low.registerLanguage('csp', __webpack_require__(236));
-	low.registerLanguage('css', __webpack_require__(237));
-	low.registerLanguage('d', __webpack_require__(238));
-	low.registerLanguage('markdown', __webpack_require__(239));
-	low.registerLanguage('dart', __webpack_require__(240));
-	low.registerLanguage('delphi', __webpack_require__(241));
-	low.registerLanguage('diff', __webpack_require__(242));
-	low.registerLanguage('django', __webpack_require__(243));
-	low.registerLanguage('dns', __webpack_require__(244));
-	low.registerLanguage('dockerfile', __webpack_require__(245));
-	low.registerLanguage('dos', __webpack_require__(246));
-	low.registerLanguage('dts', __webpack_require__(247));
-	low.registerLanguage('dust', __webpack_require__(248));
-	low.registerLanguage('elixir', __webpack_require__(249));
-	low.registerLanguage('elm', __webpack_require__(250));
-	low.registerLanguage('ruby', __webpack_require__(251));
-	low.registerLanguage('erb', __webpack_require__(252));
-	low.registerLanguage('erlang-repl', __webpack_require__(253));
-	low.registerLanguage('erlang', __webpack_require__(254));
-	low.registerLanguage('fix', __webpack_require__(255));
-	low.registerLanguage('fortran', __webpack_require__(256));
-	low.registerLanguage('fsharp', __webpack_require__(257));
-	low.registerLanguage('gams', __webpack_require__(258));
-	low.registerLanguage('gauss', __webpack_require__(259));
-	low.registerLanguage('gcode', __webpack_require__(260));
-	low.registerLanguage('gherkin', __webpack_require__(261));
-	low.registerLanguage('glsl', __webpack_require__(262));
-	low.registerLanguage('go', __webpack_require__(263));
-	low.registerLanguage('golo', __webpack_require__(264));
-	low.registerLanguage('gradle', __webpack_require__(265));
-	low.registerLanguage('groovy', __webpack_require__(266));
-	low.registerLanguage('haml', __webpack_require__(267));
-	low.registerLanguage('handlebars', __webpack_require__(268));
-	low.registerLanguage('haskell', __webpack_require__(269));
-	low.registerLanguage('haxe', __webpack_require__(270));
-	low.registerLanguage('hsp', __webpack_require__(271));
-	low.registerLanguage('htmlbars', __webpack_require__(272));
-	low.registerLanguage('http', __webpack_require__(273));
-	low.registerLanguage('inform7', __webpack_require__(274));
-	low.registerLanguage('ini', __webpack_require__(275));
-	low.registerLanguage('irpf90', __webpack_require__(276));
-	low.registerLanguage('java', __webpack_require__(277));
-	low.registerLanguage('javascript', __webpack_require__(278));
-	low.registerLanguage('json', __webpack_require__(279));
-	low.registerLanguage('julia', __webpack_require__(280));
-	low.registerLanguage('kotlin', __webpack_require__(281));
-	low.registerLanguage('lasso', __webpack_require__(282));
-	low.registerLanguage('less', __webpack_require__(283));
-	low.registerLanguage('lisp', __webpack_require__(284));
-	low.registerLanguage('livecodeserver', __webpack_require__(285));
-	low.registerLanguage('livescript', __webpack_require__(286));
-	low.registerLanguage('lua', __webpack_require__(287));
-	low.registerLanguage('makefile', __webpack_require__(288));
-	low.registerLanguage('mathematica', __webpack_require__(289));
-	low.registerLanguage('matlab', __webpack_require__(290));
-	low.registerLanguage('maxima', __webpack_require__(291));
-	low.registerLanguage('mel', __webpack_require__(292));
-	low.registerLanguage('mercury', __webpack_require__(293));
-	low.registerLanguage('mipsasm', __webpack_require__(294));
-	low.registerLanguage('mizar', __webpack_require__(295));
-	low.registerLanguage('perl', __webpack_require__(296));
-	low.registerLanguage('mojolicious', __webpack_require__(297));
-	low.registerLanguage('monkey', __webpack_require__(298));
-	low.registerLanguage('moonscript', __webpack_require__(299));
-	low.registerLanguage('nginx', __webpack_require__(300));
-	low.registerLanguage('nimrod', __webpack_require__(301));
-	low.registerLanguage('nix', __webpack_require__(302));
-	low.registerLanguage('nsis', __webpack_require__(303));
-	low.registerLanguage('objectivec', __webpack_require__(304));
-	low.registerLanguage('ocaml', __webpack_require__(305));
-	low.registerLanguage('openscad', __webpack_require__(306));
-	low.registerLanguage('oxygene', __webpack_require__(307));
-	low.registerLanguage('parser3', __webpack_require__(308));
-	low.registerLanguage('pf', __webpack_require__(309));
-	low.registerLanguage('php', __webpack_require__(310));
-	low.registerLanguage('powershell', __webpack_require__(311));
-	low.registerLanguage('processing', __webpack_require__(312));
-	low.registerLanguage('profile', __webpack_require__(313));
-	low.registerLanguage('prolog', __webpack_require__(314));
-	low.registerLanguage('protobuf', __webpack_require__(315));
-	low.registerLanguage('puppet', __webpack_require__(316));
-	low.registerLanguage('purebasic', __webpack_require__(317));
-	low.registerLanguage('python', __webpack_require__(318));
-	low.registerLanguage('q', __webpack_require__(319));
-	low.registerLanguage('qml', __webpack_require__(320));
-	low.registerLanguage('r', __webpack_require__(321));
-	low.registerLanguage('rib', __webpack_require__(322));
-	low.registerLanguage('roboconf', __webpack_require__(323));
-	low.registerLanguage('rsl', __webpack_require__(324));
-	low.registerLanguage('ruleslanguage', __webpack_require__(325));
-	low.registerLanguage('rust', __webpack_require__(326));
-	low.registerLanguage('scala', __webpack_require__(327));
-	low.registerLanguage('scheme', __webpack_require__(328));
-	low.registerLanguage('scilab', __webpack_require__(329));
-	low.registerLanguage('scss', __webpack_require__(330));
-	low.registerLanguage('smali', __webpack_require__(331));
-	low.registerLanguage('smalltalk', __webpack_require__(332));
-	low.registerLanguage('sml', __webpack_require__(333));
-	low.registerLanguage('sqf', __webpack_require__(334));
-	low.registerLanguage('sql', __webpack_require__(335));
-	low.registerLanguage('stan', __webpack_require__(336));
-	low.registerLanguage('stata', __webpack_require__(337));
-	low.registerLanguage('step21', __webpack_require__(338));
-	low.registerLanguage('stylus', __webpack_require__(339));
-	low.registerLanguage('swift', __webpack_require__(340));
-	low.registerLanguage('taggerscript', __webpack_require__(341));
-	low.registerLanguage('tcl', __webpack_require__(342));
-	low.registerLanguage('tex', __webpack_require__(343));
-	low.registerLanguage('thrift', __webpack_require__(344));
-	low.registerLanguage('tp', __webpack_require__(345));
-	low.registerLanguage('twig', __webpack_require__(346));
-	low.registerLanguage('typescript', __webpack_require__(347));
-	low.registerLanguage('vala', __webpack_require__(348));
-	low.registerLanguage('vbnet', __webpack_require__(349));
-	low.registerLanguage('vbscript', __webpack_require__(350));
-	low.registerLanguage('vbscript-html', __webpack_require__(351));
-	low.registerLanguage('verilog', __webpack_require__(352));
-	low.registerLanguage('vhdl', __webpack_require__(353));
-	low.registerLanguage('vim', __webpack_require__(354));
-	low.registerLanguage('x86asm', __webpack_require__(355));
-	low.registerLanguage('xl', __webpack_require__(356));
-	low.registerLanguage('xquery', __webpack_require__(357));
-	low.registerLanguage('yaml', __webpack_require__(358));
-	low.registerLanguage('zephir', __webpack_require__(359));
+	low.registerLanguage('1c', __webpack_require__(193));
+	low.registerLanguage('accesslog', __webpack_require__(194));
+	low.registerLanguage('actionscript', __webpack_require__(195));
+	low.registerLanguage('ada', __webpack_require__(196));
+	low.registerLanguage('apache', __webpack_require__(197));
+	low.registerLanguage('applescript', __webpack_require__(198));
+	low.registerLanguage('cpp', __webpack_require__(199));
+	low.registerLanguage('arduino', __webpack_require__(200));
+	low.registerLanguage('armasm', __webpack_require__(201));
+	low.registerLanguage('xml', __webpack_require__(202));
+	low.registerLanguage('asciidoc', __webpack_require__(203));
+	low.registerLanguage('aspectj', __webpack_require__(204));
+	low.registerLanguage('autohotkey', __webpack_require__(205));
+	low.registerLanguage('autoit', __webpack_require__(206));
+	low.registerLanguage('avrasm', __webpack_require__(207));
+	low.registerLanguage('axapta', __webpack_require__(208));
+	low.registerLanguage('bash', __webpack_require__(209));
+	low.registerLanguage('basic', __webpack_require__(210));
+	low.registerLanguage('bnf', __webpack_require__(211));
+	low.registerLanguage('brainfuck', __webpack_require__(212));
+	low.registerLanguage('cal', __webpack_require__(213));
+	low.registerLanguage('capnproto', __webpack_require__(214));
+	low.registerLanguage('ceylon', __webpack_require__(215));
+	low.registerLanguage('clojure', __webpack_require__(216));
+	low.registerLanguage('clojure-repl', __webpack_require__(217));
+	low.registerLanguage('cmake', __webpack_require__(218));
+	low.registerLanguage('coffeescript', __webpack_require__(219));
+	low.registerLanguage('cos', __webpack_require__(220));
+	low.registerLanguage('crmsh', __webpack_require__(221));
+	low.registerLanguage('crystal', __webpack_require__(222));
+	low.registerLanguage('cs', __webpack_require__(223));
+	low.registerLanguage('csp', __webpack_require__(224));
+	low.registerLanguage('css', __webpack_require__(225));
+	low.registerLanguage('d', __webpack_require__(226));
+	low.registerLanguage('markdown', __webpack_require__(227));
+	low.registerLanguage('dart', __webpack_require__(228));
+	low.registerLanguage('delphi', __webpack_require__(229));
+	low.registerLanguage('diff', __webpack_require__(230));
+	low.registerLanguage('django', __webpack_require__(231));
+	low.registerLanguage('dns', __webpack_require__(232));
+	low.registerLanguage('dockerfile', __webpack_require__(233));
+	low.registerLanguage('dos', __webpack_require__(234));
+	low.registerLanguage('dts', __webpack_require__(235));
+	low.registerLanguage('dust', __webpack_require__(236));
+	low.registerLanguage('elixir', __webpack_require__(237));
+	low.registerLanguage('elm', __webpack_require__(238));
+	low.registerLanguage('ruby', __webpack_require__(239));
+	low.registerLanguage('erb', __webpack_require__(240));
+	low.registerLanguage('erlang-repl', __webpack_require__(241));
+	low.registerLanguage('erlang', __webpack_require__(242));
+	low.registerLanguage('fix', __webpack_require__(243));
+	low.registerLanguage('fortran', __webpack_require__(244));
+	low.registerLanguage('fsharp', __webpack_require__(245));
+	low.registerLanguage('gams', __webpack_require__(246));
+	low.registerLanguage('gauss', __webpack_require__(247));
+	low.registerLanguage('gcode', __webpack_require__(248));
+	low.registerLanguage('gherkin', __webpack_require__(249));
+	low.registerLanguage('glsl', __webpack_require__(250));
+	low.registerLanguage('go', __webpack_require__(251));
+	low.registerLanguage('golo', __webpack_require__(252));
+	low.registerLanguage('gradle', __webpack_require__(253));
+	low.registerLanguage('groovy', __webpack_require__(254));
+	low.registerLanguage('haml', __webpack_require__(255));
+	low.registerLanguage('handlebars', __webpack_require__(256));
+	low.registerLanguage('haskell', __webpack_require__(257));
+	low.registerLanguage('haxe', __webpack_require__(258));
+	low.registerLanguage('hsp', __webpack_require__(259));
+	low.registerLanguage('htmlbars', __webpack_require__(260));
+	low.registerLanguage('http', __webpack_require__(261));
+	low.registerLanguage('inform7', __webpack_require__(262));
+	low.registerLanguage('ini', __webpack_require__(263));
+	low.registerLanguage('irpf90', __webpack_require__(264));
+	low.registerLanguage('java', __webpack_require__(265));
+	low.registerLanguage('javascript', __webpack_require__(266));
+	low.registerLanguage('json', __webpack_require__(267));
+	low.registerLanguage('julia', __webpack_require__(268));
+	low.registerLanguage('kotlin', __webpack_require__(269));
+	low.registerLanguage('lasso', __webpack_require__(270));
+	low.registerLanguage('less', __webpack_require__(271));
+	low.registerLanguage('lisp', __webpack_require__(272));
+	low.registerLanguage('livecodeserver', __webpack_require__(273));
+	low.registerLanguage('livescript', __webpack_require__(274));
+	low.registerLanguage('lua', __webpack_require__(275));
+	low.registerLanguage('makefile', __webpack_require__(276));
+	low.registerLanguage('mathematica', __webpack_require__(277));
+	low.registerLanguage('matlab', __webpack_require__(278));
+	low.registerLanguage('maxima', __webpack_require__(279));
+	low.registerLanguage('mel', __webpack_require__(280));
+	low.registerLanguage('mercury', __webpack_require__(281));
+	low.registerLanguage('mipsasm', __webpack_require__(282));
+	low.registerLanguage('mizar', __webpack_require__(283));
+	low.registerLanguage('perl', __webpack_require__(284));
+	low.registerLanguage('mojolicious', __webpack_require__(285));
+	low.registerLanguage('monkey', __webpack_require__(286));
+	low.registerLanguage('moonscript', __webpack_require__(287));
+	low.registerLanguage('nginx', __webpack_require__(288));
+	low.registerLanguage('nimrod', __webpack_require__(289));
+	low.registerLanguage('nix', __webpack_require__(290));
+	low.registerLanguage('nsis', __webpack_require__(291));
+	low.registerLanguage('objectivec', __webpack_require__(292));
+	low.registerLanguage('ocaml', __webpack_require__(293));
+	low.registerLanguage('openscad', __webpack_require__(294));
+	low.registerLanguage('oxygene', __webpack_require__(295));
+	low.registerLanguage('parser3', __webpack_require__(296));
+	low.registerLanguage('pf', __webpack_require__(297));
+	low.registerLanguage('php', __webpack_require__(298));
+	low.registerLanguage('powershell', __webpack_require__(299));
+	low.registerLanguage('processing', __webpack_require__(300));
+	low.registerLanguage('profile', __webpack_require__(301));
+	low.registerLanguage('prolog', __webpack_require__(302));
+	low.registerLanguage('protobuf', __webpack_require__(303));
+	low.registerLanguage('puppet', __webpack_require__(304));
+	low.registerLanguage('purebasic', __webpack_require__(305));
+	low.registerLanguage('python', __webpack_require__(306));
+	low.registerLanguage('q', __webpack_require__(307));
+	low.registerLanguage('qml', __webpack_require__(308));
+	low.registerLanguage('r', __webpack_require__(309));
+	low.registerLanguage('rib', __webpack_require__(310));
+	low.registerLanguage('roboconf', __webpack_require__(311));
+	low.registerLanguage('rsl', __webpack_require__(312));
+	low.registerLanguage('ruleslanguage', __webpack_require__(313));
+	low.registerLanguage('rust', __webpack_require__(314));
+	low.registerLanguage('scala', __webpack_require__(315));
+	low.registerLanguage('scheme', __webpack_require__(316));
+	low.registerLanguage('scilab', __webpack_require__(317));
+	low.registerLanguage('scss', __webpack_require__(318));
+	low.registerLanguage('smali', __webpack_require__(319));
+	low.registerLanguage('smalltalk', __webpack_require__(320));
+	low.registerLanguage('sml', __webpack_require__(321));
+	low.registerLanguage('sqf', __webpack_require__(322));
+	low.registerLanguage('sql', __webpack_require__(323));
+	low.registerLanguage('stan', __webpack_require__(324));
+	low.registerLanguage('stata', __webpack_require__(325));
+	low.registerLanguage('step21', __webpack_require__(326));
+	low.registerLanguage('stylus', __webpack_require__(327));
+	low.registerLanguage('swift', __webpack_require__(328));
+	low.registerLanguage('taggerscript', __webpack_require__(329));
+	low.registerLanguage('tcl', __webpack_require__(330));
+	low.registerLanguage('tex', __webpack_require__(331));
+	low.registerLanguage('thrift', __webpack_require__(332));
+	low.registerLanguage('tp', __webpack_require__(333));
+	low.registerLanguage('twig', __webpack_require__(334));
+	low.registerLanguage('typescript', __webpack_require__(335));
+	low.registerLanguage('vala', __webpack_require__(336));
+	low.registerLanguage('vbnet', __webpack_require__(337));
+	low.registerLanguage('vbscript', __webpack_require__(338));
+	low.registerLanguage('vbscript-html', __webpack_require__(339));
+	low.registerLanguage('verilog', __webpack_require__(340));
+	low.registerLanguage('vhdl', __webpack_require__(341));
+	low.registerLanguage('vim', __webpack_require__(342));
+	low.registerLanguage('x86asm', __webpack_require__(343));
+	low.registerLanguage('xl', __webpack_require__(344));
+	low.registerLanguage('xquery', __webpack_require__(345));
+	low.registerLanguage('yaml', __webpack_require__(346));
+	low.registerLanguage('zephir', __webpack_require__(347));
 
 	/*
 	 * Expose.
@@ -22899,7 +23683,7 @@
 
 
 /***/ },
-/* 203 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22919,7 +23703,7 @@
 	 * Dependencies.
 	 */
 
-	var high = __webpack_require__(204);
+	var high = __webpack_require__(192);
 
 	/*
 	 * Methods.
@@ -23828,7 +24612,7 @@
 
 
 /***/ },
-/* 204 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -24618,7 +25402,7 @@
 
 
 /***/ },
-/* 205 */
+/* 193 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs){
@@ -24701,7 +25485,7 @@
 	};
 
 /***/ },
-/* 206 */
+/* 194 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -24743,7 +25527,7 @@
 	};
 
 /***/ },
-/* 207 */
+/* 195 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -24821,7 +25605,7 @@
 	};
 
 /***/ },
-/* 208 */
+/* 196 */
 /***/ function(module, exports) {
 
 	module.exports = // We try to support full Ada2012
@@ -24998,7 +25782,7 @@
 	};
 
 /***/ },
-/* 209 */
+/* 197 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -25048,7 +25832,7 @@
 	};
 
 /***/ },
-/* 210 */
+/* 198 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -25138,7 +25922,7 @@
 	};
 
 /***/ },
-/* 211 */
+/* 199 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -25303,7 +26087,7 @@
 	};
 
 /***/ },
-/* 212 */
+/* 200 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -25407,7 +26191,7 @@
 	};
 
 /***/ },
-/* 213 */
+/* 201 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -25503,7 +26287,7 @@
 	};
 
 /***/ },
-/* 214 */
+/* 202 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -25610,7 +26394,7 @@
 	};
 
 /***/ },
-/* 215 */
+/* 203 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -25802,7 +26586,7 @@
 	};
 
 /***/ },
-/* 216 */
+/* 204 */
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -25950,7 +26734,7 @@
 	};
 
 /***/ },
-/* 217 */
+/* 205 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -26002,7 +26786,7 @@
 	};
 
 /***/ },
-/* 218 */
+/* 206 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -26142,7 +26926,7 @@
 	};
 
 /***/ },
-/* 219 */
+/* 207 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -26208,7 +26992,7 @@
 	};
 
 /***/ },
-/* 220 */
+/* 208 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -26243,7 +27027,7 @@
 	};
 
 /***/ },
-/* 221 */
+/* 209 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -26322,7 +27106,7 @@
 	};
 
 /***/ },
-/* 222 */
+/* 210 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -26377,7 +27161,7 @@
 	};
 
 /***/ },
-/* 223 */
+/* 211 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs){
@@ -26410,7 +27194,7 @@
 	};
 
 /***/ },
-/* 224 */
+/* 212 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs){
@@ -26451,7 +27235,7 @@
 	};
 
 /***/ },
-/* 225 */
+/* 213 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -26535,7 +27319,7 @@
 	};
 
 /***/ },
-/* 226 */
+/* 214 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -26588,7 +27372,7 @@
 	};
 
 /***/ },
-/* 227 */
+/* 215 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -26659,7 +27443,7 @@
 	};
 
 /***/ },
-/* 228 */
+/* 216 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -26758,7 +27542,7 @@
 	};
 
 /***/ },
-/* 229 */
+/* 217 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -26777,7 +27561,7 @@
 	};
 
 /***/ },
-/* 230 */
+/* 218 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -26819,7 +27603,7 @@
 	};
 
 /***/ },
-/* 231 */
+/* 219 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -26962,7 +27746,7 @@
 	};
 
 /***/ },
-/* 232 */
+/* 220 */
 /***/ function(module, exports) {
 
 	module.exports = function cos (hljs) {
@@ -27098,7 +27882,7 @@
 	};
 
 /***/ },
-/* 233 */
+/* 221 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -27196,7 +27980,7 @@
 	};
 
 /***/ },
-/* 234 */
+/* 222 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -27377,7 +28161,7 @@
 	};
 
 /***/ },
-/* 235 */
+/* 223 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -27548,7 +28332,7 @@
 	};
 
 /***/ },
-/* 236 */
+/* 224 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -27574,7 +28358,7 @@
 	};
 
 /***/ },
-/* 237 */
+/* 225 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -27683,7 +28467,7 @@
 	};
 
 /***/ },
-/* 238 */
+/* 226 */
 /***/ function(module, exports) {
 
 	module.exports = /**
@@ -27945,7 +28729,7 @@
 	};
 
 /***/ },
-/* 239 */
+/* 227 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -28057,7 +28841,7 @@
 	};
 
 /***/ },
-/* 240 */
+/* 228 */
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -28162,7 +28946,7 @@
 	};
 
 /***/ },
-/* 241 */
+/* 229 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -28234,7 +29018,7 @@
 	};
 
 /***/ },
-/* 242 */
+/* 230 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -28278,7 +29062,7 @@
 	};
 
 /***/ },
-/* 243 */
+/* 231 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -28346,7 +29130,7 @@
 	};
 
 /***/ },
-/* 244 */
+/* 232 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -28379,7 +29163,7 @@
 	};
 
 /***/ },
-/* 245 */
+/* 233 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -28412,7 +29196,7 @@
 	};
 
 /***/ },
-/* 246 */
+/* 234 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -28468,7 +29252,7 @@
 	};
 
 /***/ },
-/* 247 */
+/* 235 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -28596,7 +29380,7 @@
 	};
 
 /***/ },
-/* 248 */
+/* 236 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -28632,7 +29416,7 @@
 	};
 
 /***/ },
-/* 249 */
+/* 237 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -28733,7 +29517,7 @@
 	};
 
 /***/ },
-/* 250 */
+/* 238 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -28820,7 +29604,7 @@
 	};
 
 /***/ },
-/* 251 */
+/* 239 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -28997,7 +29781,7 @@
 	};
 
 /***/ },
-/* 252 */
+/* 240 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -29016,7 +29800,7 @@
 	};
 
 /***/ },
-/* 253 */
+/* 241 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -29066,7 +29850,7 @@
 	};
 
 /***/ },
-/* 254 */
+/* 242 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -29216,7 +30000,7 @@
 	};
 
 /***/ },
-/* 255 */
+/* 243 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -29249,7 +30033,7 @@
 	};
 
 /***/ },
-/* 256 */
+/* 244 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -29324,7 +30108,7 @@
 	};
 
 /***/ },
-/* 257 */
+/* 245 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -29387,7 +30171,7 @@
 	};
 
 /***/ },
-/* 258 */
+/* 246 */
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -29544,7 +30328,7 @@
 	};
 
 /***/ },
-/* 259 */
+/* 247 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -29770,7 +30554,7 @@
 	};
 
 /***/ },
-/* 260 */
+/* 248 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -29841,7 +30625,7 @@
 	};
 
 /***/ },
-/* 261 */
+/* 249 */
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -29882,7 +30666,7 @@
 	};
 
 /***/ },
-/* 262 */
+/* 250 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -30003,7 +30787,7 @@
 	};
 
 /***/ },
-/* 263 */
+/* 251 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -30061,7 +30845,7 @@
 	};
 
 /***/ },
-/* 264 */
+/* 252 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -30088,7 +30872,7 @@
 	};
 
 /***/ },
-/* 265 */
+/* 253 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -30127,7 +30911,7 @@
 	};
 
 /***/ },
-/* 266 */
+/* 254 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -30225,7 +31009,7 @@
 	};
 
 /***/ },
-/* 267 */
+/* 255 */
 /***/ function(module, exports) {
 
 	module.exports = // TODO support filter tags like :javascript, support inline HTML
@@ -30336,7 +31120,7 @@
 	};
 
 /***/ },
-/* 268 */
+/* 256 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -30374,7 +31158,7 @@
 	};
 
 /***/ },
-/* 269 */
+/* 257 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -30500,7 +31284,7 @@
 	};
 
 /***/ },
-/* 270 */
+/* 258 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -30562,7 +31346,7 @@
 	};
 
 /***/ },
-/* 271 */
+/* 259 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -30612,7 +31396,7 @@
 	};
 
 /***/ },
-/* 272 */
+/* 260 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -30687,7 +31471,7 @@
 	};
 
 /***/ },
-/* 273 */
+/* 261 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -30732,7 +31516,7 @@
 	};
 
 /***/ },
-/* 274 */
+/* 262 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -30793,7 +31577,7 @@
 	};
 
 /***/ },
-/* 275 */
+/* 263 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -30863,7 +31647,7 @@
 	};
 
 /***/ },
-/* 276 */
+/* 264 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -30943,7 +31727,7 @@
 	};
 
 /***/ },
-/* 277 */
+/* 265 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -31054,7 +31838,7 @@
 	};
 
 /***/ },
-/* 278 */
+/* 266 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -31172,7 +31956,7 @@
 	};
 
 /***/ },
-/* 279 */
+/* 267 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -31213,7 +31997,7 @@
 	};
 
 /***/ },
-/* 280 */
+/* 268 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -31395,7 +32179,7 @@
 	};
 
 /***/ },
-/* 281 */
+/* 269 */
 /***/ function(module, exports) {
 
 	module.exports = function (hljs) {
@@ -31573,7 +32357,7 @@
 	};
 
 /***/ },
-/* 282 */
+/* 270 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -31745,7 +32529,7 @@
 	};
 
 /***/ },
-/* 283 */
+/* 271 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -31889,7 +32673,7 @@
 	};
 
 /***/ },
-/* 284 */
+/* 272 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -31996,7 +32780,7 @@
 	};
 
 /***/ },
-/* 285 */
+/* 273 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -32157,7 +32941,7 @@
 	};
 
 /***/ },
-/* 286 */
+/* 274 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -32310,7 +33094,7 @@
 	};
 
 /***/ },
-/* 287 */
+/* 275 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -32370,7 +33154,7 @@
 	};
 
 /***/ },
-/* 288 */
+/* 276 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -32419,7 +33203,7 @@
 	};
 
 /***/ },
-/* 289 */
+/* 277 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -32481,7 +33265,7 @@
 	};
 
 /***/ },
-/* 290 */
+/* 278 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -32573,7 +33357,7 @@
 	};
 
 /***/ },
-/* 291 */
+/* 279 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -32983,7 +33767,7 @@
 	};
 
 /***/ },
-/* 292 */
+/* 280 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -33212,7 +33996,7 @@
 	};
 
 /***/ },
-/* 293 */
+/* 281 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -33298,7 +34082,7 @@
 	};
 
 /***/ },
-/* 294 */
+/* 282 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -33388,7 +34172,7 @@
 	};
 
 /***/ },
-/* 295 */
+/* 283 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -33411,7 +34195,7 @@
 	};
 
 /***/ },
-/* 296 */
+/* 284 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -33572,7 +34356,7 @@
 	};
 
 /***/ },
-/* 297 */
+/* 285 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -33601,7 +34385,7 @@
 	};
 
 /***/ },
-/* 298 */
+/* 286 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -33680,7 +34464,7 @@
 	};
 
 /***/ },
-/* 299 */
+/* 287 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -33796,7 +34580,7 @@
 	};
 
 /***/ },
-/* 300 */
+/* 288 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -33893,7 +34677,7 @@
 	};
 
 /***/ },
-/* 301 */
+/* 289 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -33952,7 +34736,7 @@
 	};
 
 /***/ },
-/* 302 */
+/* 290 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -34005,7 +34789,7 @@
 	};
 
 /***/ },
-/* 303 */
+/* 291 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -34095,7 +34879,7 @@
 	};
 
 /***/ },
-/* 304 */
+/* 292 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -34177,7 +34961,7 @@
 	};
 
 /***/ },
-/* 305 */
+/* 293 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -34252,7 +35036,7 @@
 	};
 
 /***/ },
-/* 306 */
+/* 294 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -34313,7 +35097,7 @@
 	};
 
 /***/ },
-/* 307 */
+/* 295 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -34387,7 +35171,7 @@
 	};
 
 /***/ },
-/* 308 */
+/* 296 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -34439,7 +35223,7 @@
 	};
 
 /***/ },
-/* 309 */
+/* 297 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -34495,7 +35279,7 @@
 	};
 
 /***/ },
-/* 310 */
+/* 298 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -34626,7 +35410,7 @@
 	};
 
 /***/ },
-/* 311 */
+/* 299 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -34711,7 +35495,7 @@
 	};
 
 /***/ },
-/* 312 */
+/* 300 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -34763,7 +35547,7 @@
 	};
 
 /***/ },
-/* 313 */
+/* 301 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -34797,7 +35581,7 @@
 	};
 
 /***/ },
-/* 314 */
+/* 302 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -34889,7 +35673,7 @@
 	};
 
 /***/ },
-/* 315 */
+/* 303 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -34929,7 +35713,7 @@
 	};
 
 /***/ },
-/* 316 */
+/* 304 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -35048,7 +35832,7 @@
 	};
 
 /***/ },
-/* 317 */
+/* 305 */
 /***/ function(module, exports) {
 
 	module.exports = // Base deafult colors in PB IDE: background: #FFFFDF; foreground: #000000;
@@ -35110,7 +35894,7 @@
 	};
 
 /***/ },
-/* 318 */
+/* 306 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -35206,7 +35990,7 @@
 	};
 
 /***/ },
-/* 319 */
+/* 307 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -35233,7 +36017,7 @@
 	};
 
 /***/ },
-/* 320 */
+/* 308 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -35406,7 +36190,7 @@
 	};
 
 /***/ },
-/* 321 */
+/* 309 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -35480,7 +36264,7 @@
 	};
 
 /***/ },
-/* 322 */
+/* 310 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -35511,7 +36295,7 @@
 	};
 
 /***/ },
-/* 323 */
+/* 311 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -35582,7 +36366,7 @@
 	};
 
 /***/ },
-/* 324 */
+/* 312 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -35622,7 +36406,7 @@
 	};
 
 /***/ },
-/* 325 */
+/* 313 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -35687,7 +36471,7 @@
 	};
 
 /***/ },
-/* 326 */
+/* 314 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -35802,7 +36586,7 @@
 	};
 
 /***/ },
-/* 327 */
+/* 315 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -35921,7 +36705,7 @@
 	};
 
 /***/ },
-/* 328 */
+/* 316 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -36066,7 +36850,7 @@
 	};
 
 /***/ },
-/* 329 */
+/* 317 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -36124,7 +36908,7 @@
 	};
 
 /***/ },
-/* 330 */
+/* 318 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -36226,7 +37010,7 @@
 	};
 
 /***/ },
-/* 331 */
+/* 319 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -36286,7 +37070,7 @@
 	};
 
 /***/ },
-/* 332 */
+/* 320 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -36340,7 +37124,7 @@
 	};
 
 /***/ },
-/* 333 */
+/* 321 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -36410,7 +37194,7 @@
 	};
 
 /***/ },
-/* 334 */
+/* 322 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -36511,7 +37295,7 @@
 	};
 
 /***/ },
-/* 335 */
+/* 323 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -36675,7 +37459,7 @@
 	};
 
 /***/ },
-/* 336 */
+/* 324 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -36762,7 +37546,7 @@
 	};
 
 /***/ },
-/* 337 */
+/* 325 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -36804,7 +37588,7 @@
 	};
 
 /***/ },
-/* 338 */
+/* 326 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -36855,7 +37639,7 @@
 	};
 
 /***/ },
-/* 339 */
+/* 327 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -37313,7 +38097,7 @@
 	};
 
 /***/ },
-/* 340 */
+/* 328 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -37434,7 +38218,7 @@
 	};
 
 /***/ },
-/* 341 */
+/* 329 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -37482,7 +38266,7 @@
 	};
 
 /***/ },
-/* 342 */
+/* 330 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -37547,7 +38331,7 @@
 	};
 
 /***/ },
-/* 343 */
+/* 331 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -37613,7 +38397,7 @@
 	};
 
 /***/ },
-/* 344 */
+/* 332 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -37652,7 +38436,7 @@
 	};
 
 /***/ },
-/* 345 */
+/* 333 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -37740,7 +38524,7 @@
 	};
 
 /***/ },
-/* 346 */
+/* 334 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -37810,7 +38594,7 @@
 	};
 
 /***/ },
-/* 347 */
+/* 335 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -37918,7 +38702,7 @@
 	};
 
 /***/ },
-/* 348 */
+/* 336 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -37972,7 +38756,7 @@
 	};
 
 /***/ },
-/* 349 */
+/* 337 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -38032,7 +38816,7 @@
 	};
 
 /***/ },
-/* 350 */
+/* 338 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -38075,7 +38859,7 @@
 	};
 
 /***/ },
-/* 351 */
+/* 339 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -38091,7 +38875,7 @@
 	};
 
 /***/ },
-/* 352 */
+/* 340 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -38194,7 +38978,7 @@
 	};
 
 /***/ },
-/* 353 */
+/* 341 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -38254,7 +39038,7 @@
 	};
 
 /***/ },
-/* 354 */
+/* 342 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -38364,7 +39148,7 @@
 	};
 
 /***/ },
-/* 355 */
+/* 343 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -38504,7 +39288,7 @@
 	};
 
 /***/ },
-/* 356 */
+/* 344 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -38581,7 +39365,7 @@
 	};
 
 /***/ },
-/* 357 */
+/* 345 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -38656,7 +39440,7 @@
 	};
 
 /***/ },
-/* 358 */
+/* 346 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -38744,7 +39528,7 @@
 	};
 
 /***/ },
-/* 359 */
+/* 347 */
 /***/ function(module, exports) {
 
 	module.exports = function(hljs) {
@@ -38855,7 +39639,7 @@
 	};
 
 /***/ },
-/* 360 */
+/* 348 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38864,7 +39648,7 @@
 	  value: true
 	});
 
-	var _agate = __webpack_require__(361);
+	var _agate = __webpack_require__(349);
 
 	Object.defineProperty(exports, 'agate', {
 	  enumerable: true,
@@ -38873,7 +39657,7 @@
 	  }
 	});
 
-	var _androidstudio = __webpack_require__(362);
+	var _androidstudio = __webpack_require__(350);
 
 	Object.defineProperty(exports, 'androidstudio', {
 	  enumerable: true,
@@ -38882,7 +39666,7 @@
 	  }
 	});
 
-	var _arduinoLight = __webpack_require__(363);
+	var _arduinoLight = __webpack_require__(351);
 
 	Object.defineProperty(exports, 'arduinoLight', {
 	  enumerable: true,
@@ -38891,7 +39675,7 @@
 	  }
 	});
 
-	var _arta = __webpack_require__(364);
+	var _arta = __webpack_require__(352);
 
 	Object.defineProperty(exports, 'arta', {
 	  enumerable: true,
@@ -38900,7 +39684,7 @@
 	  }
 	});
 
-	var _ascetic = __webpack_require__(365);
+	var _ascetic = __webpack_require__(353);
 
 	Object.defineProperty(exports, 'ascetic', {
 	  enumerable: true,
@@ -38909,7 +39693,7 @@
 	  }
 	});
 
-	var _atelierCaveDark = __webpack_require__(366);
+	var _atelierCaveDark = __webpack_require__(354);
 
 	Object.defineProperty(exports, 'atelierCaveDark', {
 	  enumerable: true,
@@ -38918,7 +39702,7 @@
 	  }
 	});
 
-	var _atelierCaveLight = __webpack_require__(367);
+	var _atelierCaveLight = __webpack_require__(355);
 
 	Object.defineProperty(exports, 'atelierCaveLight', {
 	  enumerable: true,
@@ -38927,7 +39711,7 @@
 	  }
 	});
 
-	var _atelierDuneDark = __webpack_require__(368);
+	var _atelierDuneDark = __webpack_require__(356);
 
 	Object.defineProperty(exports, 'atelierDuneDark', {
 	  enumerable: true,
@@ -38936,7 +39720,7 @@
 	  }
 	});
 
-	var _atelierDuneLight = __webpack_require__(369);
+	var _atelierDuneLight = __webpack_require__(357);
 
 	Object.defineProperty(exports, 'atelierDuneLight', {
 	  enumerable: true,
@@ -38945,7 +39729,7 @@
 	  }
 	});
 
-	var _atelierEstuaryDark = __webpack_require__(370);
+	var _atelierEstuaryDark = __webpack_require__(358);
 
 	Object.defineProperty(exports, 'atelierEstuaryDark', {
 	  enumerable: true,
@@ -38954,7 +39738,7 @@
 	  }
 	});
 
-	var _atelierEstuaryLight = __webpack_require__(371);
+	var _atelierEstuaryLight = __webpack_require__(359);
 
 	Object.defineProperty(exports, 'atelierEstuaryLight', {
 	  enumerable: true,
@@ -38963,7 +39747,7 @@
 	  }
 	});
 
-	var _atelierForestDark = __webpack_require__(372);
+	var _atelierForestDark = __webpack_require__(360);
 
 	Object.defineProperty(exports, 'atelierForestDark', {
 	  enumerable: true,
@@ -38972,7 +39756,7 @@
 	  }
 	});
 
-	var _atelierForestLight = __webpack_require__(373);
+	var _atelierForestLight = __webpack_require__(361);
 
 	Object.defineProperty(exports, 'atelierForestLight', {
 	  enumerable: true,
@@ -38981,7 +39765,7 @@
 	  }
 	});
 
-	var _atelierHeathDark = __webpack_require__(374);
+	var _atelierHeathDark = __webpack_require__(362);
 
 	Object.defineProperty(exports, 'atelierHeathDark', {
 	  enumerable: true,
@@ -38990,7 +39774,7 @@
 	  }
 	});
 
-	var _atelierHeathLight = __webpack_require__(375);
+	var _atelierHeathLight = __webpack_require__(363);
 
 	Object.defineProperty(exports, 'atelierHeathLight', {
 	  enumerable: true,
@@ -38999,7 +39783,7 @@
 	  }
 	});
 
-	var _atelierLakesideDark = __webpack_require__(376);
+	var _atelierLakesideDark = __webpack_require__(364);
 
 	Object.defineProperty(exports, 'atelierLakesideDark', {
 	  enumerable: true,
@@ -39008,7 +39792,7 @@
 	  }
 	});
 
-	var _atelierLakesideLight = __webpack_require__(377);
+	var _atelierLakesideLight = __webpack_require__(365);
 
 	Object.defineProperty(exports, 'atelierLakesideLight', {
 	  enumerable: true,
@@ -39017,7 +39801,7 @@
 	  }
 	});
 
-	var _atelierPlateauDark = __webpack_require__(378);
+	var _atelierPlateauDark = __webpack_require__(366);
 
 	Object.defineProperty(exports, 'atelierPlateauDark', {
 	  enumerable: true,
@@ -39026,7 +39810,7 @@
 	  }
 	});
 
-	var _atelierPlateauLight = __webpack_require__(379);
+	var _atelierPlateauLight = __webpack_require__(367);
 
 	Object.defineProperty(exports, 'atelierPlateauLight', {
 	  enumerable: true,
@@ -39035,7 +39819,7 @@
 	  }
 	});
 
-	var _atelierSavannaDark = __webpack_require__(380);
+	var _atelierSavannaDark = __webpack_require__(368);
 
 	Object.defineProperty(exports, 'atelierSavannaDark', {
 	  enumerable: true,
@@ -39044,7 +39828,7 @@
 	  }
 	});
 
-	var _atelierSavannaLight = __webpack_require__(381);
+	var _atelierSavannaLight = __webpack_require__(369);
 
 	Object.defineProperty(exports, 'atelierSavannaLight', {
 	  enumerable: true,
@@ -39053,7 +39837,7 @@
 	  }
 	});
 
-	var _atelierSeasideDark = __webpack_require__(382);
+	var _atelierSeasideDark = __webpack_require__(370);
 
 	Object.defineProperty(exports, 'atelierSeasideDark', {
 	  enumerable: true,
@@ -39062,7 +39846,7 @@
 	  }
 	});
 
-	var _atelierSeasideLight = __webpack_require__(383);
+	var _atelierSeasideLight = __webpack_require__(371);
 
 	Object.defineProperty(exports, 'atelierSeasideLight', {
 	  enumerable: true,
@@ -39071,7 +39855,7 @@
 	  }
 	});
 
-	var _atelierSulphurpoolDark = __webpack_require__(384);
+	var _atelierSulphurpoolDark = __webpack_require__(372);
 
 	Object.defineProperty(exports, 'atelierSulphurpoolDark', {
 	  enumerable: true,
@@ -39080,7 +39864,7 @@
 	  }
 	});
 
-	var _atelierSulphurpoolLight = __webpack_require__(385);
+	var _atelierSulphurpoolLight = __webpack_require__(373);
 
 	Object.defineProperty(exports, 'atelierSulphurpoolLight', {
 	  enumerable: true,
@@ -39089,7 +39873,7 @@
 	  }
 	});
 
-	var _brownPaper = __webpack_require__(386);
+	var _brownPaper = __webpack_require__(374);
 
 	Object.defineProperty(exports, 'brownPaper', {
 	  enumerable: true,
@@ -39098,7 +39882,7 @@
 	  }
 	});
 
-	var _codepenEmbed = __webpack_require__(387);
+	var _codepenEmbed = __webpack_require__(375);
 
 	Object.defineProperty(exports, 'codepenEmbed', {
 	  enumerable: true,
@@ -39107,7 +39891,7 @@
 	  }
 	});
 
-	var _colorBrewer = __webpack_require__(388);
+	var _colorBrewer = __webpack_require__(376);
 
 	Object.defineProperty(exports, 'colorBrewer', {
 	  enumerable: true,
@@ -39116,7 +39900,7 @@
 	  }
 	});
 
-	var _dark = __webpack_require__(389);
+	var _dark = __webpack_require__(377);
 
 	Object.defineProperty(exports, 'dark', {
 	  enumerable: true,
@@ -39125,7 +39909,7 @@
 	  }
 	});
 
-	var _darkula = __webpack_require__(390);
+	var _darkula = __webpack_require__(378);
 
 	Object.defineProperty(exports, 'darkula', {
 	  enumerable: true,
@@ -39134,7 +39918,7 @@
 	  }
 	});
 
-	var _defaultStyle = __webpack_require__(391);
+	var _defaultStyle = __webpack_require__(379);
 
 	Object.defineProperty(exports, 'defaultStyle', {
 	  enumerable: true,
@@ -39143,7 +39927,7 @@
 	  }
 	});
 
-	var _docco = __webpack_require__(392);
+	var _docco = __webpack_require__(380);
 
 	Object.defineProperty(exports, 'docco', {
 	  enumerable: true,
@@ -39152,7 +39936,7 @@
 	  }
 	});
 
-	var _dracula = __webpack_require__(393);
+	var _dracula = __webpack_require__(381);
 
 	Object.defineProperty(exports, 'dracula', {
 	  enumerable: true,
@@ -39161,7 +39945,7 @@
 	  }
 	});
 
-	var _far = __webpack_require__(394);
+	var _far = __webpack_require__(382);
 
 	Object.defineProperty(exports, 'far', {
 	  enumerable: true,
@@ -39170,7 +39954,7 @@
 	  }
 	});
 
-	var _foundation = __webpack_require__(395);
+	var _foundation = __webpack_require__(383);
 
 	Object.defineProperty(exports, 'foundation', {
 	  enumerable: true,
@@ -39179,7 +39963,7 @@
 	  }
 	});
 
-	var _githubGist = __webpack_require__(396);
+	var _githubGist = __webpack_require__(384);
 
 	Object.defineProperty(exports, 'githubGist', {
 	  enumerable: true,
@@ -39188,7 +39972,7 @@
 	  }
 	});
 
-	var _github = __webpack_require__(397);
+	var _github = __webpack_require__(385);
 
 	Object.defineProperty(exports, 'github', {
 	  enumerable: true,
@@ -39197,7 +39981,7 @@
 	  }
 	});
 
-	var _googlecode = __webpack_require__(398);
+	var _googlecode = __webpack_require__(386);
 
 	Object.defineProperty(exports, 'googlecode', {
 	  enumerable: true,
@@ -39206,7 +39990,7 @@
 	  }
 	});
 
-	var _grayscale = __webpack_require__(399);
+	var _grayscale = __webpack_require__(387);
 
 	Object.defineProperty(exports, 'grayscale', {
 	  enumerable: true,
@@ -39215,7 +39999,7 @@
 	  }
 	});
 
-	var _gruvboxDark = __webpack_require__(400);
+	var _gruvboxDark = __webpack_require__(388);
 
 	Object.defineProperty(exports, 'gruvboxDark', {
 	  enumerable: true,
@@ -39224,7 +40008,7 @@
 	  }
 	});
 
-	var _gruvboxLight = __webpack_require__(401);
+	var _gruvboxLight = __webpack_require__(389);
 
 	Object.defineProperty(exports, 'gruvboxLight', {
 	  enumerable: true,
@@ -39233,7 +40017,7 @@
 	  }
 	});
 
-	var _hopscotch = __webpack_require__(402);
+	var _hopscotch = __webpack_require__(390);
 
 	Object.defineProperty(exports, 'hopscotch', {
 	  enumerable: true,
@@ -39242,7 +40026,7 @@
 	  }
 	});
 
-	var _hybrid = __webpack_require__(403);
+	var _hybrid = __webpack_require__(391);
 
 	Object.defineProperty(exports, 'hybrid', {
 	  enumerable: true,
@@ -39251,7 +40035,7 @@
 	  }
 	});
 
-	var _idea = __webpack_require__(404);
+	var _idea = __webpack_require__(392);
 
 	Object.defineProperty(exports, 'idea', {
 	  enumerable: true,
@@ -39260,7 +40044,7 @@
 	  }
 	});
 
-	var _irBlack = __webpack_require__(405);
+	var _irBlack = __webpack_require__(393);
 
 	Object.defineProperty(exports, 'irBlack', {
 	  enumerable: true,
@@ -39269,7 +40053,7 @@
 	  }
 	});
 
-	var _kimbie = __webpack_require__(406);
+	var _kimbie = __webpack_require__(394);
 
 	Object.defineProperty(exports, 'kimbieDark', {
 	  enumerable: true,
@@ -39278,7 +40062,7 @@
 	  }
 	});
 
-	var _kimbie2 = __webpack_require__(407);
+	var _kimbie2 = __webpack_require__(395);
 
 	Object.defineProperty(exports, 'kimbieLight', {
 	  enumerable: true,
@@ -39287,7 +40071,7 @@
 	  }
 	});
 
-	var _magula = __webpack_require__(408);
+	var _magula = __webpack_require__(396);
 
 	Object.defineProperty(exports, 'magula', {
 	  enumerable: true,
@@ -39296,7 +40080,7 @@
 	  }
 	});
 
-	var _monoBlue = __webpack_require__(409);
+	var _monoBlue = __webpack_require__(397);
 
 	Object.defineProperty(exports, 'monoBlue', {
 	  enumerable: true,
@@ -39305,7 +40089,7 @@
 	  }
 	});
 
-	var _monokaiSublime = __webpack_require__(410);
+	var _monokaiSublime = __webpack_require__(398);
 
 	Object.defineProperty(exports, 'monokaiSublime', {
 	  enumerable: true,
@@ -39314,7 +40098,7 @@
 	  }
 	});
 
-	var _monokai = __webpack_require__(411);
+	var _monokai = __webpack_require__(399);
 
 	Object.defineProperty(exports, 'monokai', {
 	  enumerable: true,
@@ -39323,7 +40107,7 @@
 	  }
 	});
 
-	var _obsidian = __webpack_require__(412);
+	var _obsidian = __webpack_require__(400);
 
 	Object.defineProperty(exports, 'obsidian', {
 	  enumerable: true,
@@ -39332,7 +40116,7 @@
 	  }
 	});
 
-	var _paraisoDark = __webpack_require__(413);
+	var _paraisoDark = __webpack_require__(401);
 
 	Object.defineProperty(exports, 'paraisoDark', {
 	  enumerable: true,
@@ -39341,7 +40125,7 @@
 	  }
 	});
 
-	var _paraisoLight = __webpack_require__(414);
+	var _paraisoLight = __webpack_require__(402);
 
 	Object.defineProperty(exports, 'paraisoLight', {
 	  enumerable: true,
@@ -39350,7 +40134,7 @@
 	  }
 	});
 
-	var _pojoaque = __webpack_require__(415);
+	var _pojoaque = __webpack_require__(403);
 
 	Object.defineProperty(exports, 'pojoaque', {
 	  enumerable: true,
@@ -39359,7 +40143,7 @@
 	  }
 	});
 
-	var _purebasic = __webpack_require__(416);
+	var _purebasic = __webpack_require__(404);
 
 	Object.defineProperty(exports, 'purebasic', {
 	  enumerable: true,
@@ -39368,7 +40152,7 @@
 	  }
 	});
 
-	var _qtcreator_dark = __webpack_require__(417);
+	var _qtcreator_dark = __webpack_require__(405);
 
 	Object.defineProperty(exports, 'qtcreatorDark', {
 	  enumerable: true,
@@ -39377,7 +40161,7 @@
 	  }
 	});
 
-	var _qtcreator_light = __webpack_require__(418);
+	var _qtcreator_light = __webpack_require__(406);
 
 	Object.defineProperty(exports, 'qtcreatorLight', {
 	  enumerable: true,
@@ -39386,7 +40170,7 @@
 	  }
 	});
 
-	var _railscasts = __webpack_require__(419);
+	var _railscasts = __webpack_require__(407);
 
 	Object.defineProperty(exports, 'railscasts', {
 	  enumerable: true,
@@ -39395,7 +40179,7 @@
 	  }
 	});
 
-	var _rainbow = __webpack_require__(420);
+	var _rainbow = __webpack_require__(408);
 
 	Object.defineProperty(exports, 'rainbow', {
 	  enumerable: true,
@@ -39404,7 +40188,7 @@
 	  }
 	});
 
-	var _schoolBook = __webpack_require__(421);
+	var _schoolBook = __webpack_require__(409);
 
 	Object.defineProperty(exports, 'schoolBook', {
 	  enumerable: true,
@@ -39413,7 +40197,7 @@
 	  }
 	});
 
-	var _solarizedDark = __webpack_require__(422);
+	var _solarizedDark = __webpack_require__(410);
 
 	Object.defineProperty(exports, 'solarizedDark', {
 	  enumerable: true,
@@ -39422,7 +40206,7 @@
 	  }
 	});
 
-	var _solarizedLight = __webpack_require__(423);
+	var _solarizedLight = __webpack_require__(411);
 
 	Object.defineProperty(exports, 'solarizedLight', {
 	  enumerable: true,
@@ -39431,7 +40215,7 @@
 	  }
 	});
 
-	var _sunburst = __webpack_require__(424);
+	var _sunburst = __webpack_require__(412);
 
 	Object.defineProperty(exports, 'sunburst', {
 	  enumerable: true,
@@ -39440,7 +40224,7 @@
 	  }
 	});
 
-	var _tomorrowNightBlue = __webpack_require__(425);
+	var _tomorrowNightBlue = __webpack_require__(413);
 
 	Object.defineProperty(exports, 'tomorrowNightBlue', {
 	  enumerable: true,
@@ -39449,7 +40233,7 @@
 	  }
 	});
 
-	var _tomorrowNightBright = __webpack_require__(426);
+	var _tomorrowNightBright = __webpack_require__(414);
 
 	Object.defineProperty(exports, 'tomorrowNightBright', {
 	  enumerable: true,
@@ -39458,7 +40242,7 @@
 	  }
 	});
 
-	var _tomorrowNightEighties = __webpack_require__(427);
+	var _tomorrowNightEighties = __webpack_require__(415);
 
 	Object.defineProperty(exports, 'tomorrowNightEighties', {
 	  enumerable: true,
@@ -39467,7 +40251,7 @@
 	  }
 	});
 
-	var _tomorrowNight = __webpack_require__(428);
+	var _tomorrowNight = __webpack_require__(416);
 
 	Object.defineProperty(exports, 'tomorrowNight', {
 	  enumerable: true,
@@ -39476,7 +40260,7 @@
 	  }
 	});
 
-	var _tomorrow = __webpack_require__(429);
+	var _tomorrow = __webpack_require__(417);
 
 	Object.defineProperty(exports, 'tomorrow', {
 	  enumerable: true,
@@ -39485,7 +40269,7 @@
 	  }
 	});
 
-	var _vs = __webpack_require__(430);
+	var _vs = __webpack_require__(418);
 
 	Object.defineProperty(exports, 'vs', {
 	  enumerable: true,
@@ -39494,7 +40278,7 @@
 	  }
 	});
 
-	var _xcode = __webpack_require__(431);
+	var _xcode = __webpack_require__(419);
 
 	Object.defineProperty(exports, 'xcode', {
 	  enumerable: true,
@@ -39503,7 +40287,7 @@
 	  }
 	});
 
-	var _xt = __webpack_require__(432);
+	var _xt = __webpack_require__(420);
 
 	Object.defineProperty(exports, 'xt256', {
 	  enumerable: true,
@@ -39512,7 +40296,7 @@
 	  }
 	});
 
-	var _zenburn = __webpack_require__(433);
+	var _zenburn = __webpack_require__(421);
 
 	Object.defineProperty(exports, 'zenburn', {
 	  enumerable: true,
@@ -39524,7 +40308,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 361 */
+/* 349 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -39632,7 +40416,7 @@
 	};
 
 /***/ },
-/* 362 */
+/* 350 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -39723,7 +40507,7 @@
 	};
 
 /***/ },
-/* 363 */
+/* 351 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -39842,7 +40626,7 @@
 	};
 
 /***/ },
-/* 364 */
+/* 352 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -39947,7 +40731,7 @@
 	};
 
 /***/ },
-/* 365 */
+/* 353 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -40023,7 +40807,7 @@
 	};
 
 /***/ },
-/* 366 */
+/* 354 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -40129,7 +40913,7 @@
 	};
 
 /***/ },
-/* 367 */
+/* 355 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -40235,7 +41019,7 @@
 	};
 
 /***/ },
-/* 368 */
+/* 356 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -40335,7 +41119,7 @@
 	};
 
 /***/ },
-/* 369 */
+/* 357 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -40435,7 +41219,7 @@
 	};
 
 /***/ },
-/* 370 */
+/* 358 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -40541,7 +41325,7 @@
 	};
 
 /***/ },
-/* 371 */
+/* 359 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -40647,7 +41431,7 @@
 	};
 
 /***/ },
-/* 372 */
+/* 360 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -40747,7 +41531,7 @@
 	};
 
 /***/ },
-/* 373 */
+/* 361 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -40847,7 +41631,7 @@
 	};
 
 /***/ },
-/* 374 */
+/* 362 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -40947,7 +41731,7 @@
 	};
 
 /***/ },
-/* 375 */
+/* 363 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -41047,7 +41831,7 @@
 	};
 
 /***/ },
-/* 376 */
+/* 364 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -41147,7 +41931,7 @@
 	};
 
 /***/ },
-/* 377 */
+/* 365 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -41247,7 +42031,7 @@
 	};
 
 /***/ },
-/* 378 */
+/* 366 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -41353,7 +42137,7 @@
 	};
 
 /***/ },
-/* 379 */
+/* 367 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -41459,7 +42243,7 @@
 	};
 
 /***/ },
-/* 380 */
+/* 368 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -41565,7 +42349,7 @@
 	};
 
 /***/ },
-/* 381 */
+/* 369 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -41671,7 +42455,7 @@
 	};
 
 /***/ },
-/* 382 */
+/* 370 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -41771,7 +42555,7 @@
 	};
 
 /***/ },
-/* 383 */
+/* 371 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -41871,7 +42655,7 @@
 	};
 
 /***/ },
-/* 384 */
+/* 372 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -41971,7 +42755,7 @@
 	};
 
 /***/ },
-/* 385 */
+/* 373 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -42071,7 +42855,7 @@
 	};
 
 /***/ },
-/* 386 */
+/* 374 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -42161,7 +42945,7 @@
 	};
 
 /***/ },
-/* 387 */
+/* 375 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -42267,7 +43051,7 @@
 	};
 
 /***/ },
-/* 388 */
+/* 376 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -42372,7 +43156,7 @@
 	};
 
 /***/ },
-/* 389 */
+/* 377 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -42462,7 +43246,7 @@
 	};
 
 /***/ },
-/* 390 */
+/* 378 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -42573,7 +43357,7 @@
 	};
 
 /***/ },
-/* 391 */
+/* 379 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -42692,7 +43476,7 @@
 	};
 
 /***/ },
-/* 392 */
+/* 380 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -42811,7 +43595,7 @@
 	};
 
 /***/ },
-/* 393 */
+/* 381 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -42901,7 +43685,7 @@
 	};
 
 /***/ },
-/* 394 */
+/* 382 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -43006,7 +43790,7 @@
 	};
 
 /***/ },
-/* 395 */
+/* 383 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -43112,7 +43896,7 @@
 	};
 
 /***/ },
-/* 396 */
+/* 384 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -43214,7 +43998,7 @@
 	};
 
 /***/ },
-/* 397 */
+/* 385 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -43339,7 +44123,7 @@
 	};
 
 /***/ },
-/* 398 */
+/* 386 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -43461,7 +44245,7 @@
 	};
 
 /***/ },
-/* 399 */
+/* 387 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -43586,7 +44370,7 @@
 	};
 
 /***/ },
-/* 400 */
+/* 388 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -43730,7 +44514,7 @@
 	};
 
 /***/ },
-/* 401 */
+/* 389 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -43874,7 +44658,7 @@
 	};
 
 /***/ },
-/* 402 */
+/* 390 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -43985,7 +44769,7 @@
 	};
 
 /***/ },
-/* 403 */
+/* 391 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -44117,7 +44901,7 @@
 	};
 
 /***/ },
-/* 404 */
+/* 392 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -44243,7 +45027,7 @@
 	};
 
 /***/ },
-/* 405 */
+/* 393 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -44349,7 +45133,7 @@
 	};
 
 /***/ },
-/* 406 */
+/* 394 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -44458,7 +45242,7 @@
 	};
 
 /***/ },
-/* 407 */
+/* 395 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -44567,7 +45351,7 @@
 	};
 
 /***/ },
-/* 408 */
+/* 396 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -44674,7 +45458,7 @@
 	};
 
 /***/ },
-/* 409 */
+/* 397 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -44773,7 +45557,7 @@
 	};
 
 /***/ },
-/* 410 */
+/* 398 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -44893,7 +45677,7 @@
 	};
 
 /***/ },
-/* 411 */
+/* 399 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -45011,7 +45795,7 @@
 	};
 
 /***/ },
-/* 412 */
+/* 400 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -45128,7 +45912,7 @@
 	};
 
 /***/ },
-/* 413 */
+/* 401 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -45234,7 +46018,7 @@
 	};
 
 /***/ },
-/* 414 */
+/* 402 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -45340,7 +46124,7 @@
 	};
 
 /***/ },
-/* 415 */
+/* 403 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -45454,7 +46238,7 @@
 	};
 
 /***/ },
-/* 416 */
+/* 404 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -45577,7 +46361,7 @@
 	};
 
 /***/ },
-/* 417 */
+/* 405 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -45700,7 +46484,7 @@
 	};
 
 /***/ },
-/* 418 */
+/* 406 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -45823,7 +46607,7 @@
 	};
 
 /***/ },
-/* 419 */
+/* 407 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -45940,7 +46724,7 @@
 	};
 
 /***/ },
-/* 420 */
+/* 408 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -46057,7 +46841,7 @@
 	};
 
 /***/ },
-/* 421 */
+/* 409 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -46158,7 +46942,7 @@
 	};
 
 /***/ },
-/* 422 */
+/* 410 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -46282,7 +47066,7 @@
 	};
 
 /***/ },
-/* 423 */
+/* 411 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -46406,7 +47190,7 @@
 	};
 
 /***/ },
-/* 424 */
+/* 412 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -46521,7 +47305,7 @@
 	};
 
 /***/ },
-/* 425 */
+/* 413 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -46627,7 +47411,7 @@
 	};
 
 /***/ },
-/* 426 */
+/* 414 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -46733,7 +47517,7 @@
 	};
 
 /***/ },
-/* 427 */
+/* 415 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -46839,7 +47623,7 @@
 	};
 
 /***/ },
-/* 428 */
+/* 416 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -46945,7 +47729,7 @@
 	};
 
 /***/ },
-/* 429 */
+/* 417 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -47051,7 +47835,7 @@
 	};
 
 /***/ },
-/* 430 */
+/* 418 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -47154,7 +47938,7 @@
 	};
 
 /***/ },
-/* 431 */
+/* 419 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -47276,7 +48060,7 @@
 	};
 
 /***/ },
-/* 432 */
+/* 420 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -47387,7 +48171,7 @@
 	};
 
 /***/ },
-/* 433 */
+/* 421 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -47493,7 +48277,7 @@
 	};
 
 /***/ },
-/* 434 */
+/* 422 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47512,11 +48296,11 @@
 
 	var _src2 = _interopRequireDefault(_src);
 
-	var _reactSyntaxHighlighter = __webpack_require__(201);
+	var _reactSyntaxHighlighter = __webpack_require__(189);
 
 	var _reactSyntaxHighlighter2 = _interopRequireDefault(_reactSyntaxHighlighter);
 
-	var _styles = __webpack_require__(360);
+	var _styles = __webpack_require__(348);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47556,7 +48340,7 @@
 	    key: 'handleChange',
 	    value: function handleChange(color) {
 	      var swatches = [].concat(_toConsumableArray(this.state.swatches));
-	      swatches[this.state.selected] = color.hex;
+	      swatches[this.state.selected] = color.hexString;
 	      this.setState({
 	        swatches: swatches
 	      });
@@ -47617,7 +48401,7 @@
 	exports.default = SwatchesExample;
 
 /***/ },
-/* 435 */
+/* 423 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47634,17 +48418,15 @@
 
 	var _src = __webpack_require__(173);
 
-	var _reactSyntaxHighlighter = __webpack_require__(201);
+	var _reactSyntaxHighlighter = __webpack_require__(189);
 
 	var _reactSyntaxHighlighter2 = _interopRequireDefault(_reactSyntaxHighlighter);
 
-	var _styles = __webpack_require__(360);
+	var _styles = __webpack_require__(348);
 
-	var _utils = __webpack_require__(175);
+	var _tinycolor = __webpack_require__(187);
 
-	var u = _interopRequireWildcard(_utils);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	var _tinycolor2 = _interopRequireDefault(_tinycolor);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47696,11 +48478,15 @@
 	  }, {
 	    key: 'getHue',
 	    value: function getHue() {
-	      return u.toRgbString([this.state.h, 100, 100]);
+	      var color = (0, _tinycolor2.default)('hsv(' + this.state.h + ', 100, 100)');
+	      // return u.toRgbString([this.state.h, 100, 100]);
+	      return color.toRgbString();
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var color = (0, _tinycolor2.default)('hsv(' + this.state.h + ', ' + this.state.s + ', ' + this.state.v + ')');
+	      var rgb = color.toRgbString();
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'example' },
@@ -47714,7 +48500,7 @@
 	          { style: {
 	              position: 'relative',
 	              height: '300px',
-	              border: '1em solid ' + u.toRgbString([this.state.h, this.state.s, this.state.v]),
+	              border: '1em solid ' + rgb,
 	              marginBottom: '3em'
 	            } },
 	          _react2.default.createElement(_src.Map, {
