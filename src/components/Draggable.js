@@ -57,7 +57,7 @@ export default function draggable (options = {}) {
 
         const { x, y } = this.getPosition(e);
         this.setState({ active : true });
-        // this.updatePosition(x, y);
+        // this.updatePosition({ x, y });
         this.throttle(this.updatePosition, { x, y });
       }
 
@@ -65,7 +65,7 @@ export default function draggable (options = {}) {
         if (this.state.active) {
           e.preventDefault();
           const { x, y } = this.getPosition(e);
-          // this.updatePosition(x, y);
+          // this.updatePosition({ x, y });
           this.throttle(this.updatePosition, { x, y });
         }
       }
