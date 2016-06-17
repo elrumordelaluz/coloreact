@@ -22,7 +22,7 @@ class SwatchesExample extends Component {
 
   handleChange (color) {
     const swatches = [...this.state.swatches];
-    swatches[this.state.selected] = color.hex;
+    swatches[this.state.selected] = color.hexString;
     this.setState({
       swatches
     })

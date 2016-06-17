@@ -9,9 +9,9 @@ import tinycolor from 'tinycolor2';
 class ColorPicker extends Component {
   constructor (props) {
     super(props);
+    const c = tinycolor(this.props.color).toHsv();
     this.state = {
-      // color: u.toHSV(this.props.color)
-      color: tinycolor(this.props.color).toHsv()
+      color: this.toPercentage(c)
     }
 
     this.throttle = throttle(function (fn: any, data: any) {
@@ -25,12 +25,21 @@ class ColorPicker extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    // if (!u.equals(u.toHSV(nextProps.color), this.state.color)) {
-    if (tinycolor.equals(nextProps.color, this.state.color)) {
+    if (!tinycolor.equals(nextProps.color, this.state.color)) {
+      const c = tinycolor(nextProps.color).toHsv();
       this.setState({
-        // color: u.toHSV(nextProps.color)
-        color: tinycolor(nextProps.color).toHsv()
+        color: this.toPercentage(c)
       });
+    }
+  }
+
+  toPercentage (hsv) {
+    const { h, s, v, a } = hsv;
+    return {
+      h,
+      s: s * 100,
+      v: v * 100,
+      a
     }
   }
 
@@ -69,24 +78,13 @@ class ColorPicker extends Component {
   }
 
   output () {
-    const { color } = this.state;
-    const c = tinycolor(color);
-    // const rgbArr = u.toRGBa(color);
-    // const hex = u.toHEX(rgbArr);
-    // const rgbaString = u.toRgbString(color);
-    // const rgba = {
-    //   r: rgbArr[0],
-    //   g: rgbArr[1],
-    //   b: rgbArr[2],
-    //   a: rgbArr[3]
-    // }
-    // const hsv = {
-    //   h: color[0],
-    //   s: color[1],
-    //   v: color[2]
-    // };
-    //
-    // return { rgba, rgbaString, hex, hsv, };
+    const c = tinycolor(this.state.color);
+    return {
+      hex: c.toHex(),
+      hexString: c.toHexString(),
+      rgb: c.toRgb(),
+      rgbString: c.toRgbString(),
+    }
     return c;
   }
 
@@ -96,7 +94,6 @@ class ColorPicker extends Component {
 
   render () {
     const { h, s, v, a } = this.state.color;
-    console.log(s, v)
     return (
       <div
         className={this.props.className || 'ColorPicker'}
@@ -175,7 +172,7 @@ class ColorPicker extends Component {
             bottom: this.props.opacity ? '2.5em' : '1.3em'
           }}
           pointerStyle={{
-            borderColor: !tinycolor(this.state.color).isDark() ? "#000" : "#fff"
+            borderColor: tinycolor(this.state.color).isDark() ? "#fff" : "#000"
           }}
         />
       </div>
