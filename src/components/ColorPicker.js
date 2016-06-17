@@ -4,11 +4,14 @@ import Slider from './Slider';
 import Map from './Map';
 import throttle from 'lodash/throttle';
 
+import tinycolor from 'tinycolor2';
+
 class ColorPicker extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      color: u.toHSV(this.props.color)
+      // color: u.toHSV(this.props.color)
+      color: tinycolor(this.props.color).toHsv()
     }
 
     this.throttle = throttle(function (fn: any, data: any) {
@@ -22,38 +25,40 @@ class ColorPicker extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (!u.equals(u.toHSV(nextProps.color), this.state.color)) {
+    // if (!u.equals(u.toHSV(nextProps.color), this.state.color)) {
+    if (tinycolor.equals(nextProps.color, this.state.color)) {
       this.setState({
-        color: u.toHSV(nextProps.color)
+        // color: u.toHSV(nextProps.color)
+        color: tinycolor(nextProps.color).toHsv()
       });
     }
   }
 
-  handleHueChange (hue) {
-    const [, s, v, a] = this.state.color;
-    this.update([hue, s, v, a]);
+  handleHueChange (h) {
+    const {s, v, a} = this.state.color;
+    this.update({h, s, v, a});
   }
 
-  handleSaturationValueChange(saturation, value) {
-    const [h, , , a] = this.state.color;
-    this.update([h, saturation, value, a]);
+  handleSaturationValueChange(s, v) {
+    const { h, a } = this.state.color;
+    this.update({h, s, v, a});
   }
 
-  handleAlphaChange (alpha) {
-    const [h, s, v] = this.state.color;
-    this.update([h, s, v, alpha]);
+  handleAlphaChange (a) {
+    const { h, s, v } = this.state.color;
+    this.update({ h, s, v, a });
   }
 
   getAlpha () {
-    return this.state.color[3] === undefined ? 1 : this.state.color[3];
+    return this.state.color.a === undefined ? 1 : this.state.color.a;
   }
 
   getBackgroundHue () {
-    return u.toRgbString([this.state.color[0], 100, 100]);
+    return u.toRgbString([this.state.color.h, 100, 100]);
   }
 
   getBackgroundGradient() {
-    const [h, s, v] = this.state.color;
+    const {h, s, v} = this.state.color;
     const opaque = u.toRgbString([h, s, v, 1]);
     return `linear-gradient(to right, rgba(0,0,0,0) 0%, ${opaque} 100%)`;
   }
@@ -65,22 +70,24 @@ class ColorPicker extends Component {
 
   output () {
     const { color } = this.state;
-    const rgbArr = u.toRGBa(color);
-    const hex = u.toHEX(rgbArr);
-    const rgbaString = u.toRgbString(color);
-    const rgba = {
-      r: rgbArr[0],
-      g: rgbArr[1],
-      b: rgbArr[2],
-      a: rgbArr[3]
-    }
-    const hsv = {
-      h: color[0],
-      s: color[1],
-      v: color[2]
-    };
-
-    return { rgba, rgbaString, hex, hsv, };
+    const c = tinycolor(color);
+    // const rgbArr = u.toRGBa(color);
+    // const hex = u.toHEX(rgbArr);
+    // const rgbaString = u.toRgbString(color);
+    // const rgba = {
+    //   r: rgbArr[0],
+    //   g: rgbArr[1],
+    //   b: rgbArr[2],
+    //   a: rgbArr[3]
+    // }
+    // const hsv = {
+    //   h: color[0],
+    //   s: color[1],
+    //   v: color[2]
+    // };
+    //
+    // return { rgba, rgbaString, hex, hsv, };
+    return c;
   }
 
   showLastValue () {
@@ -88,7 +95,8 @@ class ColorPicker extends Component {
   }
 
   render () {
-    const [ hue, saturation, value ] = this.state.color;
+    const { h, s, v, a } = this.state.color;
+    console.log(s, v)
     return (
       <div
         className={this.props.className || 'ColorPicker'}
@@ -97,7 +105,7 @@ class ColorPicker extends Component {
         <Slider
           className="HueSlider"
           vertical={true}
-          value={hue}
+          value={h}
           type="hue"
           max={360}
           onChange={this.handleHueChange}
@@ -131,7 +139,7 @@ class ColorPicker extends Component {
           <Slider
             className="OpacitySlider"
             type="opacity"
-            value={this.getAlpha()}
+            value={a}
             max={1}
             background={this.getBackgroundGradient()}
             onChange={this.handleAlphaChange}
@@ -154,8 +162,8 @@ class ColorPicker extends Component {
         )}
 
         <Map
-          x={saturation}
-          y={value}
+          x={s}
+          y={v}
           max={100}
           backgroundColor={this.getBackgroundHue()}
           onChange={this.handleSaturationValueChange}
@@ -167,7 +175,7 @@ class ColorPicker extends Component {
             bottom: this.props.opacity ? '2.5em' : '1.3em'
           }}
           pointerStyle={{
-            borderColor: !u.isDark(this.state.color) ? "#000" : "#fff"
+            borderColor: !tinycolor(this.state.color).isDark() ? "#000" : "#fff"
           }}
         />
       </div>
