@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Slider, Map } from '../src';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { rainbow } from 'react-syntax-highlighter/dist/styles';
-import * as u from '../src/utils';
+import tinycolor from 'tinycolor2';
 
 class CustomExample extends Component {
   constructor (props) {
@@ -35,17 +35,21 @@ class CustomExample extends Component {
   }
 
   getHue () {
-    return u.toRgbString([this.state.h, 100, 100]);
+    const color = tinycolor(`hsv(${this.state.h}, 100, 100)`);
+    // return u.toRgbString([this.state.h, 100, 100]);
+    return color.toRgbString();
   }
 
   render () {
+    const color = tinycolor(`hsv(${this.state.h}, ${this.state.s}, ${this.state.v})`);
+    const rgb = color.toRgbString();
     return (
       <div className="example">
         <h3>Custom ColorPicker</h3>
         <div style={{
             position: 'relative',
             height: '300px',
-            border: `1em solid ${u.toRgbString([this.state.h, this.state.s, this.state.v])}`,
+            border: `1em solid ${rgb}`,
             marginBottom: '3em'
           }}>
           <Map
