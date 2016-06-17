@@ -1,9 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import * as u from '../utils';
 import Slider from './Slider';
 import Map from './Map';
 import throttle from 'lodash/throttle';
-
 import tinycolor from 'tinycolor2';
 
 class ColorPicker extends Component {
@@ -63,12 +61,19 @@ class ColorPicker extends Component {
   }
 
   getBackgroundHue () {
-    return u.toRgbString([this.state.color.h, 100, 100]);
+    return tinycolor({
+      h: this.state.color.h,
+      s: 100,
+      v: 100 }).toRgbString();
   }
 
   getBackgroundGradient() {
     const {h, s, v} = this.state.color;
-    const opaque = u.toRgbString([h, s, v, 1]);
+    const opaque = tinycolor({
+      h,
+      s,
+      v,
+      a: 1 }).toRgbString();
     return `linear-gradient(to right, rgba(0,0,0,0) 0%, ${opaque} 100%)`;
   }
 
