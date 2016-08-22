@@ -7,8 +7,8 @@ module.exports = {
     app: ['./examples/index.js']
   },
   output: {
-    path: path.join(__dirname, './build'),
-    publicPath: '/build',
+    path: path.join(__dirname, './docs'),
+    publicPath: '/docs',
     filename: 'bundle.js'
   },
   module: {

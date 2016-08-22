@@ -31,7 +31,7 @@
     "css-loader": "^0.23.1",
     "extract-text-webpack-plugin": "^1.0.1",
     "postcss-loader": "^0.8.2",
-    "react-syntax-highlighter": "^2.2.0",
+    "react-syntax-highlighter": "*",
     "style-loader": "^0.13.1",
     "webpack": "^1.12.14",
     "webpack-dev-server": "^1.14.1"
