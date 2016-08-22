@@ -85,6 +85,7 @@ class ColorPicker extends Component {
   output () {
     const c = tinycolor(this.state.color);
     return {
+      hsl: c.toHsl(),
       hex: c.toHex(),
       hexString: c.toHexString(),
       rgb: c.toRgb(),
