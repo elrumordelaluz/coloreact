@@ -49348,7 +49348,7 @@
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(SwatchesExample).call(this, props));
 
 	    _this.state = {
-	      swatches: ['#9C27B0', '#673AB7', '#FF1744', '#00BCD4', '#03A9F4', '#4CAF50', '#009688', '#CDDC39'],
+	      swatches: ['rgb(157, 41, 177)', '#673AB7', 'rgba(182, 73, 98, 1)', '#00BCD4', 'LightSeaGreen', 'rgb(76, 175, 80)', 'rgba(8, 136, 124, .7)', '#CDDC39'],
 	      selected: 5
 	    };
 	    _this.selectSwatch = _this.selectSwatch.bind(_this);
@@ -49367,7 +49367,7 @@
 	    key: 'handleChange',
 	    value: function handleChange(color) {
 	      var swatches = [].concat(_toConsumableArray(this.state.swatches));
-	      swatches[this.state.selected] = color.hexString;
+	      swatches[this.state.selected] = color.rgbString;
 	      this.setState({
 	        swatches: swatches
 	      });
@@ -49407,7 +49407,7 @@
 	        _react2.default.createElement(_src2.default, {
 	          style: { position: 'relative', height: '300px', width: '100%', paddingLeft: '1.3em' },
 	          color: this.state.swatches[this.state.selected],
-	          onChange: this.handleChange }),
+	          onChange: this.handleChange, opacity: true }),
 	        _react2.default.createElement(
 	          _reactSyntaxHighlighter2.default,
 	          { language: 'jsx', style: _styles.rainbow },
