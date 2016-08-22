@@ -21980,6 +21980,7 @@
 	    value: function output() {
 	      var c = (0, _tinycolor2.default)(this.state.color);
 	      return {
+	        hsl: c.toHsl(),
 	        hex: c.toHex(),
 	        hexString: c.toHexString(),
 	        rgb: c.toRgb(),
