@@ -7,8 +7,7 @@
     "prepublish": "npm run lib",
     "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --port 3040",
     "lib": "NODE_ENV=production babel -d lib/ src/",
-    "build": "webpack --progress --colors",
-    "deploy": "npm run build && git add build && git commit -m 'Update Demo Page' && git subtree push --prefix build origin gh-pages"
+    "build": "webpack --progress --colors"
   },
   "keywords": [
     "color-picker",
