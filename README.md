@@ -66,3 +66,7 @@ It is possible to create your own _ColorPicker_ using `Map` and `Slider`s.
 $ npm start
 # goto http://localhost:3040/
 ```
+
+### Docs 
+
+coming soon
