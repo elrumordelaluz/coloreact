@@ -67,6 +67,10 @@ $ npm start
 # goto http://localhost:3040/
 ```
 
+### License and Attribution
+
+The project start as a derivate of the awesome [react-simple-colorpicker](https://github.com/WickyNilliams/react-simple-colorpicker) which is based on [react-colorpicker](https://github.com/stayradiated/react-colorpicker).  Licensed MIT.
+
 ### Docs 
 
 coming soon

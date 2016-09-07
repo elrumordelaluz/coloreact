@@ -15,7 +15,7 @@
     "color"
   ],
   "author": "Lionel T <elrumordelaluz@hotmail.com> (elrumordelaluz.com)",
-  "license": "ISC",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/elrumordelaluz/coloreact"
