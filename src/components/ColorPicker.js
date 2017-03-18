@@ -91,7 +91,6 @@ class ColorPicker extends Component {
       rgb: c.toRgb(),
       rgbString: c.toRgbString(),
     }
-    return c;
   }
 
   showLastValue () {

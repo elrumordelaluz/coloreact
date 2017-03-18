@@ -21986,7 +21986,6 @@
 	        rgb: c.toRgb(),
 	        rgbString: c.toRgbString()
 	      };
-	      return c;
 	    }
 	  }, {
 	    key: 'showLastValue',
