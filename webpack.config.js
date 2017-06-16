@@ -1,44 +1,42 @@
-const autoprefixer = require('autoprefixer')
+const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const path = require('path')
 
 module.exports = {
   entry: {
-    app: ['./examples/index.js']
+    app: ['./examples/index.js'],
   },
   output: {
     path: path.join(__dirname, './docs'),
     publicPath: '/docs',
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    library: 'coloreact',
+    libraryTarget: 'umd',
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel'
+        loader: 'babel-loader',
       },
       {
         test: /\.css$/,
-        loader: 'style-loader!css-loader!postcss-loader',
-      }
-
-    ]
+        use: ['style-loader', 'css-loader'],
+      },
+    ],
   },
   resolve: {
-    extensions: ['', '.js', '.jsx', '.css'],
-    modulesDirectories: ['src', 'node_modules']
+    modules: [path.join(__dirname, 'src'), 'node_modules'],
   },
   plugins: [
-    new ExtractTextPlugin('[name].css')
-  ],
-  postcss: [
-    autoprefixer({
-      browsers: ['last 2 versions']
-    })
+    new ExtractTextPlugin('[name].css'),
+    new webpack.optimize.UglifyJsPlugin({
+      minimize: true,
+    }),
   ],
   devServer: {
     historyApiFallback: true,
-    contentBase: './'
-  }
-};
+    contentBase: './',
+  },
+}

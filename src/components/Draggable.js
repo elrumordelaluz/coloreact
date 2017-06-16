@@ -1,7 +1,8 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import hoistStatics from 'hoist-non-react-statics'
-import throttle from 'lodash/throttle';
+import throttle from 'lodash.throttle';
 
 const noop = () => {};
 const getDocument = element => element.ownerDocument;

@@ -1,7 +1,8 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Slider from './Slider';
 import Map from './Map';
-import throttle from 'lodash/throttle';
+import throttle from 'lodash.throttle';
 import tinycolor from 'tinycolor2';
 
 class ColorPicker extends Component {
