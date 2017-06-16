@@ -37,9 +37,7 @@
   "dependencies": {
     "babel-preset-stage-1": "^6.5.0",
     "hoist-non-react-statics": "^1.0.6",
-    "install": "^0.8.1",
     "lodash.throttle": "4.1.1",
-    "npm": "^3.9.6",
     "react": "15.6.1",
     "react-dom": "15.6.1",
     "react-syntax-highlighter": "5.6.2",
