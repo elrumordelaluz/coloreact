@@ -52,10 +52,10 @@ class Map extends Component {
 }
 
 Map.propTypes = {
-  x: React.PropTypes.number.isRequired,
-  y: React.PropTypes.number.isRequired,
-  backgroundColor: React.PropTypes.string,
-  className: React.PropTypes.string,
+  x: PropTypes.number.isRequired,
+  y: PropTypes.number.isRequired,
+  backgroundColor: PropTypes.string,
+  className: PropTypes.string,
 };
 
 Map.defaultProps = {
