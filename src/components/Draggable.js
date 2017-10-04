@@ -50,7 +50,7 @@ export default function draggable (options = {}) {
         const { document } = this;
         e.preventDefault();
 
-        this.updateBoundingRect();
+        const rect = this.updateBoundingRect();
         document.addEventListener("mousemove", this.handleUpdate);
         document.addEventListener("touchmove", this.handleUpdate);
         document.addEventListener("mouseup", this.stopUpdates);
@@ -58,7 +58,7 @@ export default function draggable (options = {}) {
 
         const { x, y } = this.getPosition(e);
         this.setState({ active : true });
-        this.updatePosition({ x, y });
+        this.updatePosition({ x, y }, rect);
         // this.throttle(this.updatePosition, { x, y });
       }
 
@@ -85,9 +85,7 @@ export default function draggable (options = {}) {
         }
       }
 
-      updatePosition ({x: clientX, y: clientY}) {
-        const { rect } = this.state;
-
+      updatePosition ({x: clientX, y: clientY}, rect = this.state.rect) {
         if (options.single) {
           const value = this.props.vertical ?
                         (rect.bottom - clientY) / rect.height :
@@ -122,9 +120,14 @@ export default function draggable (options = {}) {
         return clamp(value, 0, 1) * this.props.max;
       }
 
+      /**
+       * Findout the bounding rect - update state to send the rect to WrappedComponent
+       * @return {Object} Returns rect for additional logic
+       */
       updateBoundingRect () {
         const rect = ReactDOM.findDOMNode(this).getBoundingClientRect();
         this.setState({ rect });
+        return rect
       }
 
       render () {
