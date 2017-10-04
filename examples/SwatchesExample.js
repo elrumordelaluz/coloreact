@@ -48,7 +48,7 @@ class SwatchesExample extends Component {
               <li
                 style={{ backgroundColor: col }}
                 key={i}
-                className={this.state.selected === i && 'selected'}
+                className={this.state.selected === i ? 'selected' : ''}
                 onClick={() => this.selectSwatch(i)} />
             ))
           }
