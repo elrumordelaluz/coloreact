@@ -17,7 +17,9 @@ const SingleExample = () => {
         {`import ColorPicker from 'coloreact';
 <ColorPicker color="#408fa3" onChange={color => console.log(color.hex)} />`}
       </SyntaxHighlighter>
-      <a className="example__codeLink" href="https://github.com/elrumordelaluz/coloreact/blob/master/examples/SingleExample.js">Example Full code</a>
+      <a className="example__codeLink" href="https://github.com/elrumordelaluz/coloreact/blob/master/examples/SingleExample.js">Source</a>
+      {' '}|{' '}
+      <a href="https://codesandbox.io/s/w6l8rxwpk5" className="example__codeLink">Edit</a>
     </div>
   );
 }

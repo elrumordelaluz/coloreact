@@ -128,7 +128,10 @@ class CustomExample extends Component {
 />`}
         </SyntaxHighlighter>
 
-        <a className="example__codeLink" href="https://github.com/elrumordelaluz/coloreact/blob/master/examples/CustomExample.js">Example Full code</a>
+        <a className="example__codeLink" href="https://github.com/elrumordelaluz/coloreact/blob/master/examples/CustomExample.js">Source</a>
+        {' '}|{' '}
+        <a className="example__codeLink" href="https://codesandbox.io/s/65nypmpqw?module=">Edit</a>
+
       </div>
     );
   }

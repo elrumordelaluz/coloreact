@@ -92,11 +92,3 @@ pre code {
     transform: translateX(50%);
   }
 }
-
-
-
-.MyColorPicker {
-  height: 400px;
-  position: relative;
-  width: 100%;
-}

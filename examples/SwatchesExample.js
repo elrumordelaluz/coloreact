@@ -67,7 +67,9 @@ class SwatchesExample extends Component {
   opacity={true}
   onChange={this.handleChange} />`}
         </SyntaxHighlighter>
-        <a className="example__codeLink" href="https://github.com/elrumordelaluz/coloreact/blob/master/examples/SwatchesExample.js">Example Full code</a>
+        <a className="example__codeLink" href="https://github.com/elrumordelaluz/coloreact/blob/master/examples/SwatchesExample.js">Source</a>
+        {' '}|{' '}
+        <a className="example__codeLink"  href="https://codesandbox.io/s/0mpzo88z3w?module=">Edit</a>
       </div>
     );
   }
