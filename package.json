@@ -1,6 +1,6 @@
 {
   "name": "coloreact",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "A tiny Color Picker for React",
   "main": "lib/index.js",
   "scripts": {
