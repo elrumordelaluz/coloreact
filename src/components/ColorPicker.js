@@ -79,8 +79,9 @@ class ColorPicker extends Component {
   }
 
   update (color) {
-    this.setState({ color });
-    this.throttle(this.props.onChange, this.output());
+    this.setState({ color }, () => {
+      this.throttle(this.props.onChange, this.output());
+    });
   }
 
   output () {
