@@ -1,5 +1,4 @@
-const webpack = require('webpack')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const path = require('path')
 
 module.exports = {
@@ -30,11 +29,13 @@ module.exports = {
     modules: [path.join(__dirname, 'src'), 'node_modules'],
   },
   plugins: [
-    new ExtractTextPlugin('[name].css'),
-    new webpack.optimize.UglifyJsPlugin({
-      minimize: true,
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
     }),
   ],
+  optimization: {
+    minimize: true,
+  },
   devServer: {
     historyApiFallback: true,
     contentBase: './',

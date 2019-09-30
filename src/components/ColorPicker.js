@@ -1,91 +1,95 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Slider from './Slider';
-import Map from './Map';
-import throttle from 'lodash.throttle';
-import tinycolor from 'tinycolor2';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import Slider from './Slider'
+import Map from './Map'
+import throttle from 'lodash.throttle'
+import tinycolor from 'tinycolor2'
 
 class ColorPicker extends Component {
-  constructor (props) {
-    super(props);
-    const c = tinycolor(this.props.color).toHsv();
+  constructor(props) {
+    super(props)
+    const c = tinycolor(this.props.color).toHsv()
     this.state = {
-      color: this.toPercentage(c)
+      color: this.toPercentage(c),
     }
 
-    this.throttle = throttle(function (fn: any, data: any) {
+    this.throttle = throttle(function(fn, data) {
       fn(data)
-    }, 100);
+    }, 100)
 
-    this.handleSaturationValueChange = this.handleSaturationValueChange.bind(this);
-    this.handleHueChange = this.handleHueChange.bind(this);
-    this.handleAlphaChange = this.handleAlphaChange.bind(this);
-    this.showLastValue = this.showLastValue.bind(this);
+    this.handleSaturationValueChange = this.handleSaturationValueChange.bind(
+      this
+    )
+    this.handleHueChange = this.handleHueChange.bind(this)
+    this.handleAlphaChange = this.handleAlphaChange.bind(this)
+    this.showLastValue = this.showLastValue.bind(this)
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (!tinycolor.equals(nextProps.color, this.state.color)) {
-      const c = tinycolor(nextProps.color).toHsv();
+      const c = tinycolor(nextProps.color).toHsv()
       this.setState({
-        color: this.toPercentage(c)
-      });
+        color: this.toPercentage(c),
+      })
     }
   }
 
-  toPercentage (hsv) {
-    const { h, s, v, a } = hsv;
+  toPercentage(hsv) {
+    const { h, s, v, a } = hsv
     return {
       h,
       s: s * 100,
       v: v * 100,
-      a
+      a,
     }
   }
 
-  handleHueChange (h) {
-    const {s, v, a} = this.state.color;
-    this.update({h, s, v, a});
+  handleHueChange(h) {
+    const { s, v, a } = this.state.color
+    this.update({ h, s, v, a })
   }
 
   handleSaturationValueChange(s, v) {
-    const { h, a } = this.state.color;
-    this.update({h, s, v, a});
+    const { h, a } = this.state.color
+    this.update({ h, s, v, a })
   }
 
-  handleAlphaChange (a) {
-    const { h, s, v } = this.state.color;
-    this.update({ h, s, v, a });
+  handleAlphaChange(a) {
+    const { h, s, v } = this.state.color
+    this.update({ h, s, v, a })
   }
 
-  getAlpha () {
-    return this.state.color.a === undefined ? 1 : this.state.color.a;
+  getAlpha() {
+    return this.state.color.a === undefined ? 1 : this.state.color.a
   }
 
-  getBackgroundHue () {
+  getBackgroundHue() {
     return tinycolor({
       h: this.state.color.h,
       s: 100,
-      v: 100 }).toRgbString();
+      v: 100,
+    }).toRgbString()
   }
 
   getBackgroundGradient() {
-    const {h, s, v} = this.state.color;
+    const { h, s, v } = this.state.color
     const opaque = tinycolor({
       h,
       s,
       v,
-      a: 1 }).toRgbString();
-    return `linear-gradient(to right, rgba(0,0,0,0) 0%, ${opaque} 100%)`;
+      a: 1,
+    }).toRgbString()
+    return `linear-gradient(to right, rgba(0,0,0,0) 0%, ${opaque} 100%)`
   }
 
-  update (color) {
+  update(color) {
     this.setState({ color }, () => {
-      this.throttle(this.props.onChange, this.output());
-    });
+      this.throttle(this.props.onChange, this.output())
+    })
   }
 
-  output () {
-    const c = tinycolor(this.state.color);
+  output() {
+    const c = tinycolor(this.state.color)
     return {
       hsl: c.toHsl(),
       hex: c.toHex(),
@@ -95,17 +99,17 @@ class ColorPicker extends Component {
     }
   }
 
-  showLastValue () {
-    this.props.onComplete && this.props.onComplete(this.output());
+  showLastValue() {
+    this.props.onComplete && this.props.onComplete(this.output())
   }
 
-  render () {
-    const { h, s, v, a } = this.state.color;
+  render() {
+    const { h, s, v, a } = this.state.color
     return (
       <div
         className={this.props.className || 'ColorPicker'}
-        style={this.props.style}>
-
+        style={this.props.style}
+      >
         <Slider
           className="HueSlider"
           vertical={true}
@@ -133,7 +137,8 @@ class ColorPicker extends Component {
           pointerStyle={{
             boxShadow: 'inset 0 0 0 1px #ccc,0 1px 2px #ccc',
             borderRadius: '100%',
-          }} />
+          }}
+        />
 
         {this.props.opacity && (
           <Slider
@@ -148,17 +153,20 @@ class ColorPicker extends Component {
               bottom: '1.3em',
               right: '2.5em',
               height: 8,
-              background: '#fff url("data:image/gif;base64,R0lGODdhEAAQAPEAAMvLy8zMzP///wAAACwAAAAAEAAQAEACHYxvosstCAEMrq6Jj812Y59NIDQipdY5XLWqH4sVADs=") repeat',
+              background:
+                '#fff url("data:image/gif;base64,R0lGODdhEAAQAPEAAMvLy8zMzP///wAAACwAAAAAEAAQAEACHYxvosstCAEMrq6Jj812Y59NIDQipdY5XLWqH4sVADs=") repeat',
               backgroundSize: '8px 8px',
             }}
             trackStyle={{
               borderRadius: '1em',
-              background: 'linear-gradient(to right, rgba(255,255,255,0) 0%, #FFF 100%)',
+              background:
+                'linear-gradient(to right, rgba(255,255,255,0) 0%, #FFF 100%)',
             }}
             pointerStyle={{
               boxShadow: 'inset 0 0 0 1px #ccc,0 1px 2px #ccc',
               borderRadius: '100%',
-            }} />
+            }}
+          />
         )}
 
         <Map
@@ -172,14 +180,14 @@ class ColorPicker extends Component {
             top: 0,
             left: 0,
             right: '2.5em',
-            bottom: this.props.opacity ? '2.5em' : '1.3em'
+            bottom: this.props.opacity ? '2.5em' : '1.3em',
           }}
           pointerStyle={{
-            borderColor: tinycolor(this.state.color).isDark() ? "#fff" : "#000"
+            borderColor: tinycolor(this.state.color).isDark() ? '#fff' : '#000',
           }}
         />
       </div>
-    );
+    )
   }
 }
 
@@ -187,10 +195,10 @@ ColorPicker.propTypes = {
   color: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   onComplete: PropTypes.func,
-};
+}
 
 ColorPicker.defaultProps = {
   color: 'rgba(0,0,0,1)',
-};
+}
 
-export default ColorPicker;
+export default ColorPicker

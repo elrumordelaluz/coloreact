@@ -1,155 +1,160 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import ReactDOM from 'react-dom'
 import hoistStatics from 'hoist-non-react-statics'
-import throttle from 'lodash.throttle';
+import throttle from 'lodash.throttle'
 
-const noop = () => {};
-const getDocument = element => element.ownerDocument;
-const clamp = (val, min, max) => Math.min(Math.max(val, min), max);
-const getDisplayName = (WrappedComponent) => {
+const noop = () => {}
+const getDocument = element => element.ownerDocument
+const clamp = (val, min, max) => Math.min(Math.max(val, min), max)
+const getDisplayName = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component'
-};
+}
 
-export default function draggable (options = {}) {
-  return function wrappedInDraggable (WrappedComponent) {
+export default function draggable(options = {}) {
+  return function wrappedInDraggable(WrappedComponent) {
     class Draggable extends Component {
-      constructor (props) {
-        super(props);
+      constructor(props) {
+        super(props)
 
         this.state = { active: false }
 
-        this.throttle = throttle((fn: any, data: any) => fn(data), 30);
-        this.getPercentageValue = this.getPercentageValue.bind(this);
-        this.startUpdates = this.startUpdates.bind(this);
-        this.handleUpdate = this.handleUpdate.bind(this);
-        this.stopUpdates = this.stopUpdates.bind(this);
-        this.getPosition = this.getPosition.bind(this);
-        this.getScaledValue = this.getScaledValue.bind(this);
-        this.updateBoundingRect = this.updateBoundingRect.bind(this);
-        this.updatePosition = this.updatePosition.bind(this);
+        this.throttle = throttle((fn, data) => fn(data), 30)
+        this.getPercentageValue = this.getPercentageValue.bind(this)
+        this.startUpdates = this.startUpdates.bind(this)
+        this.handleUpdate = this.handleUpdate.bind(this)
+        this.stopUpdates = this.stopUpdates.bind(this)
+        this.getPosition = this.getPosition.bind(this)
+        this.getScaledValue = this.getScaledValue.bind(this)
+        this.updateBoundingRect = this.updateBoundingRect.bind(this)
+        this.updatePosition = this.updatePosition.bind(this)
       }
 
-      componentDidMount () {
-        this.document = getDocument(ReactDOM.findDOMNode(this));
-        const window  = this.window = this.document.defaultView;
+      componentDidMount() {
+        this.document = getDocument(ReactDOM.findDOMNode(this))
+        const window = (this.window = this.document.defaultView)
 
-        window.addEventListener("resize", this.updateBoundingRect);
-        window.addEventListener("scroll", this.updateBoundingRect);
+        window.addEventListener('resize', this.updateBoundingRect)
+        window.addEventListener('scroll', this.updateBoundingRect)
 
-        this.updateBoundingRect();
+        this.updateBoundingRect()
       }
 
-      componentWillUnmount () {
-        const { window } = this;
-        window.removeEventListener("resize", this.updateBoundingRect);
-        window.removeEventListener("scroll", this.updateBoundingRect);
+      componentWillUnmount() {
+        const { window } = this
+        window.removeEventListener('resize', this.updateBoundingRect)
+        window.removeEventListener('scroll', this.updateBoundingRect)
       }
 
-      startUpdates (e) {
-        const { document } = this;
-        e.preventDefault();
+      startUpdates(e) {
+        const { document } = this
+        e.preventDefault()
 
-        const rect = this.updateBoundingRect();
-        document.addEventListener("mousemove", this.handleUpdate);
-        document.addEventListener("touchmove", this.handleUpdate);
-        document.addEventListener("mouseup", this.stopUpdates);
-        document.addEventListener("touchend", this.stopUpdates);
+        const rect = this.updateBoundingRect()
+        document.addEventListener('mousemove', this.handleUpdate)
+        document.addEventListener('touchmove', this.handleUpdate)
+        document.addEventListener('mouseup', this.stopUpdates)
+        document.addEventListener('touchend', this.stopUpdates)
 
-        const { x, y } = this.getPosition(e);
-        this.setState({ active : true });
-        this.updatePosition({ x, y }, rect);
+        const { x, y } = this.getPosition(e)
+        this.setState({ active: true })
+        this.updatePosition({ x, y }, rect)
         // this.throttle(this.updatePosition, { x, y });
       }
 
-      handleUpdate (e) {
+      handleUpdate(e) {
         if (this.state.active) {
-          e.preventDefault();
-          const { x, y } = this.getPosition(e);
-          this.updatePosition({ x, y });
+          e.preventDefault()
+          const { x, y } = this.getPosition(e)
+          this.updatePosition({ x, y })
           // this.throttle(this.updatePosition, { x, y });
         }
       }
 
-      stopUpdates () {
+      stopUpdates() {
         if (this.state.active) {
-          const { document } = this;
+          const { document } = this
 
-          document.removeEventListener("mousemove", this.handleUpdate);
-          document.removeEventListener("touchmove", this.handleUpdate);
-          document.removeEventListener("mouseup", this.stopUpdates);
-          document.removeEventListener("touchend", this.stopUpdates);
+          document.removeEventListener('mousemove', this.handleUpdate)
+          document.removeEventListener('touchmove', this.handleUpdate)
+          document.removeEventListener('mouseup', this.stopUpdates)
+          document.removeEventListener('touchend', this.stopUpdates)
 
-          this.props.onComplete();
-          this.setState({ active : false });
+          this.props.onComplete()
+          this.setState({ active: false })
         }
       }
 
-      updatePosition ({x: clientX, y: clientY}, rect = this.state.rect) {
+      updatePosition({ x: clientX, y: clientY }, rect = this.state.rect) {
         if (options.single) {
-          const value = this.props.vertical ?
-                        (rect.bottom - clientY) / rect.height :
-                        (clientX - rect.left) / rect.width;
-          return this.props.onChange(this.getScaledValue(value));
+          const value = this.props.vertical
+            ? (rect.bottom - clientY) / rect.height
+            : (clientX - rect.left) / rect.width
+          return this.props.onChange(this.getScaledValue(value))
         }
 
-        const x = (clientX - rect.left) / rect.width;
-        const y = (rect.bottom - clientY) / rect.height;
+        const x = (clientX - rect.left) / rect.width
+        const y = (rect.bottom - clientY) / rect.height
         return this.props.onChange(
           this.getScaledValue(x),
           this.getScaledValue(y)
-        );
+        )
       }
 
-      getPosition (e) {
+      getPosition(e) {
         if (e.touches) {
-          e = e.touches[0];
+          e = e.touches[0]
         }
 
         return {
           x: e.clientX,
-          y: e.clientY
-        };
+          y: e.clientY,
+        }
       }
 
-      getPercentageValue (value) {
-        return (value / this.props.max) * 100 + "%";
+      getPercentageValue(value) {
+        return (value / this.props.max) * 100 + '%'
       }
 
-      getScaledValue (value) {
-        return clamp(value, 0, 1) * this.props.max;
+      getScaledValue(value) {
+        return clamp(value, 0, 1) * this.props.max
       }
 
       /**
        * Findout the bounding rect - update state to send the rect to WrappedComponent
        * @return {Object} Returns rect for additional logic
        */
-      updateBoundingRect () {
-        const rect = ReactDOM.findDOMNode(this).getBoundingClientRect();
-        this.setState({ rect });
+      updateBoundingRect() {
+        const rect = ReactDOM.findDOMNode(this).getBoundingClientRect()
+        this.setState({ rect })
         return rect
       }
 
-      render () {
-        return <WrappedComponent {...this.props} {...this.state}
-                  startUpdates={this.startUpdates}
-                  getPercentageValue={this.getPercentageValue} />;
+      render() {
+        return (
+          <WrappedComponent
+            {...this.props}
+            {...this.state}
+            startUpdates={this.startUpdates}
+            getPercentageValue={this.getPercentageValue}
+          />
+        )
       }
     }
 
-    Draggable.displayName = `draggable(${getDisplayName(WrappedComponent)})`;
-    Draggable.WrappedComponent = WrappedComponent;
+    Draggable.displayName = `draggable(${getDisplayName(WrappedComponent)})`
+    Draggable.WrappedComponent = WrappedComponent
     Draggable.propTypes = {
       onChange: PropTypes.func.isRequired,
       onComplete: PropTypes.func,
       max: PropTypes.number,
-    };
+    }
     Draggable.defaultProps = {
       onChange: noop,
       onComplete: noop,
       max: 1,
-    };
+    }
 
-    return hoistStatics(Draggable, WrappedComponent);
+    return hoistStatics(Draggable, WrappedComponent)
   }
 }

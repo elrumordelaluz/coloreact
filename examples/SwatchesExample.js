@@ -1,78 +1,94 @@
-import React, { Component } from 'react';
-import ColorPicker from '../src';
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import { rainbow } from 'react-syntax-highlighter/dist/styles';
+import React, { Component } from 'react'
+import ColorPicker from '../src'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 class SwatchesExample extends Component {
-  constructor (props) {
-    super(props);
+  constructor(props) {
+    super(props)
     this.state = {
       swatches: [
-        'rgb(157, 41, 177)', 
-        '#673AB7', 
-        'rgba(182, 73, 98, 1)', 
-        '#00BCD4', 
-        'LightSeaGreen', 
-        'rgb(76, 175, 80)', 
-        'rgba(8, 136, 124, .7)', 
+        'rgb(157, 41, 177)',
+        '#673AB7',
+        'rgba(182, 73, 98, 1)',
+        '#00BCD4',
+        'LightSeaGreen',
+        'rgb(76, 175, 80)',
+        'rgba(8, 136, 124, .7)',
         '#CDDC39',
       ],
       selected: 5,
     }
-    this.selectSwatch = this.selectSwatch.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.selectSwatch = this.selectSwatch.bind(this)
+    this.handleChange = this.handleChange.bind(this)
   }
 
-  selectSwatch (selected) {
+  selectSwatch(selected) {
     this.setState({
-      selected
+      selected,
     })
   }
 
-  handleChange (color) {
-    const swatches = [...this.state.swatches];
-    swatches[this.state.selected] = color.rgbString;
+  handleChange(color) {
+    const swatches = [...this.state.swatches]
+    swatches[this.state.selected] = color.rgbString
     this.setState({
-      swatches
+      swatches,
     })
   }
 
-  render () {
-    const actualColor = this.state.swatches[this.state.selected];
+  render() {
+    const actualColor = this.state.swatches[this.state.selected]
     return (
       <div className="example">
         <h3>ColorPicker with Swatches</h3>
         <ul className="swatches">
-          {
-            this.state.swatches.map((col, i) => (
-              <li
-                style={{ backgroundColor: col }}
-                key={i}
-                className={this.state.selected === i ? 'selected' : ''}
-                onClick={() => this.selectSwatch(i)} />
-            ))
-          }
+          {this.state.swatches.map((col, i) => (
+            <li
+              style={{ backgroundColor: col }}
+              key={i}
+              className={this.state.selected === i ? 'selected' : ''}
+              onClick={() => this.selectSwatch(i)}
+            />
+          ))}
         </ul>
-        <code className="swatch-value" style={{ color:actualColor }}>
-          { actualColor }
+        <code className="swatch-value" style={{ color: actualColor }}>
+          {actualColor}
         </code>
         <ColorPicker
-          style={{ position: 'relative', height: '300px', width: '100%', paddingLeft: '1.3em' }}
+          style={{
+            position: 'relative',
+            height: '300px',
+            width: '100%',
+            paddingLeft: '1.3em',
+          }}
           color={this.state.swatches[this.state.selected]}
-          onChange={this.handleChange} opacity />
-        <SyntaxHighlighter language='jsx' style={rainbow}>
-        {`import ColorPicker from 'coloreact';
+          onChange={this.handleChange}
+          opacity
+        />
+        <SyntaxHighlighter language="jsx" style={atomDark}>
+          {`import ColorPicker from 'coloreact';
 <ColorPicker
   color={this.state.swatches[this.state.selected]}
   opacity={true}
   onChange={this.handleChange} />`}
         </SyntaxHighlighter>
-        <a className="example__codeLink" href="https://github.com/elrumordelaluz/coloreact/blob/master/examples/SwatchesExample.js">Source</a>
-        {' '}|{' '}
-        <a className="example__codeLink"  href="https://codesandbox.io/s/0mpzo88z3w?module=">Edit</a>
+        <a
+          className="example__codeLink"
+          href="https://github.com/elrumordelaluz/coloreact/blob/master/examples/SwatchesExample.js"
+        >
+          Source
+        </a>{' '}
+        |{' '}
+        <a
+          className="example__codeLink"
+          href="https://codesandbox.io/s/0mpzo88z3w?module="
+        >
+          Edit
+        </a>
       </div>
-    );
+    )
   }
 }
 
-export default SwatchesExample;
+export default SwatchesExample

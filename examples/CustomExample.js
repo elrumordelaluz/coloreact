@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import { Slider, Map } from '../src';
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import { rainbow } from 'react-syntax-highlighter/dist/styles';
-import tinycolor from 'tinycolor2';
+import React, { Component } from 'react'
+import { Slider, Map } from '../src'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import tinycolor from 'tinycolor2'
 
 class CustomExample extends Component {
-  constructor (props) {
-    super(props);
+  constructor(props) {
+    super(props)
     this.state = {
       h: 155,
       s: 50,
@@ -14,44 +14,48 @@ class CustomExample extends Component {
       mapActive: false,
       sliderActive: false,
     }
-    this._sv = this._sv.bind(this);
-    this._h = this._h.bind(this);
-    this.resetActive = this.resetActive.bind(this);
+    this._sv = this._sv.bind(this)
+    this._h = this._h.bind(this)
+    this.resetActive = this.resetActive.bind(this)
   }
 
-  _sv (s, v)  {
-    this.setState({ s, v, mapActive: true });
+  _sv(s, v) {
+    this.setState({ s, v, mapActive: true })
   }
 
-  _h (h) {
-    this.setState({ h, sliderActive: true });
+  _h(h) {
+    this.setState({ h, sliderActive: true })
   }
 
-  resetActive () {
+  resetActive() {
     this.setState({
       mapActive: false,
-      sliderActive: false
+      sliderActive: false,
     })
   }
 
-  getHue () {
-    const color = tinycolor(`hsv(${this.state.h}, 100, 100)`);
+  getHue() {
+    const color = tinycolor(`hsv(${this.state.h}, 100, 100)`)
     // return u.toRgbString([this.state.h, 100, 100]);
-    return color.toRgbString();
+    return color.toRgbString()
   }
 
-  render () {
-    const color = tinycolor(`hsv(${this.state.h}, ${this.state.s}, ${this.state.v})`);
-    const rgb = color.toRgbString();
+  render() {
+    const color = tinycolor(
+      `hsv(${this.state.h}, ${this.state.s}, ${this.state.v})`
+    )
+    const rgb = color.toRgbString()
     return (
       <div className="example">
         <h3>Custom ColorPicker</h3>
-        <div style={{
+        <div
+          style={{
             position: 'relative',
             height: '300px',
             border: `1em solid ${rgb}`,
-            marginBottom: '3em'
-          }}>
+            marginBottom: '3em',
+          }}
+        >
           <Map
             x={this.state.s}
             y={this.state.v}
@@ -66,18 +70,19 @@ class CustomExample extends Component {
               bottom: 0,
               left: 0,
             }}
-
             pointerStyle={{
               width: 30,
               height: 30,
               marginLeft: -15,
               marginBottom: -15,
-              boxShadow: this.state.mapActive ? '.3em .3em 2em rgba(0,0,0,.3), inset 0 0 .1em rgba(255,255,255,.1)' : 'inset 0 0 .5em rgba(0,0,0,.3), 0 0 .3em rgba(255,255,255,.1)',
+              boxShadow: this.state.mapActive
+                ? '.3em .3em 2em rgba(0,0,0,.3), inset 0 0 .1em rgba(255,255,255,.1)'
+                : 'inset 0 0 .5em rgba(0,0,0,.3), 0 0 .3em rgba(255,255,255,.1)',
               border: 0,
               transition: 'transform 250ms, box-shadow 250ms',
               transform: this.state.mapActive ? 'scale(1)' : 'scale(.95)',
             }}
-            />
+          />
           <Slider
             max={360}
             value={this.state.h}
@@ -101,12 +106,14 @@ class CustomExample extends Component {
               animationTimingFunction: 'linear',
               animationIterationCount: 'infinite',
               animationDirection: 'alternate',
-              animationPlayState: this.state.sliderActive ? 'paused' : 'running',
+              animationPlayState: this.state.sliderActive
+                ? 'paused'
+                : 'running',
             }}
           />
         </div>
-        <SyntaxHighlighter language='jsx' style={rainbow}>
-        {`import { Map, Slider } from 'coloreact';
+        <SyntaxHighlighter language="jsx" style={atomDark}>
+          {`import { Map, Slider } from 'coloreact';
 
 <Map
   x={this.state.s}
@@ -127,14 +134,22 @@ class CustomExample extends Component {
   pointerStyle={{ ... }}
 />`}
         </SyntaxHighlighter>
-
-        <a className="example__codeLink" href="https://github.com/elrumordelaluz/coloreact/blob/master/examples/CustomExample.js">Source</a>
-        {' '}|{' '}
-        <a className="example__codeLink" href="https://codesandbox.io/s/65nypmpqw?module=">Edit</a>
-
+        <a
+          className="example__codeLink"
+          href="https://github.com/elrumordelaluz/coloreact/blob/master/examples/CustomExample.js"
+        >
+          Source
+        </a>{' '}
+        |{' '}
+        <a
+          className="example__codeLink"
+          href="https://codesandbox.io/s/65nypmpqw?module="
+        >
+          Edit
+        </a>
       </div>
-    );
+    )
   }
 }
 
-export default CustomExample;
+export default CustomExample
