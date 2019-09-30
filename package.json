@@ -35,7 +35,7 @@
     "react-syntax-highlighter": "5.7.0",
     "style-loader": "0.19.1",
     "webpack": "3.10.0",
-    "webpack-dev-server": "2.9.7"
+    "webpack-dev-server": "2.11.5"
   },
   "dependencies": {
     "hoist-non-react-statics": "2.3.1",

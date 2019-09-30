@@ -121,17 +121,13 @@ class ColorPicker extends Component {
           trackStyle={{
             borderRadius: '1em',
             background: `linear-gradient(to bottom,
-              #FF0000 0%,
-              #FF0099 10%,
-              #CD00FF 20%,
-              #3200FF 30%,
-              #0066FF 40%,
-              #00FFFD 50%,
-              #00FF66 60%,
-              #35FF00 70%,
-              #CDFF00 80%,
-              #FF9900 90%,
-              #FF0000 100%
+              #f00 0%,
+              #ff0 17%,
+              #0f0 33%,
+              #0ff 50%,
+              #00f 67%,
+              #f0f 83%,
+              #f00 100%
             )`,
           }}
           pointerStyle={{
