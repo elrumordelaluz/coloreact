@@ -126,11 +126,11 @@ class ColorPicker extends Component {
             borderRadius: '1em',
             background: `linear-gradient(to bottom,
               #f00 0%,
-              #ff0 17%,
-              #0f0 33%,
+              #f0f 17%,
+              #00f 33%,
               #0ff 50%,
-              #00f 67%,
-              #f0f 83%,
+              #0f0 67%,
+              #ff0 83%,
               #f00 100%
             )`,
           }}
