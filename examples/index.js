@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import Styles from './styles.css';
 import ColorPicker, { Slider, Map } from '../src';
 
@@ -29,4 +29,4 @@ class App extends Component {
   }
 }
 
-ReactDOM.render(<App />, document.querySelector('.container'));
+createRoot(document.querySelector('.container')).render(<App />);

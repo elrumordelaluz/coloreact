@@ -9,8 +9,10 @@ module.exports = {
     path: path.join(__dirname, './docs'),
     publicPath: '/docs',
     filename: 'bundle.js',
-    library: 'coloreact',
-    libraryTarget: 'umd',
+    library: {
+      name: 'coloreact',
+      type: 'umd',
+    },
   },
   module: {
     rules: [
@@ -38,6 +40,8 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
-    contentBase: './',
+    static: {
+      directory: path.join(__dirname),
+    },
   },
 }

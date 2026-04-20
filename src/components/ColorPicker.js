@@ -25,7 +25,7 @@ class ColorPicker extends Component {
     this.showLastValue = this.showLastValue.bind(this)
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!tinycolor.equals(nextProps.color, this.state.color)) {
       const c = tinycolor(nextProps.color).toHsv()
       this.setState({

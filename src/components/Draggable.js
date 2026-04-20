@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import ReactDOM from 'react-dom'
 import hoistStatics from 'hoist-non-react-statics'
 import throttle from 'lodash.throttle'
 
 const noop = () => {}
-const getDocument = element => element.ownerDocument
 const clamp = (val, min, max) => Math.min(Math.max(val, min), max)
 const getDisplayName = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component'
@@ -18,6 +16,7 @@ export default function draggable(options = {}) {
         super(props)
 
         this.state = { active: false }
+        this.containerRef = React.createRef()
 
         this.throttle = throttle((fn, data) => fn(data), 30)
         this.getPercentageValue = this.getPercentageValue.bind(this)
@@ -31,7 +30,7 @@ export default function draggable(options = {}) {
       }
 
       componentDidMount() {
-        this.document = getDocument(ReactDOM.findDOMNode(this))
+        this.document = this.containerRef.current.ownerDocument
         const window = (this.window = this.document.defaultView)
 
         window.addEventListener('resize', this.updateBoundingRect)
@@ -125,7 +124,7 @@ export default function draggable(options = {}) {
        * @return {Object} Returns rect for additional logic
        */
       updateBoundingRect() {
-        const rect = ReactDOM.findDOMNode(this).getBoundingClientRect()
+        const rect = this.containerRef.current.getBoundingClientRect()
         this.setState({ rect })
         return rect
       }
@@ -137,6 +136,7 @@ export default function draggable(options = {}) {
             {...this.state}
             startUpdates={this.startUpdates}
             getPercentageValue={this.getPercentageValue}
+            containerRef={this.containerRef}
           />
         )
       }

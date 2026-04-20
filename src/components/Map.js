@@ -34,6 +34,7 @@ class Map extends Component {
     const { bgOverlay } = Map.defaultStyles;
     return (
       <div
+        ref={this.props.containerRef}
         className={this.props.className}
         style={this.getMapStyles()}
         onMouseDown={this.props.startUpdates}

@@ -41,6 +41,7 @@ class Slider extends Component {
     const { opacitySlider, opacitySlider__track }= Slider.defaultStyles;
     return (
       <div
+        ref={this.props.containerRef}
         className={this.props.className || 'Slider'}
         style={this.getSliderStyles()}
         onMouseDown={this.props.startUpdates}
